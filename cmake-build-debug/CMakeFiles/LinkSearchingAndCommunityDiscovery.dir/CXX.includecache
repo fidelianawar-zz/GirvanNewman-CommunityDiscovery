@@ -11,9 +11,9 @@ iostream
 -
 fstream
 -
-string
+ostream
 -
-vector
+string
 -
 sstream
 -

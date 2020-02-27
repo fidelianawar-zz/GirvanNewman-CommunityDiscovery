@@ -4,8 +4,8 @@
 
 #include <iostream>
 #include <fstream>
+#include <ostream>
 #include <string>
-#include <vector>
 #include <sstream>
 #include <unordered_map>
 
@@ -17,7 +17,7 @@ using std::vector;
 
 void readInputFile(std::basic_string<char> input){
     cout << "inputfile is: " << input << endl;
-    std::ifstream networkFile("g1.txt");
+    std::ifstream networkFile(input);
 
     if(!networkFile){
         cout << "network file cannot open :(";
@@ -29,7 +29,13 @@ void readInputFile(std::basic_string<char> input){
 }
 
 void createOutputFile(std::basic_string<char> output){
+
     cout << "outputfile is: " << output << endl;
+
+    std::ofstream outputFile(output);
+    outputFile << "Writing this to output file.\n";
+    outputFile.close();
+
 }
 
 void performDFS(std::basic_string<char> node){
@@ -38,6 +44,10 @@ void performDFS(std::basic_string<char> node){
 
 void performBFS(std::basic_string<char> node){
     cout << "inside BFS: " << node << endl;
+}
+
+void girvanNewmanAlgo(){
+    cout << "inside girvan algo" << endl;
 }
 
 int main(int argc, char* const argv[]) {
@@ -50,32 +60,39 @@ int main(int argc, char* const argv[]) {
 
     string command;
     string input;
-    std::vector<string> values;
-    std::unordered_map<string, string> commandArgs;
+    std::unordered_map<string,std::pair<string,string>> mcMap;
+    std::unordered_map<string, string> commandMap;
 
-    int i = 0;
 
     for (std::string line; std::getline(controlFile, line); ) {
 
         // inserting the line into a stream that helps us parse the content
         std::stringstream ss(line);
         ss >> command;
+
         if(command == "mc"){
-            break;
+            string arg1, arg2;
+            ss >> arg1 >> arg2;
+            mcMap.insert({command,std::make_pair(arg1, arg2)});
+            //cout << values.at(0).first << " " << values.at(0).second << endl;
         }
-        while(ss >> input){
-            commandArgs.insert({command,input});
+        else if(command == "dc"){
+            commandMap.insert({command, ""});
         }
-        i++;
+        else{
+            while(ss >> input){
+                commandMap.insert({command, input});
+            }
+        }
     }
 
-    for (auto itr = commandArgs.begin(); itr != commandArgs.end(); ++itr) {
+    for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
         cout << itr->first << '\t' << itr->second << '\n';
     }
 
     cout << endl;
 
-    for (auto itr = commandArgs.begin(); itr != commandArgs.end(); ++itr) {
+    for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
         if(itr -> first == "or"){
             readInputFile(itr->second);
         }
@@ -88,6 +105,14 @@ int main(int argc, char* const argv[]) {
         else if(itr -> first == "dfs"){
             performDFS(itr->second);
         }
+        else if(itr -> first == "dc"){
+            girvanNewmanAlgo();
+        }
+    }
+
+    for (auto itr = mcMap.begin(); itr != mcMap.end(); ++itr) {
+        cout << endl << itr->first << "\t";
+        cout << itr->second.first << "\t" << itr->second.second << "\t";
     }
 
     return 0;
