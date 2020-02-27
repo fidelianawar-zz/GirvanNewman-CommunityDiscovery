@@ -13,7 +13,7 @@ env:
   ###      input file
   ###      Example: INPUT_FILES: -f input01.txt input02.txt
   INPUT_FILES: controlFile.txt
-  OUTPUT_FILES:
+  OUTPUT_FILES: g1-output.txt
 
 jobs:
   build:
