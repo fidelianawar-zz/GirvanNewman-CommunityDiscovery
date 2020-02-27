@@ -15,9 +15,17 @@ using std::endl;
 using std::string;
 using std::vector;
 
-
-void readInputFile(std::basic_string<char> input){
+void readInputFile(std::basic_string<char>* input){
     cout << "inputfile is: " << input << endl;
+    std::ifstream networkFile("g1.txt");
+
+    if(!networkFile){
+        cout << "network file cannot open :(";
+    }
+    else{
+        cout << "network file opened!";
+    }
+    networkFile.close();
 }
 
 void createOutputFile(std::basic_string<char> output){
@@ -64,7 +72,7 @@ int main(int argc, char* const argv[]) {
     for (auto itr = commandArgs.begin(); itr != commandArgs.end(); ++itr) {
         cout << itr->first << '\t' << itr->second << '\n';
     }
-    
+
     cout << endl;
 
     for (auto itr = commandArgs.begin(); itr != commandArgs.end(); ++itr) {
