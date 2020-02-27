@@ -15,7 +15,7 @@ using std::endl;
 using std::string;
 using std::vector;
 
-void readInputFile(std::basic_string<char>* input){
+void readInputFile(std::basic_string<char> input){
     cout << "inputfile is: " << input << endl;
     std::ifstream networkFile("g1.txt");
 
