@@ -1,8 +1,8 @@
 //
 // Created by Fidelia Nawar on 2/26/20.
 //
+#include <iostream>
 
 int main(int argc, char* const argv[]) {
- cout << "test";
-
+    std::cout << "test";
 }
