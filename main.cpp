@@ -13,7 +13,6 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
-using std::vector;
 
 void readInputFile(std::basic_string<char> input){
     cout << "inputfile is: " << input << endl;
@@ -51,6 +50,7 @@ void girvanNewmanAlgo(){
 }
 
 int main(int argc, char* const argv[]) {
+    cout << argc;
 
     std::ifstream controlFile(argv[1]);
 

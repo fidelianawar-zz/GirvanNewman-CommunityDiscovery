@@ -3,3 +3,4 @@ ow g1-output.txt
 dfs E
 bfs G
 mc A B
+dc
