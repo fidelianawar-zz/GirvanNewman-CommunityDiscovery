@@ -50,8 +50,6 @@ void girvanNewmanAlgo(){
 }
 
 int main(int argc, char* const argv[]) {
-    cout << argc;
-
     std::ifstream controlFile(argv[1]);
 
     if(!controlFile){
