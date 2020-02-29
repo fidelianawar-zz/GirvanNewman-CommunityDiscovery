@@ -8,6 +8,8 @@
 #include <string>
 #include <sstream>
 #include <unordered_map>
+#include <list>
+#include "Graph.h"
 
 using std::cout;
 using std::cin;
@@ -22,8 +24,23 @@ void readInputFile(std::basic_string<char> input){
         cout << "network file cannot open :(";
     }
     else{
-        cout << "network file opened!";
+        cout << "network file opened!" << endl;
     }
+    int numVertices;
+    string chars = "[]";
+
+    // first line
+    string line;
+    if (std::getline(networkFile, line)) {
+        // load into string stream for parsing.
+        for(char c : chars){
+            line.erase(std::remove(line.begin(), line.end(), c), line.end());
+        }
+        std::istringstream iss(line);
+        iss >> numVertices;
+    }
+    cout << "the number of vertices are: " << numVertices;
+    //store each vertice as an edge
     networkFile.close();
 }
 
@@ -112,6 +129,12 @@ int main(int argc, char* const argv[]) {
         cout << endl << itr->first << "\t";
         cout << itr->second.first << "\t" << itr->second.second << "\t";
     }
+     cout << endl << endl;
+
+    int V = 5;
+    Graph<int> adjList(5);
+    //adjList.addEdge(1, 5);
+
 
     return 0;
 }

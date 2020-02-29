@@ -6,6 +6,20 @@
 
 #IncludeRegexTransform: 
 
+/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/Graph.h
+vector
+-
+list
+-
+iostream
+-
+iterator
+-
+string
+-
+algorithm
+-
+
 /Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/main.cpp
 iostream
 -
@@ -19,4 +33,8 @@ sstream
 -
 unordered_map
 -
+list
+-
+Graph.h
+/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/Graph.h
 
