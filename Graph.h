@@ -26,7 +26,7 @@ class Graph {
 public:
     Graph(int V);
 
-    void addVertex(T&);
+    void addVertex(T &);
 
     void addEdge(T src, T dest);
 
@@ -57,7 +57,7 @@ Graph<T>::Graph(int vertices) {
 //typename list<T>::iterator innerListIterator;
 
 template<class T>
-void Graph<T>::addVertex(T& v) {
+void Graph<T>::addVertex(T &v) {
     cout << "vertex is: " << &v << endl;
     list<T> tempList;
     innerList.push_back(v);
@@ -81,20 +81,19 @@ void Graph<T>::addEdge(T src, T dest) { //src: vertex, dest: edge to be added
         //check if first element == 'src' parameter
         if (*val == src) {
             //iterate through rest of tempList to make sure 'dest' doesn't already exist
-            for (auto innerListIterator = next(tempList.begin(), 1);
-                 innerListIterator != tempList.end(); innerListIterator++) {
-                if (*innerListIterator == dest) {
-                    cout << "this value already exists for this vertex";
-                    return; //exit out of function
-                }
-            }
+//            for (auto innerListIterator = next(tempList.begin(), 1);
+//                 innerListIterator != tempList.end(); innerListIterator++) {
+//                if (*innerListIterator == dest) {
+//                    cout << "this value already exists for this vertex";
+//                    return; //exit out of function
+//                }
+//            }
             //if 'dest' doesnt exist, BUT vertex does, push to tempList
-            tempList.push_back(dest);
-            innerList = tempList;
+            //tempList.push_back(dest);
+            innerList.push_back(dest);
         }
     }
     //push back inner list to larger adjList
-    adjLists.push_back(innerList);
 //        if (vertexExists == false) { //first element (vertex) is not in tempList
 //            //if src does not exist, create and pushback the vertex to innerList
 //            addVertex(src);
@@ -147,7 +146,6 @@ void Graph<T>::addEdge(T src, T dest) { //src: vertex, dest: edge to be added
 
 
 
-
 //adjLists.insert(src,innerList);
 //    for(auto it = next(adjLists->begin(),0); it != adjLists->end(); it++){
 //
@@ -183,14 +181,14 @@ void Graph<T>::addEdge(T src, T dest) { //src: vertex, dest: edge to be added
 //adjLists[src].push_front(dest);
 
 template<class T>
-int Graph<T>::getSize(){
+int Graph<T>::getSize() {
     return adjLists.size();
 }
 
 template<class T>
 // A utility function to print the adjacency list representation of graph
 void Graph<T>::displayGraph() {
-    for (int i =0; i  < adjLists.size(); i++) {
+    for (int i = 0; i < adjLists.size(); i++) {
         list<T> tempList = adjLists[i];
         for (auto it2 = tempList.begin(); it2 != tempList.end(); it2++) {
             cout << " elements of  tempList: " << *it2 << " ";

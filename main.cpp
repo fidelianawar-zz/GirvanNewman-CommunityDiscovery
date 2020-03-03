@@ -16,14 +16,13 @@ using std::cin;
 using std::endl;
 using std::string;
 
-void readInputFile(std::basic_string<char> input){
+void readInputFile(std::basic_string<char> input) {
     cout << "inputfile is: " << input << endl;
     std::ifstream networkFile(input);
 
-    if(!networkFile){
+    if (!networkFile) {
         cout << "network file cannot open :(";
-    }
-    else{
+    } else {
         cout << "network file opened!" << endl;
     }
     int numVertices = 0;
@@ -33,26 +32,26 @@ void readInputFile(std::basic_string<char> input){
     string line;
     if (std::getline(networkFile, line)) {
         // load into string stream for parsing.
-        for(char c : chars){
+        for (char c : chars) {
             line.erase(std::remove(line.begin(), line.end(), c), line.end());
         }
         std::istringstream iss(line);
         iss >> numVertices;
     }
-    cout << "the number of vertices are: " << numVertices <<endl;
+    cout << "the number of vertices are: " << numVertices << endl;
 
     Graph<char> networkGraph(numVertices);
     string vertex;
-    for(int i = 0; i < numVertices; i++){
-        getline(networkFile,vertex);
+    for (int i = 0; i < numVertices; i++) {
+        getline(networkFile, vertex);
         networkGraph.addVertex((char &) vertex);
     }
 
-    networkFile.ignore(256,'\n');\
+    networkFile.ignore(256, '\n');
     string edges;
 
-    while (std::getline(networkFile, edges))
-    {
+    while (std::getline(networkFile, edges)) {
+        cout << edges << endl;
         string u, v;
         //cout << edges  << " " ;
         //edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
@@ -63,7 +62,7 @@ void readInputFile(std::basic_string<char> input){
     networkFile.close();
 }
 
-void createOutputFile(std::basic_string<char> output){
+void createOutputFile(std::basic_string<char> output) {
 
     cout << "outputfile is: " << output << endl;
 
@@ -73,48 +72,46 @@ void createOutputFile(std::basic_string<char> output){
 
 }
 
-void performDFS(std::basic_string<char> node){
+void performDFS(std::basic_string<char> node) {
     cout << "inside DFS: " << node << endl;
 }
 
-void performBFS(std::basic_string<char> node){
+void performBFS(std::basic_string<char> node) {
     cout << "inside BFS: " << node << endl;
 }
 
-void girvanNewmanAlgo(){
+void girvanNewmanAlgo() {
     cout << "inside girvan algo" << endl;
 }
 
-int main(int argc, char* const argv[]) {
+int main(int argc, char *const argv[]) {
     std::ifstream controlFile(argv[1]);
     cout << argc << endl;
-    if(!controlFile){
+    if (!controlFile) {
         cout << "control file cannot open";
     }
 
     string command;
     string input;
-    std::unordered_map<string,std::pair<string,string>> mcMap;
+    std::unordered_map<string, std::pair<string, string>> mcMap;
     std::unordered_map<string, string> commandMap;
 
 
-    for (std::string line; std::getline(controlFile, line); ) {
+    for (std::string line; std::getline(controlFile, line);) {
 
         // inserting the line into a stream that helps us parse the content
         std::stringstream ss(line);
         ss >> command;
 
-        if(command == "mc"){
+        if (command == "mc") {
             string arg1, arg2;
             ss >> arg1 >> arg2;
-            mcMap.insert({command,std::make_pair(arg1, arg2)});
+            mcMap.insert({command, std::make_pair(arg1, arg2)});
             //cout << values.at(0).first << " " << values.at(0).second << endl;
-        }
-        else if(command == "dc"){
+        } else if (command == "dc") {
             commandMap.insert({command, ""});
-        }
-        else{
-            while(ss >> input){
+        } else {
+            while (ss >> input) {
                 commandMap.insert({command, input});
             }
         }
@@ -125,19 +122,15 @@ int main(int argc, char* const argv[]) {
     }
     cout << endl;
     for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
-        if(itr -> first == "or"){
+        if (itr->first == "or") {
             readInputFile(itr->second);
-        }
-        else if(itr -> first == "ow"){
+        } else if (itr->first == "ow") {
             createOutputFile(itr->second);
-        }
-        else if(itr -> first == "bfs"){
+        } else if (itr->first == "bfs") {
             performBFS(itr->second);
-        }
-        else if(itr -> first == "dfs"){
+        } else if (itr->first == "dfs") {
             performDFS(itr->second);
-        }
-        else if(itr -> first == "dc"){
+        } else if (itr->first == "dc") {
             girvanNewmanAlgo();
         }
     }
@@ -146,6 +139,6 @@ int main(int argc, char* const argv[]) {
         cout << endl << itr->first << "\t";
         cout << itr->second.first << "\t" << itr->second.second << "\t";
     }
-     cout << endl;
+    cout << endl;
     return 0;
 }
