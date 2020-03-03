@@ -24,7 +24,7 @@ class Graph {
 public:
     Graph(int V);
 
-    void addVertex(const T &v);
+    void addVertex(T&);
     void addEdge(T src, T dest);
     void displayGraph(int);
 };
@@ -52,11 +52,11 @@ Graph<T>::Graph(int vertices) {
 //typename list<T>::iterator innerListIterator;
 
 template<class T>
-void Graph<T>::addVertex(const T &v) {
+void Graph<T>::addVertex(T& v) {
     list<T> tempList;
     tempList.push_back(v);
     adjLists.push_back(tempList);
-    cout << "here" << adjLists.size() << endl;
+    cout << "the size of adj list is: " << adjLists.size() << endl;
 }
 template<class T>
 void Graph<T>::addEdge(T src, T dest){ //src: vertex, dest: edge to be added
@@ -91,10 +91,10 @@ void Graph<T>::addEdge(T src, T dest){ //src: vertex, dest: edge to be added
         }
         //push back inner list to larger adjList
         adjLists.push_back(innerList);
-        if (vertexExists == false) { //first element (vertex) is not in tempList
-            //if src does not exist, create and pushback the vertex to innerList
-            addVertex(src);
-        }
+//        if (vertexExists == false) { //first element (vertex) is not in tempList
+//            //if src does not exist, create and pushback the vertex to innerList
+//            addVertex(src);
+//        }
     }
     cout << adjLists.size();
 }

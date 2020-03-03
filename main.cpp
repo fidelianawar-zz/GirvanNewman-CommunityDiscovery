@@ -41,7 +41,14 @@ void readInputFile(std::basic_string<char> input){
         iss >> numVertices;
     }
     cout << "the number of vertices are: " << numVertices;
-    //store each vertice as an edge
+    Graph<char> networkGraph(numVertices);
+    string vertex;
+    for(int i = 0; i < numVertices; i++){
+        getline(networkFile,vertex);
+        cout << vertex << endl;
+        networkGraph.addVertex((char &) vertex);
+    }
+
     networkFile.close();
 }
 
