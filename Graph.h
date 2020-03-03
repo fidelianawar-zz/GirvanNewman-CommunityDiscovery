@@ -47,7 +47,6 @@ Graph<T>::Graph(int vertices) {
 //}
 
 //typename list<list<T>>::iterator bigIt;
-
 //typename list<T>::iterator littleIt;
 //typename list<T>::iterator innerListIterator;
 
@@ -61,7 +60,6 @@ void Graph<T>::addVertex(T& v) {
 template<class T>
 void Graph<T>::addEdge(T src, T dest){ //src: vertex, dest: edge to be added
     list<T> tempList;
-    bool vertexExists = false;
     if (adjLists.empty()) { //adding first element to adjList
         innerList.push_back(src); //innerList is public/global list<T> object
         innerList.push_back(dest);
@@ -75,7 +73,6 @@ void Graph<T>::addEdge(T src, T dest){ //src: vertex, dest: edge to be added
             auto val = next(tempList.begin(), 0);
             //check if first element == 'src' parameter
             if (*val == src) {
-                vertexExists = true;
                 //iterate through rest of tempList to make sure 'dest' doesn't already exist
                 for (auto innerListIterator = next(tempList.begin(), 1);
                      innerListIterator != tempList.end(); innerListIterator++) {

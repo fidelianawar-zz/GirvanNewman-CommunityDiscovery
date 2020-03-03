@@ -9,7 +9,6 @@
 #include <string>
 #include <sstream>
 #include <unordered_map>
-#include <list>
 #include "Graph.h"
 
 using std::cout;
@@ -47,6 +46,17 @@ void readInputFile(std::basic_string<char> input){
         getline(networkFile,vertex);
         cout << vertex << endl;
         networkGraph.addVertex((char &) vertex);
+    }
+    networkFile.ignore(256,'\n');
+    string edges;
+    string u, v;
+    while (std::getline(networkFile, edges))
+    {
+
+        replace(edges.begin(), edges.end(), '-', ' ');
+        cout << edges;
+       // networkFile >> u >> v;
+        //cout << u << " " << v;
     }
 
     networkFile.close();
@@ -137,12 +147,6 @@ int main(int argc, char* const argv[]) {
         cout << endl << itr->first << "\t";
         cout << itr->second.first << "\t" << itr->second.second << "\t";
     }
-     cout << endl << endl;
-
-
-    Graph<int> adjList(5);
-    //adjList.addEdge(1, 5);
-
-
+     cout << endl;
     return 0;
 }
