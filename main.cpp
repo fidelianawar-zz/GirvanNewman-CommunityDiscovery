@@ -34,7 +34,8 @@ void readInputFile(std::basic_string<char> input){
     if (std::getline(networkFile, line)) {
         // load into string stream for parsing.
         for(char c : chars){
-            //line.erase(std::remove(line.begin(), line.end(), c), line.end());
+            line.erase(std::remove(line.begin(), line.end(), '['), line.end());
+            line.erase(std::remove(line.begin(), line.end(), ']'), line.end());
         }
         std::istringstream iss(line);
         iss >> numVertices;
