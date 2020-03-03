@@ -39,26 +39,27 @@ void readInputFile(std::basic_string<char> input){
         std::istringstream iss(line);
         iss >> numVertices;
     }
-    cout << "the number of vertices are: " << numVertices;
+    cout << "the number of vertices are: " << numVertices <<endl;
+
     Graph<char> networkGraph(numVertices);
     string vertex;
     for(int i = 0; i < numVertices; i++){
         getline(networkFile,vertex);
-        cout << vertex << endl;
         networkGraph.addVertex((char &) vertex);
     }
-    networkFile.ignore(256,'\n');
+
+    networkFile.ignore(256,'\n');\
     string edges;
-    string u, v;
+
     while (std::getline(networkFile, edges))
     {
+        string u, v;
+        //cout << edges  << " " ;
+        //edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
+        //cout << edges << endl;
+        //networkFile >> edges;
 
-        replace(edges.begin(), edges.end(), '-', ' ');
-        cout << edges;
-       // networkFile >> u >> v;
-        //cout << u << " " << v;
     }
-
     networkFile.close();
 }
 
@@ -122,9 +123,7 @@ int main(int argc, char* const argv[]) {
     for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
         cout << itr->first << '\t' << itr->second << '\n';
     }
-
     cout << endl;
-
     for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
         if(itr -> first == "or"){
             readInputFile(itr->second);

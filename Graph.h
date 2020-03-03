@@ -1,10 +1,11 @@
 //
 // Created by Fidelia Nawar on 2/27/20.
 //
-
 #ifndef INC_20S_3353_PA02_GRAPH_H
 #define INC_20S_3353_PA02_GRAPH_H
+
 #include <iostream>
+#include <vector>
 #include <list>
 #include <map>
 
@@ -14,7 +15,8 @@ template<class T>
 class Graph {
     int numVertices;
 
-    list<list<T>> adjLists;
+    vector<list<T>> adjLists;
+
     list<T> innerList;
 
     typename list<list<T>>::iterator *vertexIterator;
@@ -25,8 +27,12 @@ public:
     Graph(int V);
 
     void addVertex(T&);
+
     void addEdge(T src, T dest);
-    void displayGraph(int);
+
+    void displayGraph();
+
+    int getSize();
 };
 
 template<class T>
@@ -52,48 +58,49 @@ Graph<T>::Graph(int vertices) {
 
 template<class T>
 void Graph<T>::addVertex(T& v) {
+    cout << "vertex is: " << &v << endl;
     list<T> tempList;
-    tempList.push_back(v);
-    adjLists.push_back(tempList);
-    cout << "the size of adj list is: " << adjLists.size() << endl;
+    innerList.push_back(v);
+    adjLists.push_back(innerList);
 }
+
 template<class T>
-void Graph<T>::addEdge(T src, T dest){ //src: vertex, dest: edge to be added
+void Graph<T>::addEdge(T src, T dest) { //src: vertex, dest: edge to be added
     list<T> tempList;
-    if (adjLists.empty()) { //adding first element to adjList
-        innerList.push_back(src); //innerList is public/global list<T> object
-        innerList.push_back(dest);
-        adjLists.push_back(innerList); //adjList is public/global list<list<T>> object
-    } else {
-        //iterate through entire adjList
-        for (auto bigIt = adjLists.begin(); bigIt != adjLists.end(); bigIt++) {
-            //create tempList for each sublist in adjList
-            tempList = *bigIt;
-            //grab first element of tempList
-            auto val = next(tempList.begin(), 0);
-            //check if first element == 'src' parameter
-            if (*val == src) {
-                //iterate through rest of tempList to make sure 'dest' doesn't already exist
-                for (auto innerListIterator = next(tempList.begin(), 1);
-                     innerListIterator != tempList.end(); innerListIterator++) {
-                    if (*innerListIterator == dest) {
-                        cout << "this value already exists for this vertex";
-                        return; //exit out of function
-                    }
+//    if (adjLists.empty()) { //adding first element to adjList
+//        innerList.push_back(src); //innerList is public/global list<T> object
+//        innerList.push_back(dest);
+//        adjLists.push_back(innerList); //adjList is public/global list<list<T>> object
+//    } else {
+    //iterate through entire adjList
+    for (int i = 0; i < adjLists.size(); i++) {
+        //create tempList for each sublist in adjList
+        tempList = adjLists[i];
+        //grab first element of tempList
+        auto val = next(tempList.begin(), 0);
+        //check if first element == 'src' parameter
+        if (*val == src) {
+            //iterate through rest of tempList to make sure 'dest' doesn't already exist
+            for (auto innerListIterator = next(tempList.begin(), 1);
+                 innerListIterator != tempList.end(); innerListIterator++) {
+                if (*innerListIterator == dest) {
+                    cout << "this value already exists for this vertex";
+                    return; //exit out of function
                 }
-                //if 'dest' doesnt exist, BUT vertex does, push to tempList
-                tempList.push_back(dest);
-                innerList = tempList;
             }
+            //if 'dest' doesnt exist, BUT vertex does, push to tempList
+            tempList.push_back(dest);
+            innerList = tempList;
         }
-        //push back inner list to larger adjList
-        adjLists.push_back(innerList);
+    }
+    //push back inner list to larger adjList
+    adjLists.push_back(innerList);
 //        if (vertexExists == false) { //first element (vertex) is not in tempList
 //            //if src does not exist, create and pushback the vertex to innerList
 //            addVertex(src);
 //        }
-    }
-    cout << adjLists.size();
+//    }
+    cout << "size of adjList is: " << adjLists.size() << endl;
 }
 
 //    for(littleIt = tempList.begin(); littleIt != tempList.end(); littleIt++){
@@ -175,19 +182,22 @@ void Graph<T>::addEdge(T src, T dest){ //src: vertex, dest: edge to be added
 //    }
 //adjLists[src].push_front(dest);
 
-
+template<class T>
+int Graph<T>::getSize(){
+    return adjLists.size();
+}
 
 template<class T>
 // A utility function to print the adjacency list representation of graph
-void Graph<T>::displayGraph(int v){
-    for(int i = 0; i < v; i++){
-        cout << i << "---->";
-        //list<T> :: iterator it;
-        for(auto it  = adjLists[i].begin(); it != adjLists[i].end(); ++it) {
-            cout << *it << " ";
+void Graph<T>::displayGraph() {
+    for (int i =0; i  < adjLists.size(); i++) {
+        list<T> tempList = adjLists[i];
+        for (auto it2 = tempList.begin(); it2 != tempList.end(); it2++) {
+            cout << " elements of  tempList: " << *it2 << " ";
         }
         cout << endl;
     }
 }
+
 
 #endif //INC_20S_3353_PA02_GRAPH_H
