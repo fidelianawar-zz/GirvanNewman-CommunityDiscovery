@@ -26,7 +26,7 @@ void readInputFile(std::basic_string<char> input){
     else{
         cout << "network file opened!" << endl;
     }
-    int numVertices;
+    int numVertices = 0;
     string chars = "[]";
 
     // first line
@@ -68,7 +68,7 @@ void girvanNewmanAlgo(){
 
 int main(int argc, char* const argv[]) {
     std::ifstream controlFile(argv[1]);
-
+    cout << argc << endl;
     if(!controlFile){
         cout << "control file cannot open";
     }
@@ -131,7 +131,7 @@ int main(int argc, char* const argv[]) {
     }
      cout << endl << endl;
 
-    int V = 5;
+
     Graph<int> adjList(5);
     //adjList.addEdge(1, 5);
 
