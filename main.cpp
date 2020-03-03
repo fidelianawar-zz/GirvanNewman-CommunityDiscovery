@@ -42,6 +42,8 @@ void readInputFile(std::basic_string<char> input) {
 
     Graph<char> networkGraph(numVertices);
     string vertex;
+    vector<pair<string, string>> adjPair;
+
     for (int i = 0; i < numVertices; i++) {
         getline(networkFile, vertex);
         networkGraph.addVertex((char &) vertex);
@@ -51,13 +53,18 @@ void readInputFile(std::basic_string<char> input) {
     string edges;
 
     while (std::getline(networkFile, edges)) {
-        cout << edges << endl;
         string u, v;
-        //cout << edges  << " " ;
-        //edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
-        //cout << edges << endl;
-        //networkFile >> edges;
-
+        string newEdge;
+        edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
+        //cout << edges  <<  endl;
+        std::stringstream ss(edges);
+        ss >> u >> v;
+        cout << "u: " << u << " v: " << v << endl;
+        adjPair.push_back(make_pair(u, v));
+    }
+    cout << adjPair.size() << endl;
+    for(int i = 0; i < adjPair.size(); i++){
+        networkGraph.addEdge(reinterpret_cast<char &>(adjPair[i].first), reinterpret_cast<char &>(adjPair[i].second));
     }
     networkFile.close();
 }
