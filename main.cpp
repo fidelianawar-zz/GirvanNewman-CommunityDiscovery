@@ -48,15 +48,12 @@ void readInputFile(std::basic_string<char> input) {
         getline(networkFile, vertex);
         networkGraph.addVertex((char &) vertex);
     }
-
     networkFile.ignore(256, '\n');
     string edges;
 
     while (std::getline(networkFile, edges)) {
-        string u, v;
-        string newEdge;
+        string u, v, newEdge;
         edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
-        //cout << edges  <<  endl;
         std::stringstream ss(edges);
         ss >> u >> v;
         cout << "u: " << u << " v: " << v << endl;
@@ -102,8 +99,6 @@ int main(int argc, char *const argv[]) {
     string input;
     std::unordered_map<string, std::pair<string, string>> mcMap;
     std::unordered_map<string, string> commandMap;
-
-
     for (std::string line; std::getline(controlFile, line);) {
 
         // inserting the line into a stream that helps us parse the content
