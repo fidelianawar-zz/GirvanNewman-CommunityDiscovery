@@ -42,7 +42,7 @@ void readInputFile(std::basic_string<char> input) {
         std::istringstream iss(line);
         iss >> numVertices;
     }
-    cout << "the number of vertices are: " << numVertices << endl;
+    //cout << "the number of vertices are: " << numVertices << endl;
 
     Graph<string> networkGraph(numVertices);
     string vertex;
@@ -52,9 +52,8 @@ void readInputFile(std::basic_string<char> input) {
         getline(networkFile, vertex);
         //networkGraph.addVertexVec((char &)vertex);
         networkGraph.hashVertex(vertex);
-        cout << vertex << endl;
     }
-
+    networkGraph.createAdj(numVertices);
     networkFile.ignore(256, '\n');
     string edges;
 
@@ -63,16 +62,14 @@ void readInputFile(std::basic_string<char> input) {
         edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
         std::stringstream ss(edges);
         ss >> u >> v;
-        cout << "u: " << u << " v: " << v << endl;
+        //cout << "u: " << u << " v: " << v << endl;
         adjPair.push_back(make_pair(u, v));
     }
-    cout << adjPair.size() << endl;
-    for(int i = 0; i < adjPair.size(); i++){
-        //networkGraph.addEdgeVec(reinterpret_cast<char &>(adjPair[i].first), reinterpret_cast<char &>(adjPair[i].second));
+    cout << "the size of adjPair is: " << adjPair.size() << endl;
+    for(unsigned int i = 0; i < adjPair.size(); i++){
+        networkGraph.populateAdj(adjPair[i].first, adjPair[i].second);
     }
-
     networkGraph.testFunction();
-
     networkFile.close();
 }
 

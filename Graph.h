@@ -21,8 +21,7 @@ template<class T>
 class Graph {
     int numVertices;
     vector<list<T>> adjLists;
-    vector<vector<T>> adjVec;
-    vector<vector<T>> testVec;
+    vector<vector<int>> adjVec;
     list<T> innerList;
     vector<T> tempVec;
     std::unordered_map<T, int> vertexMap;
@@ -35,11 +34,12 @@ public:
     void addVertex(T &);
     void addVertexVec(T);
     void addEdge(T& src, T& dest);
-    void addEdgeVec(T src, T dest);
+    void populateAdj(T src, T dest);
     void displayGraph();
-    void displayGraphVec();
+    void displayAdjVec();
     void testFunction();
     void hashVertex(T);
+    void createAdj(int);
 
 
     vector<T> performDFS(std::basic_string<char>);
@@ -104,14 +104,35 @@ void Graph<T>::displayGraph() {
 
 template<class T>
 void Graph<T>::hashVertex(T v) {
-    cout << "The vertex is: " << v << endl;
     vertexMap.insert(std::make_pair(v, count));
     count++;
-    for (itr = vertexMap.begin(); itr != vertexMap.end(); itr++)
-    {
-        cout << itr->first << "  " << itr->second << endl;
-    }
+//    for (itr = vertexMap.begin(); itr != vertexMap.end(); itr++)
+//    {
+//        cout << itr->first << "  " << itr->second << endl;
+//    }
 }
+
+template<class T>
+void Graph<T>::createAdj(int numV){
+    cout << "number of vertices is: " << numV << endl;
+    vector<int> emptyVector;
+    for(int i = 0; i < numV; i++){
+        adjVec.push_back(emptyVector);
+        cout << "size of adjVec is : " << adjVec.size() << " ";
+    }
+    cout << endl;
+}
+
+template<class T>
+void Graph<T>::populateAdj(T src, T dest) { //src: vertex, dest: edge to be added
+    cout << "src: " << src << " " << "dest: " << dest << " ";
+    int srcKey = vertexMap.at(src); //hash index for src
+    int destKey = vertexMap.at(dest); //hash index for dest
+    cout << srcKey << " " <<  destKey << endl;
+    adjVec[srcKey].push_back(destKey);
+
+}
+
 template<class T>
 void Graph<T>::addVertexVec(T v) {
     cout << "vertex is: " << v << endl; //this outputs the correct vertex
@@ -120,25 +141,18 @@ void Graph<T>::addVertexVec(T v) {
     cout << tempVec.size();
     T element = tempVec[0];
     cout << "first element of tempVec is: " << tempVec[0] << endl;
-    testVec.push_back(tempVec);
+    adjVec.push_back(tempVec);
     //cout << adjVec[0];
 }
 
 template<class T>
-void Graph<T>::addEdgeVec(T src, T dest) { //src: vertex, dest: edge to be added
-    cout << "src: " << src << " " << "dest: " << dest << endl;
-    //for()
-
-}
-template<class T>
 // A utility function to print the adjacency list representation of graph
-void Graph<T>::displayGraphVec() {
-    for (unsigned int i = 0; i < testVec.size(); i++) {
-        vector<T> tempVec = testVec[i];
-        auto val = tempVec[0];
-        cout << "HEAD:  " << val << "--->";
-        for (auto it2 = 1; it2 != tempVec.size(); it2++) {
-            cout << it2 << " ";
+void Graph<T>::displayAdjVec() {
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
+        vector<int> tempVec = adjVec[i];
+        cout << "HEAD:  " << i << " ---> ";
+        for (int j = tempVec[0]; j < tempVec[tempVec.size()-1]; j++) {
+            cout << j << " ";
         }
         cout << endl;
     }
@@ -146,9 +160,10 @@ void Graph<T>::displayGraphVec() {
 
 template<class T>
 void Graph<T>::testFunction(){
-    cout << testVec.size() << endl;
-    cout << "the first element of Adj Vec is of size: " << testVec[0].size() << endl;
-    cout << "the first element of the first vec is: " << testVec[0][0] << endl;
+    cout << "size of adjVec @ 0 is: " << adjVec[0].size() << endl;
+    cout << "size of adjVec @ 1 is: " << adjVec[1].size() << endl;;
+    cout << "size of adjVec @ 2 is: " << adjVec[2].size() << endl;;
+    cout << "size of adjVec @ 3 is: " << adjVec[3].size() << endl;;
 }
 
 template<class T>
