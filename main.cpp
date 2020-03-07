@@ -11,8 +11,6 @@
 #include <unordered_map>
 #include "Graph.h"
 
-void DFSUtil(int vertices, bool *pBoolean);
-
 using std::cout;
 using std::cin;
 using std::endl;
@@ -42,7 +40,6 @@ void readInputFile(std::basic_string<char> input) {
         std::istringstream iss(line);
         iss >> numVertices;
     }
-    //cout << "the number of vertices are: " << numVertices << endl;
 
     Graph<string> networkGraph(numVertices);
     string vertex;
@@ -62,13 +59,13 @@ void readInputFile(std::basic_string<char> input) {
         edges.erase(std::remove(edges.begin(), edges.end(), '-'), edges.end());
         std::stringstream ss(edges);
         ss >> u >> v;
-        //cout << "u: " << u << " v: " << v << endl;
         adjPair.push_back(make_pair(u, v));
     }
-    cout << "the size of adjPair is: " << adjPair.size() << endl;
+
     for(unsigned int i = 0; i < adjPair.size(); i++){
         networkGraph.populateAdj(adjPair[i].first, adjPair[i].second);
     }
+
     networkGraph.testFunction();
     networkFile.close();
 }
@@ -82,6 +79,10 @@ void createOutputFile(std::basic_string<char> output) {
     outputFile.close();
 
 }
+void dfs(std::basic_string<char> node) {
+    cout << "inside DFS: " << node << endl;
+}
+
 void performBFS(std::basic_string<char> node) {
     cout << "inside BFS: " << node << endl;
 }
@@ -133,7 +134,7 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "bfs") {
             performBFS(itr->second);
         } else if (itr->first == "dfs") {
-            //performDFS(itr->second);
+            dfs(itr->second);
         } else if (itr->first == "dc") {
             girvanNewmanAlgo();
         }

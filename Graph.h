@@ -106,10 +106,6 @@ template<class T>
 void Graph<T>::hashVertex(T v) {
     vertexMap.insert(std::make_pair(v, count));
     count++;
-//    for (itr = vertexMap.begin(); itr != vertexMap.end(); itr++)
-//    {
-//        cout << itr->first << "  " << itr->second << endl;
-//    }
 }
 
 template<class T>
@@ -118,31 +114,17 @@ void Graph<T>::createAdj(int numV){
     vector<int> emptyVector;
     for(int i = 0; i < numV; i++){
         adjVec.push_back(emptyVector);
-        cout << "size of adjVec is : " << adjVec.size() << " ";
     }
     cout << endl;
 }
 
 template<class T>
 void Graph<T>::populateAdj(T src, T dest) { //src: vertex, dest: edge to be added
-    cout << "src: " << src << " " << "dest: " << dest << " ";
     int srcKey = vertexMap.at(src); //hash index for src
     int destKey = vertexMap.at(dest); //hash index for dest
-    cout << srcKey << " " <<  destKey << endl;
-    adjVec[srcKey].push_back(destKey);
-
-}
-
-template<class T>
-void Graph<T>::addVertexVec(T v) {
-    cout << "vertex is: " << v << endl; //this outputs the correct vertex
-    vector<T> tempVec;
-    tempVec.push_back(v);
-    cout << tempVec.size();
-    T element = tempVec[0];
-    cout << "first element of tempVec is: " << tempVec[0] << endl;
-    adjVec.push_back(tempVec);
-    //cout << adjVec[0];
+    cout << "src key : " << srcKey << " " << "dest key: " << destKey << " " << endl;
+    //cout << srcKey << " " <<  destKey << endl;
+    (adjVec.at(srcKey)).push_back(destKey);
 }
 
 template<class T>
@@ -160,10 +142,13 @@ void Graph<T>::displayAdjVec() {
 
 template<class T>
 void Graph<T>::testFunction(){
-    cout << "size of adjVec @ 0 is: " << adjVec[0].size() << endl;
-    cout << "size of adjVec @ 1 is: " << adjVec[1].size() << endl;;
-    cout << "size of adjVec @ 2 is: " << adjVec[2].size() << endl;;
-    cout << "size of adjVec @ 3 is: " << adjVec[3].size() << endl;;
+    for(int i  = 0; i < adjVec.size(); i++){
+        cout << i << "-> ";
+        for(int j = 0; j < adjVec[i].size(); j++){
+            cout << adjVec[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
 
 template<class T>
