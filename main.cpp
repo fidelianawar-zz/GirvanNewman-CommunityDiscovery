@@ -11,10 +11,13 @@
 #include <unordered_map>
 #include "Graph.h"
 
+void DFSUtil(int vertices, bool *pBoolean);
+
 using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
+using std::pair;
 
 void readInputFile(std::basic_string<char> input) {
     cout << "inputfile is: " << input << endl;
@@ -25,6 +28,7 @@ void readInputFile(std::basic_string<char> input) {
     } else {
         cout << "network file opened!" << endl;
     }
+
     int numVertices = 0;
     string chars = "[]";
 
@@ -40,14 +44,17 @@ void readInputFile(std::basic_string<char> input) {
     }
     cout << "the number of vertices are: " << numVertices << endl;
 
-    Graph<char> networkGraph(numVertices);
+    Graph<string> networkGraph(numVertices);
     string vertex;
     vector<pair<string, string>> adjPair;
 
     for (int i = 0; i < numVertices; i++) {
         getline(networkFile, vertex);
-        networkGraph.addVertex((char &) vertex);
+        //networkGraph.addVertexVec((char &)vertex);
+        networkGraph.hashVertex(vertex);
+        cout << vertex << endl;
     }
+
     networkFile.ignore(256, '\n');
     string edges;
 
@@ -61,8 +68,11 @@ void readInputFile(std::basic_string<char> input) {
     }
     cout << adjPair.size() << endl;
     for(int i = 0; i < adjPair.size(); i++){
-        networkGraph.addEdge(reinterpret_cast<char &>(adjPair[i].first), reinterpret_cast<char &>(adjPair[i].second));
+        //networkGraph.addEdgeVec(reinterpret_cast<char &>(adjPair[i].first), reinterpret_cast<char &>(adjPair[i].second));
     }
+
+    networkGraph.testFunction();
+
     networkFile.close();
 }
 
@@ -75,11 +85,6 @@ void createOutputFile(std::basic_string<char> output) {
     outputFile.close();
 
 }
-
-void performDFS(std::basic_string<char> node) {
-    cout << "inside DFS: " << node << endl;
-}
-
 void performBFS(std::basic_string<char> node) {
     cout << "inside BFS: " << node << endl;
 }
@@ -131,7 +136,7 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "bfs") {
             performBFS(itr->second);
         } else if (itr->first == "dfs") {
-            performDFS(itr->second);
+            //performDFS(itr->second);
         } else if (itr->first == "dc") {
             girvanNewmanAlgo();
         }
