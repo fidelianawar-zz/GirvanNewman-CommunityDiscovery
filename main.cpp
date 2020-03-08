@@ -17,6 +17,8 @@ using std::endl;
 using std::string;
 using std::pair;
 
+Graph<string> networkGraph;
+
 void readInputFile(std::basic_string<char> input) {
     cout << "inputfile is: " << input << endl;
     std::ifstream networkFile(input);
@@ -41,7 +43,6 @@ void readInputFile(std::basic_string<char> input) {
         iss >> numVertices;
     }
 
-    Graph<string> networkGraph(numVertices);
     string vertex;
     vector<pair<string, string>> adjPair;
 
@@ -79,8 +80,8 @@ void createOutputFile(std::basic_string<char> output) {
     outputFile.close();
 
 }
-void dfs(std::basic_string<char> node) {
-    cout << "inside DFS: " << node << endl;
+void performDFS(std::basic_string<char> node) {
+    networkGraph.dfs(node);
 }
 
 void performBFS(std::basic_string<char> node) {
@@ -98,33 +99,39 @@ int main(int argc, char *const argv[]) {
         cout << "control file cannot open";
     }
 
-    string command;
-    string input;
-    std::unordered_map<string, std::pair<string, string>> mcMap;
-    std::unordered_map<string, string> commandMap;
-    for (std::string line; std::getline(controlFile, line);) {
+    string command, input;
 
-        // inserting the line into a stream that helps us parse the content
+    std::map<string, std::pair<string, string>> mcMap;
+    std::vector<pair<string, string>> commandMap;
+    int counter = 0;
+
+    for (std::string line; std::getline(controlFile, line);) {
         std::stringstream ss(line);
         ss >> command;
-
+        cout << command << " ";
         if (command == "mc") {
             string arg1, arg2;
             ss >> arg1 >> arg2;
             mcMap.insert({command, std::make_pair(arg1, arg2)});
             //cout << values.at(0).first << " " << values.at(0).second << endl;
-        } else if (command == "dc") {
-            commandMap.insert({command, ""});
-        } else {
-            while (ss >> input) {
-                commandMap.insert({command, input});
+        }
+         else {
+            if(command != "dc"){
+                while (ss >> input) {
+                    cout << input << " " << endl;
+                    commandMap.push_back(std::make_pair(command, input));
+                }
+            }
+            else{
+                commandMap.push_back({command, ""});
             }
         }
     }
-
-    for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
-        cout << itr->first << '\t' << itr->second << '\n';
+    cout << endl << "-----here-------" << endl;
+    for (int i = 0; i < commandMap.size(); i++) {
+        cout << commandMap[i].first << " " << commandMap[i].second << endl;
     }
+
     cout << endl;
     for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
         if (itr->first == "or") {
@@ -134,7 +141,7 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "bfs") {
             performBFS(itr->second);
         } else if (itr->first == "dfs") {
-            dfs(itr->second);
+            performDFS(itr->second);
         } else if (itr->first == "dc") {
             girvanNewmanAlgo();
         }
