@@ -81,11 +81,11 @@ void createOutputFile(std::basic_string<char> output) {
 
 }
 void performDFS(std::basic_string<char> node) {
-    networkGraph.dfs(node);
+    networkGraph.DFS(node);
 }
 
 void performBFS(std::basic_string<char> node) {
-    cout << "inside BFS: " << node << endl;
+    cout << endl << "inside BFS: " << node << endl;
 }
 
 void girvanNewmanAlgo() {

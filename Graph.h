@@ -43,9 +43,9 @@ public:
     void createAdj(int);
 
 
-    void dfs(T);
+    void DFS(T);
     void bfs(T);
-    void dfsHelper(int v, bool visited[]);
+    void DFSHelper(int v, bool visited[]);
 
     int getSize();
 };
@@ -111,7 +111,7 @@ void Graph<T>::testFunction(){
 }
 
 template<class T>
-void Graph<T>::dfs(T node) {
+void Graph<T>::DFS(T node) {
     cout << "inside Graph.h dfs" << endl;
     int value = vertexMap.at(node);
     cout << "Node key is: " << value << endl << endl;
@@ -123,22 +123,21 @@ void Graph<T>::dfs(T node) {
     }
 
     // Call the recursive helper function to print DFS traversal
-    dfsHelper(value, visited);
+    cout << "DFS traversal of " << node << " is: ";
+    DFSHelper(value, visited);
 }
 
 template<class T>
-void Graph<T>::dfsHelper(int v, bool visited[])
+void Graph<T>::DFSHelper(int v, bool visited[])
 {
     visited[v] = true;
-    cout << "v is: " << v << " " << endl;
-
+    cout << v << " ";
     // Recur for all the vertices adjacent to this vertex
     vector<int>::iterator i;
-    int j;
     for(i = adjVec[v].begin(); i != adjVec[v].end(); i++){
-//        for(j = adjVec[v][*i]; j < adjVec[v][adjVec[v].size()]; j++){
-//            cout << "here";
-//        }
+        if(!visited[*i]){
+            DFSHelper(*i, visited);
+        }
     }
 }
 
