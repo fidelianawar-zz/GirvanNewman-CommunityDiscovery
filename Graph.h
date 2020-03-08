@@ -52,7 +52,7 @@ public:
 
 template<class T>
 Graph<T>::Graph() {
-    cout << "making a graph bitch";
+    cout << "making a graph";
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
