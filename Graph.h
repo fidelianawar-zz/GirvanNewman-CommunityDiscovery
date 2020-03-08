@@ -31,30 +31,22 @@ class Graph {
 public:
 
     Graph();
-    void addVertex(T &);
-    void addVertexVec(T);
-    void addEdge(T& src, T& dest);
     void populateAdj(T src, T dest);
-    void displayGraph();
     void displayAdjVec();
-    void testFunction();
     void hashVertex(T);
     void createAdj(int);
 
-
     void DFS(T);
-    void BFS(T);
     void DFSHelper(int v, bool visited[]);
+    void BFS(T);
 
-    int getSize();
+
 };
 
 template<class T>
 Graph<T>::Graph() {
     cout << "making a graph";
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////
 
 template<class T>
 void Graph<T>::hashVertex(T vertex) {
@@ -86,20 +78,8 @@ void Graph<T>::populateAdj(T src, T dest) { //src: vertex, dest: edge to be adde
 }
 
 template<class T>
-// A utility function to print the adjacency list representation of graph
-void Graph<T>::displayAdjVec() {
-    for (unsigned int i = 0; i < adjVec.size(); i++) {
-        vector<int> tempVec = adjVec[i];
-        cout << "HEAD:  " << i << " ---> ";
-        for (int j = tempVec[0]; j < tempVec[tempVec.size()-1]; j++) {
-            cout << j << " ";
-        }
-        cout << endl;
-    }
-}
-
-template<class T>
-void Graph<T>::testFunction(){
+void Graph<T>::displayAdjVec(){
+    cout << endl << "Adjacency List" << endl;
     for(unsigned int i  = 0; i < adjVec.size(); i++){
         cout << i << "-> ";
         for(unsigned int j = 0; j < adjVec[i].size(); j++){
@@ -107,6 +87,7 @@ void Graph<T>::testFunction(){
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 template<class T>

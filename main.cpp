@@ -8,7 +8,6 @@
 #include <ostream>
 #include <string>
 #include <sstream>
-#include <unordered_map>
 #include "Graph.h"
 
 using std::cout;
@@ -20,13 +19,13 @@ using std::pair;
 Graph<string> networkGraph;
 
 void readInputFile(std::basic_string<char> input) {
-    cout << "inputfile is: " << input << endl;
+    cout << "Inputfile is: " << input << endl;
     std::ifstream networkFile(input);
 
     if (!networkFile) {
-        cout << "network file cannot open :(";
+        cout << "Network file cannot open :(";
     } else {
-        cout << "network file opened!" << endl;
+        cout << "Network file opened!" << endl;
     }
 
     int numVertices = 0;
@@ -63,33 +62,26 @@ void readInputFile(std::basic_string<char> input) {
         adjPair.push_back(make_pair(u, v));
     }
 
+    cout << "Populating Adjacency List" << endl;
     for(unsigned int i = 0; i < adjPair.size(); i++){
         networkGraph.populateAdj(adjPair[i].first, adjPair[i].second);
     }
 
-    networkGraph.testFunction();
+    networkGraph.displayAdjVec();
     networkFile.close();
 }
 
 void createOutputFile(std::basic_string<char> output) {
 
-    cout << "outputfile is: " << output << endl;
+    cout << "Outputfile is: " << output << endl;
 
     std::ofstream outputFile(output);
     outputFile << "Writing this to output file.\n";
     outputFile.close();
 
 }
-void performDFS(std::basic_string<char> node) {
-    networkGraph.DFS(node);
-}
-
-void performBFS(std::basic_string<char> node) {
-    networkGraph.BFS(node);
-}
-
 void girvanNewmanAlgo() {
-    cout << "inside girvan algo" << endl;
+    cout << "Implementing Girvan Newman algorithm..." << endl;
 }
 
 int main(int argc, char *const argv[]) {
@@ -139,9 +131,9 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "ow") {
             createOutputFile(itr->second);
         } else if (itr->first == "bfs") {
-            performBFS(itr->second);
+            networkGraph.BFS(itr->second);
         } else if (itr->first == "dfs") {
-            performDFS(itr->second);
+            networkGraph.DFS(itr->second);
         } else if (itr->first == "dc") {
             girvanNewmanAlgo();
         }
