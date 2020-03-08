@@ -85,7 +85,7 @@ void performDFS(std::basic_string<char> node) {
 }
 
 void performBFS(std::basic_string<char> node) {
-    cout << endl << "inside BFS: " << node << endl;
+    networkGraph.BFS(node);
 }
 
 void girvanNewmanAlgo() {

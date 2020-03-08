@@ -25,7 +25,6 @@ class Graph {
 
     vector<vector<int>> adjVec;
     std::unordered_map<T, int> vertexMap;
-    std::unordered_map<int, T> reverseVertexMap;
     int count = 0;
     typename std::unordered_map<T, int>:: iterator itr;
 
@@ -44,7 +43,7 @@ public:
 
 
     void DFS(T);
-    void bfs(T);
+    void BFS(T);
     void DFSHelper(int v, bool visited[]);
 
     int getSize();
@@ -61,8 +60,8 @@ template<class T>
 void Graph<T>::hashVertex(T vertex) {
     //A - 0, B - 1, C -2, etc.
     vertexMap.insert(std::make_pair(vertex, count));
-    reverseVertexMap.insert(std::make_pair(count,vertex));
-    cout << reverseVertexMap.size();
+    //reverseVertexMap.insert(std::make_pair(count,vertex));
+    //cout << reverseVertexMap.size();
     count++;
 }
 
@@ -142,8 +141,33 @@ void Graph<T>::DFSHelper(int v, bool visited[])
 }
 
 template<class T>
-void Graph<T>::bfs(T node){
-    std::queue<T> q;
+void Graph<T>::BFS(T node){
+    int value = vertexMap.at(node);
+    bool *visited = new bool[adjVec.size()];
+    for(int i = 0; i < adjVec.size(); i++){
+        visited[i] = false;
+    }
+
+    list<int> queue;
+    visited[value] = true;
+    queue.push_back(value);
+
+    vector<int>::iterator i;
+
+    cout << endl << "BFS traversal of " << node << " is: ";
+    while(!queue.empty()){
+        value = queue.front();
+        cout << value << " ";
+        queue.pop_front();
+
+        for(i = adjVec[value].begin(); i != adjVec[value].end(); i++){
+            if(!visited[*i]){
+                visited[*i] = true;
+                queue.push_back(*i);
+            }
+        }
+    }
+    cout << endl << endl;
 }
 
 #endif //INC_20S_3353_PA02_GRAPH_H
