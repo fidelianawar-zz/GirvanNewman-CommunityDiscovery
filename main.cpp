@@ -88,7 +88,7 @@ int main(int argc, char *const argv[]) {
     std::ifstream controlFile(argv[1]);
     cout << argc << endl;
     if (!controlFile) {
-        cout << "control file cannot open";
+        cout << "Control file cannot open";
     }
 
     string command, input;
@@ -105,7 +105,6 @@ int main(int argc, char *const argv[]) {
             string arg1, arg2;
             ss >> arg1 >> arg2;
             mcMap.insert({command, std::make_pair(arg1, arg2)});
-            //cout << values.at(0).first << " " << values.at(0).second << endl;
         }
          else {
             if(command != "dc"){
