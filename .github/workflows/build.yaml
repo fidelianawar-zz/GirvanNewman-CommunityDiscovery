@@ -36,7 +36,6 @@ jobs:
           echo " "
           g++ --version
           cmake --version
-
       - name: Create build environment
         #run: cmake -E make_directory ${{runner.workspace}}/build
         run:  mkdir ${{runner.workspace}}/build
