@@ -81,8 +81,9 @@ void createOutputFile(std::basic_string<char> output) {
     outputFile.close();
 
 }
-void girvanNewmanAlgo() {
-    cout << "Implementing Girvan Newman algorithm..." << endl;
+void makingCommunities(std::basic_string<char> startNode, std::basic_string<char> endNode) {
+   networkGraph.printAllPaths(startNode, endNode);
+
 }
 
 int main(int argc, char *const argv[]) {
@@ -94,7 +95,7 @@ int main(int argc, char *const argv[]) {
 
     string command, input;
 
-    std::map<string, std::pair<string, string>> mcMap;
+    std::vector<std::pair<string, string>> mcMap;
     std::vector<pair<string, string>> commandMap;
     int counter = 0;
 
@@ -105,9 +106,9 @@ int main(int argc, char *const argv[]) {
         if (command == "mc") {
             string arg1, arg2;
             ss >> arg1 >> arg2;
-            mcMap.insert({command, std::make_pair(arg1, arg2)});
+            mcMap.push_back(std::make_pair(arg1, arg2));
         }
-         else {
+        else {
             if(command != "dc"){
                 while (ss >> input) {
                     cout << input << " " << endl;
@@ -119,9 +120,9 @@ int main(int argc, char *const argv[]) {
             }
         }
     }
-    cout << endl << "-----here-------" << endl;
+    //cout << endl << "-----here-------" << endl;
     for (int i = 0; i < commandMap.size(); i++) {
-        cout << commandMap[i].first << " " << commandMap[i].second << endl;
+        //cout << commandMap[i].first << " " << commandMap[i].second << endl;
     }
 
     cout << endl;
@@ -135,14 +136,14 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "dfs") {
             networkGraph.DFS(itr->second);
         } else if (itr->first == "dc") {
-            girvanNewmanAlgo();
+            //girvanNewmanAlgo();
         }
     }
 
     for (auto itr = mcMap.begin(); itr != mcMap.end(); ++itr) {
-        cout << endl << itr->first << "\t";
-        cout << itr->second.first << "\t" << itr->second.second << "\t";
+        //cout << itr->first << "\t" << itr->second << "\t";
+        makingCommunities(itr->first,itr->second);
+
     }
-    cout << endl;
     return 0;
 }
