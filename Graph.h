@@ -39,6 +39,7 @@ public:
     void DFS(T);
     void DFSHelper(int v, bool visited[]);
     void BFS(T);
+    void girvanNewmanAlgo(T);
 
 
 };

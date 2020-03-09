@@ -24,6 +24,7 @@ void readInputFile(std::basic_string<char> input) {
 
     if (!networkFile) {
         cout << "Network file cannot open :(";
+        exit(5);
     } else {
         cout << "Network file opened!" << endl;
     }
