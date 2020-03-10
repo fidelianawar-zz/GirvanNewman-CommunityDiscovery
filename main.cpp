@@ -35,7 +35,6 @@ void readInputFile(std::basic_string<char> input) {
     // first line
     string line;
     if (std::getline(networkFile, line)) {
-        // load into string stream for parsing.
         for (char c : chars) {
             line.erase(std::remove(line.begin(), line.end(), c), line.end());
         }
@@ -48,7 +47,6 @@ void readInputFile(std::basic_string<char> input) {
 
     for (int i = 0; i < numVertices; i++) {
         getline(networkFile, vertex);
-        //networkGraph.addVertexVec((char &)vertex);
         networkGraph.hashVertex(vertex);
     }
     networkGraph.createAdj(numVertices);
@@ -119,7 +117,6 @@ int main(int argc, char *const argv[]) {
         }
     }
 
-    //cout << endl << "-----here-------" << endl;
     for (unsigned int i = 0; i < commandMap.size(); i++) {
         //cout << commandMap[i].first << " " << commandMap[i].second << endl;
     }
@@ -140,8 +137,9 @@ int main(int argc, char *const argv[]) {
     }
 
     for (auto itr = mcMap.begin(); itr != mcMap.end(); ++itr) {
-        networkGraph.makeConnection(itr->first, itr->second);
+        //discoverCommunities(itr->first,itr->second);
+        //networkGraph.makeConnection(itr->first, itr->second);
     }
-
+    cout << endl;
     return 0;
 }
