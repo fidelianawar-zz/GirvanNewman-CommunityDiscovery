@@ -81,9 +81,8 @@ void createOutputFile(std::basic_string<char> output) {
     outputFile.close();
 
 }
-void makingCommunities(std::basic_string<char> startNode, std::basic_string<char> endNode) {
-   networkGraph.printAllPaths(startNode, endNode);
-
+void discoverCommunities(std::basic_string<char> s, std::basic_string<char> d) {
+    networkGraph.getAllPaths(s, d);
 }
 
 int main(int argc, char *const argv[]) {
@@ -97,7 +96,6 @@ int main(int argc, char *const argv[]) {
 
     std::vector<std::pair<string, string>> mcMap;
     std::vector<pair<string, string>> commandMap;
-    int counter = 0;
 
     for (std::string line; std::getline(controlFile, line);) {
         std::stringstream ss(line);
@@ -120,8 +118,9 @@ int main(int argc, char *const argv[]) {
             }
         }
     }
+
     //cout << endl << "-----here-------" << endl;
-    for (int i = 0; i < commandMap.size(); i++) {
+    for (unsigned int i = 0; i < commandMap.size(); i++) {
         //cout << commandMap[i].first << " " << commandMap[i].second << endl;
     }
 
@@ -141,9 +140,8 @@ int main(int argc, char *const argv[]) {
     }
 
     for (auto itr = mcMap.begin(); itr != mcMap.end(); ++itr) {
-        //cout << itr->first << "\t" << itr->second << "\t";
-        makingCommunities(itr->first,itr->second);
-
+        networkGraph.makeConnection(itr->first, itr->second);
     }
+
     return 0;
 }

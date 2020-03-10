@@ -25,6 +25,10 @@ class Graph {
 
     vector<vector<int>> adjVec;
     std::unordered_map<T, int> vertexMap;
+    std::unordered_map<T, int> reverseVertexMap;
+    vector<vector<T>> fullPath;
+    vector<T> tempPath;
+    int *storedPath;
     int count = 0;
     typename std::unordered_map<T, int>:: iterator itr;
 
@@ -36,8 +40,10 @@ public:
     void hashVertex(T);
     void createAdj(int);
 
-    void printAllPaths(T s, T d);
-    void printAllPathsUtil(int u, int d, bool visited[],
+    void makeConnection(T, T);
+    void printMaps();
+    void getAllPaths(T s, T d);
+    void getAllPathsHelper(int u, int d, bool visited[],
                       int path[], int &path_index);
 
     void DFS(T);
@@ -45,7 +51,6 @@ public:
     void BFS(T);
     void girvanNewmanAlgo(T);
     void removeEdge(T,T); //remove edges based on betweenness value
-
 
 };
 
@@ -58,7 +63,7 @@ template<class T>
 void Graph<T>::hashVertex(T vertex) {
     //A - 0, B - 1, C -2, etc.
     vertexMap.insert(std::make_pair(vertex, count));
-    //reverseVertexMap.insert(std::make_pair(count,vertex));
+//    reverseVertexMap.insert(std::make_pair(count,vertex));
     //cout << reverseVertexMap.size();
     count++;
 }
@@ -104,7 +109,7 @@ void Graph<T>::DFS(T node) {
 
     // Mark all the vertices as not visited
     bool *visited = new bool[adjVec.size()];
-    for (int i = 0; i < adjVec.size(); i++){
+    for (unsigned int i = 0; i < adjVec.size(); i++){
        visited[i] = false;
     }
 
@@ -131,7 +136,7 @@ template<class T>
 void Graph<T>::BFS(T node){
     int value = vertexMap.at(node);
     bool *visited = new bool[adjVec.size()];
-    for(int i = 0; i < adjVec.size(); i++){
+    for(unsigned int i = 0; i < adjVec.size(); i++){
         visited[i] = false;
     }
 
@@ -164,10 +169,11 @@ void Graph<T>::girvanNewmanAlgo(T node) {
 
 template<class T>
 // Prints all paths from 's' to 'd'
-void Graph<T>::printAllPaths(T source, T destination)
+void Graph<T>::getAllPaths(T source, T destination)
 {
     int start = vertexMap.at(source);
     int dest = vertexMap.at(destination);
+
     // Mark all the vertices as not visited
     bool *visited = new bool[adjVec.size()];
 
@@ -176,32 +182,29 @@ void Graph<T>::printAllPaths(T source, T destination)
     int path_index = 0; // Initialize path[] as empty
 
     // Initialize all vertices as not visited
-    for (int i = 0; i < adjVec.size(); i++)
+    for (unsigned int i = 0; i < adjVec.size(); i++)
         visited[i] = false;
 
     // Call the recursive helper function to print all paths
-    cout << endl << "To get from " << source << "(" << start << ") to " << destination << "(" << dest << "), the paths are: " << endl;
-    printAllPathsUtil(start, dest, visited, path, path_index);
-    cout << endl;
+    cout << endl << source << "(" << start << ") -> " << destination << "(" << dest << ") paths are: " << endl;
+    getAllPathsHelper(start, dest, visited, path, path_index);
+
 }
 
 template<class T>
-void Graph<T>::printAllPathsUtil(int u, int d, bool visited[], int path[], int &path_index)
+void Graph<T>::getAllPathsHelper(int u, int d, bool visited[], int path[], int &path_index)
 {
     // Mark the current node and store it in path[]
     visited[u] = true;
     path[path_index] = u;
     path_index++;
 
-
-    // If current vertex is same as destination, then print
-    // current path[]
+    // If current vertex is same as destination, then print current path[]
     if (u == d)
     {
-        for (int i = 0; i<path_index; i++)
+        for (int i = 0; i<path_index; i++){
             cout << path[i] << " ";
-        cout << endl;
-
+        }
     }
 
     else // If current vertex is not destination
@@ -210,12 +213,27 @@ void Graph<T>::printAllPathsUtil(int u, int d, bool visited[], int path[], int &
         vector<int>::iterator i;
         for (i = adjVec[u].begin(); i != adjVec[u].end(); ++i)
             if (!visited[*i])
-                printAllPathsUtil(*i, d, visited, path, path_index);
+                getAllPathsHelper(*i, d, visited, path, path_index);
     }
 
     // Remove current vertex from path[] and mark it as unvisited
     path_index--;
     visited[u] = false;
+}
+
+template <class T>
+void Graph<T>::printMaps() {
+    for (auto itr = vertexMap.begin(); itr != vertexMap.end(); ++itr) {
+        cout << itr->first << "\t" << itr->second << "\t";
+    }
+}
+template <class T>
+void Graph<T>::makeConnection(T s, T d) {
+    cout << "inside of makeConnection";
+    int connector = vertexMap.at(s);
+    int connecting = vertexMap.at(d);
+
+
 
 }
 
