@@ -83,6 +83,11 @@ void discoverCommunities(std::basic_string<char> s, std::basic_string<char> d) {
     networkGraph.getAllPaths(s, d);
 }
 
+void connect(std::basic_string<char> s, std::basic_string<char> d) {
+    networkGraph.makeConnection(s, d);
+}
+
+
 int main(int argc, char *const argv[]) {
     std::ifstream controlFile(argv[1]);
     cout << argc << endl;
@@ -138,7 +143,7 @@ int main(int argc, char *const argv[]) {
 
     for (auto itr = mcMap.begin(); itr != mcMap.end(); ++itr) {
         //discoverCommunities(itr->first,itr->second);
-        //networkGraph.makeConnection(itr->first, itr->second);
+        connect(itr->first, itr->second);
     }
     cout << endl;
     return 0;

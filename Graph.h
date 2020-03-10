@@ -54,7 +54,7 @@ public:
     void hashVertex(T);
     void createAdj(int);
 
-    int makeConnection(T, T);
+    void makeConnection(T, T);
     void printMaps();
     T getKey(T value);
     void getAllPaths(T s, T d);
@@ -129,9 +129,9 @@ void Graph<T>::displayAdjVec(){
 
 template<class T>
 void Graph<T>::DFS(T node) {
-    cout << "inside Graph.h dfs" << endl;
+
     int value = vertexMap.at(node);
-    cout << "Node key is: " << value << endl << endl;
+    cout << endl << "Node is: " << unHash(value) << endl;
 
     // Mark all the vertices as not visited
     bool *visited = new bool[adjVec.size()];
@@ -144,7 +144,7 @@ void Graph<T>::DFS(T node) {
     DFSHelper(value, visited);
 
     dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
-    for (int i = 1; i < dfsVector.size(); i++) {
+    for (unsigned int i = 1; i < dfsVector.size(); i++) {
         dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
     }
     cout << endl << "DFS Edge List: (";
@@ -177,6 +177,7 @@ void Graph<T>::DFSHelper(int v, bool visited[])
 template<class T>
 void Graph<T>::BFS(T node) {
     int value = vertexMap.at(node);
+    cout << endl << "Node is: " << unHash(value) << endl;
     bool *visited = new bool[adjVec.size()];
     for (unsigned int i = 0; i < adjVec.size(); i++) {
         visited[i] = false;
@@ -188,7 +189,7 @@ void Graph<T>::BFS(T node) {
 
     vector<int>::iterator i;
 
-    cout << endl << "BFS traversal of " << node << " is: ";
+    cout << "BFS traversal of " << node << " is: ";
     while (!queue.empty()) {
         value = queue.front();
         bfsVector.push_back(value);
@@ -205,7 +206,7 @@ void Graph<T>::BFS(T node) {
     cout << endl;
 
     bfsEdgeList.push_back(std::make_pair(bfsVector[0], bfsVector[1]));
-    for (int i = 1; i < bfsVector.size(); i++) {
+    for (unsigned int i = 1; i < bfsVector.size(); i++) {
         bfsEdgeList.push_back(std::make_pair(bfsVector[i], bfsVector[i + 1]));
     }
     cout << "BFS Edge List: (";
@@ -237,6 +238,7 @@ T Graph<T>::getKey(T value) {
     }
     return key;
 }
+
 template<class T>
 // Prints all paths from 's' to 'd'
 void Graph<T>::getAllPaths(T source, T destination)
@@ -270,20 +272,20 @@ void Graph<T>::getAllPathsHelper(int u, int d, bool visited[], int path[], int &
     path_index++;
 
     // If current vertex is same as destination, then print current path[]
-    if (u == d)
-    {
+    if (u == d){
         for (int i = 0; i<path_index; i++){
             cout << path[i] << " ";
         }
     }
 
-    else // If current vertex is not destination
-    {
+    else{ // If current vertex is not destination
         // Recur for all the vertices adjacent to current vertex
         vector<int>::iterator i;
-        for (i = adjVec[u].begin(); i != adjVec[u].end(); ++i)
-            if (!visited[*i])
+        for (i = adjVec[u].begin(); i != adjVec[u].end(); ++i){
+            if (!visited[*i]){
                 getAllPathsHelper(*i, d, visited, path, path_index);
+            }
+        }
     }
 
     // Remove current vertex from path[] and mark it as unvisited
@@ -304,44 +306,42 @@ void Graph<T>::printMaps() {
  * to be introduced to person D.
  * Ex: {(A - B), (B - D)}
  */
-//template <class T>
-//int Graph<T>::makeConnection(T s, T d) {
-//    cout << "inside of makeConnection";
-//    int connector = vertexMap.at(s);
-//    int connecting = vertexMap.at(d);
-//
-// visited[n] for keeping track of visited
-//    // node in BFS
-//    vector<bool> visited(s, 0);
-//
-//    // Initialize distances as 0
-//    vector<int> distance(d, 0);
-//
-//    // queue to do BFS.
-//    std::queue <int> Q;
-//    distance[s] = 0;
-//
-//    Q.push(s);
-//    visited[s] = true;
-//    while (!Q.empty())
-//    {
-//        int x = Q.front();
-//        Q.pop();
+template<class T>
+void Graph<T>::makeConnection(T ctr, T cting) {
+    // visited[n] for keeping track of visited
+    // node in BFS
+    int connector = vertexMap.at(ctr);
+    int connecting = vertexMap.at(cting);
 
-//        for (int i=0; i<edges[x].size(); i++)
-//        {
-//            if (visited[edges[x][i]])
-//                continue;
-//
-//            // update distance for i
-//            distance[edges[x][i]] = distance[x] + 1;
-//            Q.push(edges[x][i]);
-//            visited[edges[x][i]] = 1;
-//        }
-//    }
-//    return distance[d];
-//
-//
-//}
+    vector<bool> visited(adjVec.size(), 0);
+
+    // Initialize distances as 0
+    vector<int> distance(adjVec.size(), 0);
+
+    // queue to do BFS.
+    std::queue <int> Q;
+    distance[connector] = 0;
+
+    Q.push(connector);
+    visited[connector] = true;
+    while (!Q.empty())
+    {
+        int x = Q.front();
+        Q.pop();
+
+        for (int i=0; i<adjVec[x].size(); i++)
+        {
+            if (visited[adjVec[x][i]])
+                continue;
+
+            // update distance for i
+            distance[adjVec[x][i]] = distance[x] + 1;
+            Q.push(adjVec[x][i]);
+            visited[adjVec[x][i]] = 1;
+        }
+    }
+    cout << endl << "Number of edges between " << unHash(connector) << " and " << unHash(connecting) << " is: " << distance[connecting];
+    //return distance[connecting];
+}
 
 #endif //INC_20S_3353_PA02_GRAPH_H
