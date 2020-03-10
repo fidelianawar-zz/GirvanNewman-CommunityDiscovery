@@ -22,7 +22,6 @@ using std::list;
 
 template<class T>
 class InfoTracker{
-
     bool visited;
     int distanceFromOrigin;
     T parent;
@@ -30,19 +29,20 @@ class InfoTracker{
 
 template<class T>
 class Graph {
+
     vector<vector<int>> adjVec;
     std::unordered_map<T, int> vertexMap;
     std::unordered_map<int, T> reverseVertexMap;
-    vector<int> bfsVector;
-    vector<std::pair<int, int>> bfsEdgeList;
-    vector<int> dfsVector;
-    vector<std::pair<int, int>> dfsEdgeList;
-
-    vector<vector<T>> fullPath;
-    vector<T> tempPath;
-    int *storedPath;
     int count = 0;
-    typename std::unordered_map<T, int>:: iterator itr;
+
+    vector<int> bfsVector;
+    vector<int> dfsVector;
+    vector<int> edgePath;
+    vector<int> shortestPathVector;
+
+    vector<std::pair<int, int>> bfsEdgeList;
+    vector<std::pair<int, int>> dfsEdgeList;
+    vector<std::pair<int,int>> shortestPathEdgeList;
 
 public:
 
@@ -54,7 +54,10 @@ public:
     void hashVertex(T);
     void createAdj(int);
 
-    void makeConnection(T, T);
+    void findNumEdges(T, T);
+    void makeConnection(T,T);
+    void printShortestDistance(int s, int dest);
+
     void printMaps();
     T getKey(T value);
     void getAllPaths(T s, T d);
@@ -64,6 +67,12 @@ public:
     void DFS(T);
     void DFSHelper(int v, bool visited[]);
     void BFS(T);
+    bool connectionBFS(int src, int dest, int pred[], int dist[]);
+
+    bool isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path);
+    void createShortestPathEdgeList();
+    void createBFSEdgeList();
+    void createDFSEdgeList();
     void girvanNewmanAlgo(T);
     void removeEdge(T,T); //remove edges based on betweenness value
 
@@ -142,21 +151,7 @@ void Graph<T>::DFS(T node) {
     // Call the recursive helper function to print DFS traversal
     cout << "DFS traversal of " << node << " is: ";
     DFSHelper(value, visited);
-
-    dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
-    for (unsigned int i = 1; i < dfsVector.size(); i++) {
-        dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
-    }
-    cout << endl << "DFS Edge List: (";
-    for (auto itr = dfsEdgeList.begin(); itr != dfsEdgeList.end()-1; ++itr) {
-        if(itr == dfsEdgeList.end()-2){
-            cout << "{" << unHash(itr->first) << " , " << unHash(itr->second) << "}";
-        }
-        else{
-            cout << "{" << unHash(itr->first) << " , " << unHash(itr->second) << "} ";
-        }
-    }
-    cout << ")" << endl;
+    createDFSEdgeList();
 }
 
 template<class T>
@@ -173,7 +168,23 @@ void Graph<T>::DFSHelper(int v, bool visited[])
         }
     }
 }
-
+template<class T>
+void Graph<T>::createDFSEdgeList() {
+    dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
+    for (unsigned int i = 1; i < dfsVector.size(); i++) {
+        dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
+    }
+    cout << endl << "DFS Edge List: (";
+    for (auto itr = dfsEdgeList.begin(); itr != dfsEdgeList.end()-1; ++itr) {
+        if(itr == dfsEdgeList.end()-2){
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
+        }
+        else{
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
+        }
+    }
+    cout << ")" << endl;
+}
 template<class T>
 void Graph<T>::BFS(T node) {
     int value = vertexMap.at(node);
@@ -204,7 +215,11 @@ void Graph<T>::BFS(T node) {
         }
     }
     cout << endl;
+    createBFSEdgeList();
+}
 
+template<class T>
+void Graph<T>::createBFSEdgeList() {
     bfsEdgeList.push_back(std::make_pair(bfsVector[0], bfsVector[1]));
     for (unsigned int i = 1; i < bfsVector.size(); i++) {
         bfsEdgeList.push_back(std::make_pair(bfsVector[i], bfsVector[i + 1]));
@@ -212,10 +227,10 @@ void Graph<T>::BFS(T node) {
     cout << "BFS Edge List: (";
     for (auto itr = bfsEdgeList.begin(); itr != bfsEdgeList.end()-1; ++itr) {
         if(itr == bfsEdgeList.end()-2){
-            cout << "{" << unHash(itr->first) << " , " << unHash(itr->second) << "}";
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
         }
         else {
-            cout << "{" << unHash(itr->first) << " , " << unHash(itr->second) << "} ";
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
     cout << ")" << endl;
@@ -278,8 +293,7 @@ void Graph<T>::getAllPathsHelper(int u, int d, bool visited[], int path[], int &
         }
     }
 
-    else{ // If current vertex is not destination
-        // Recur for all the vertices adjacent to current vertex
+    else{ // If curr vertex is not destination, recur for all the vertices adjacent to current vertex
         vector<int>::iterator i;
         for (i = adjVec[u].begin(); i != adjVec[u].end(); ++i){
             if (!visited[*i]){
@@ -300,14 +314,8 @@ void Graph<T>::printMaps() {
     }
 }
 
-/*
- * Make a Connection with the smallest number of introductions.
- * A set of introductions that need to be made in order for person A
- * to be introduced to person D.
- * Ex: {(A - B), (B - D)}
- */
 template<class T>
-void Graph<T>::makeConnection(T ctr, T cting) {
+void Graph<T>::findNumEdges(T ctr, T cting) {
     // visited[n] for keeping track of visited
     // node in BFS
     int connector = vertexMap.at(ctr);
@@ -324,24 +332,165 @@ void Graph<T>::makeConnection(T ctr, T cting) {
 
     Q.push(connector);
     visited[connector] = true;
-    while (!Q.empty())
-    {
+    while (!Q.empty()){
         int x = Q.front();
         Q.pop();
 
-        for (int i=0; i<adjVec[x].size(); i++)
-        {
-            if (visited[adjVec[x][i]])
+        for (int i=0; i<adjVec[x].size(); i++){
+            if (visited[adjVec[x][i]]){
                 continue;
-
+            }
             // update distance for i
             distance[adjVec[x][i]] = distance[x] + 1;
             Q.push(adjVec[x][i]);
             visited[adjVec[x][i]] = 1;
         }
     }
-    cout << endl << "Number of edges between " << unHash(connector) << " and " << unHash(connecting) << " is: " << distance[connecting];
-    //return distance[connecting];
+    cout << endl << "Number of edges between " << unHash(connector) << " and " << unHash(connecting) << " is: " <<
+    distance[connecting] << endl;
+    vector<bool> discovered(adjVec.size(), 0);
+    isConnected(connector, connecting, discovered,edgePath);
+    cout << "The edge path from " << unHash(connector) << " to " << unHash(connecting) << " is: ";
+    for (int i: edgePath)
+        cout << unHash(i) << ' ';
+    cout << endl;
+}
+
+// Function to perform DFS traversal in a directed graph to find the
+// complete path between source and destination vertices
+template<class T>
+bool Graph<T>::isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path){
+    // mark current node as discovered
+    discovered[src] = true;
+
+    // include current node in the path
+    path.push_back(src);
+
+    // if destination vertex is found
+    if (src == dest) {
+        return true;
+    }
+    // do for every edge (src -> i)
+    for (int i: adjVec[src]){
+        // u is not discovered
+        if (!discovered[i]){
+            // return true if destination is found
+            if (isConnected(i, dest, discovered, path))
+                return true;
+        }
+    }
+    // backtrack: remove current node from the path
+    path.pop_back();
+
+    // return false if destination vertex is not reachable from src
+    return false;
+}
+
+/*
+ * Make a Connection with the smallest number of introductions.
+ * A set of introductions that need to be made in order for person A
+ * to be introduced to person D.
+ * Ex: {(A - B), (B - D)}
+ */
+template<class T>
+void Graph<T>::makeConnection(T s, T d) {
+    int src = vertexMap.at(s);
+    int dest = vertexMap.at(d);
+    printShortestDistance(src,dest);
+}
+
+template<class T>
+bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[])
+{
+    //queue for BFS
+    list<int> queue;
+
+    //checks if nodes are visited
+    bool visited[adjVec.size()];
+
+    //setting initial values to false/infinity
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
+        visited[i] = false;
+        dist[i] = INT_MAX;
+        pred[i] = -1;
+    }
+
+    //visit source and set distance to 0
+    visited[src] = true;
+    dist[src] = 0;
+    queue.push_back(src);
+
+    //BFS 2.0
+    while (!queue.empty()) {
+        int u = queue.front();
+        queue.pop_front();
+        for (unsigned int i = 0; i < adjVec[u].size(); i++) {
+            if (visited[adjVec[u][i]] == false) {
+                visited[adjVec[u][i]] = true;
+                dist[adjVec[u][i]] = dist[u] + 1;
+                pred[adjVec[u][i]] = u;
+                queue.push_back(adjVec[u][i]);
+
+                //stop when destination is found
+                if (adjVec[u][i] == dest)
+                    return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+template <class T>
+void Graph<T>::printShortestDistance(int s, int dest)
+{
+    // predecessor[i] contains parent of i and dist[] stores distance of i from source
+    int pred[adjVec.size()], dist[adjVec.size()];
+
+    if (connectionBFS(s, dest, pred, dist) != true)
+    {
+        cout << "Given source and destination cannot be connected";
+        return;
+    }
+
+    int crawl = dest;
+    shortestPathVector.push_back(crawl);
+    while (pred[crawl] != -1) {
+        shortestPathVector.push_back(pred[crawl]);
+        crawl = pred[crawl];
+    }
+
+    // distance from source is in distance array
+    cout << endl << "Shortest path length is : " << dist[dest];
+
+    // printing path from source to destination
+    cout << "\nTo travel from " << unHash(s) << " to " << unHash(dest) << " , the path is: " << endl;
+    for (int i = shortestPathVector.size() - 1; i >= 0; i--){
+        cout << unHash(shortestPathVector[i]) << " ";
+    }
+    cout << endl << endl;
+    createShortestPathEdgeList();
+}
+
+template <class T>
+void Graph<T>::createShortestPathEdgeList() {
+
+    std::reverse(shortestPathVector.begin(), shortestPathVector.end());
+    shortestPathEdgeList.push_back(std::make_pair(shortestPathVector[0], shortestPathVector[1]));
+
+    for (unsigned int i = 1; i < shortestPathVector.size(); i++) {
+        shortestPathEdgeList.push_back(std::make_pair(shortestPathVector[i], shortestPathVector[i + 1]));
+    }
+    cout << "Shortest Path Edge List: (";
+    for (auto itr = shortestPathEdgeList.begin(); itr != shortestPathEdgeList.end()-1; ++itr) {
+        if(itr == shortestPathEdgeList.end()-2){
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
+        }
+        else {
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
+        }
+    }
+    cout << ")" << endl;
 }
 
 #endif //INC_20S_3353_PA02_GRAPH_H
