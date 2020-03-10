@@ -1,6 +1,6 @@
-or pa03-karate-with-dashes.txt
+or g1.txt
 ow g1-output.txt
-dfs 16
-bfs 2
-mc 34 5
+dfs B
+bfs B
+mc A B
 dc
