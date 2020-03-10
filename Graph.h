@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <string>
 #include <queue>
+#include <limits>
+#include <cstdint>
 
 using std::cout;
 using std::cin;
