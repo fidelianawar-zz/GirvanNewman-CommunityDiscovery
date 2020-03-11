@@ -31,10 +31,20 @@ class InfoTracker{
     T parent;
 };
 
+class graphNode{
+public:
+    int id;
+    string name;
+    bool status;
+    double weight;
+};
+
+
 template<class T>
 class Graph {
 
     vector<vector<int>> adjVec;
+    vector<vector<int>> allPathsBetweenNodes;
     std::unordered_map<T, int> vertexMap;
     std::unordered_map<int, T> reverseVertexMap;
     int count = 0;
@@ -65,8 +75,8 @@ public:
     void printMaps();
     T getKey(T value);
     void getAllPaths(T s, T d);
-    void getAllPathsHelper(int u, int d, bool visited[],
-                      int path[], int &path_index);
+    void getAllPathsHelper(int u, int d, bool visited[], int path[], int &path_index);
+    void printAllPaths();
 
     void DFS(T);
     void DFSHelper(int v, bool visited[]);
@@ -258,6 +268,22 @@ T Graph<T>::getKey(T value) {
     return key;
 }
 
+
+template<class T>
+void Graph<T>::printAllPaths(){
+    std::vector< std::vector<int> >::iterator row;
+    std::vector<int>::iterator col;
+    cout << endl;
+    int counter = 0;
+    for(unsigned int i = 0; i < adjVec.size(); i++){
+        for(unsigned int j = 0; j < adjVec.size(); j++){
+            getAllPaths(unHash(i), unHash(j));
+        }
+        //
+    }
+
+}
+
 template<class T>
 // Prints all paths from 's' to 'd'
 void Graph<T>::getAllPaths(T source, T destination)
@@ -281,7 +307,6 @@ void Graph<T>::getAllPaths(T source, T destination)
     getAllPathsHelper(start, dest, visited, path, path_index);
 
 }
-
 template<class T>
 void Graph<T>::getAllPathsHelper(int u, int d, bool visited[], int path[], int &path_index)
 {
@@ -289,12 +314,14 @@ void Graph<T>::getAllPathsHelper(int u, int d, bool visited[], int path[], int &
     visited[u] = true;
     path[path_index] = u;
     path_index++;
-
+    vector<int> paths;
     // If current vertex is same as destination, then print current path[]
     if (u == d){
         for (int i = 0; i<path_index; i++){
+            paths.push_back(path[i]);
             cout << path[i] << " ";
         }
+        cout << "The size of this path is: " << paths.size() << endl;
     }
 
     else{ // If curr vertex is not destination, recur for all the vertices adjacent to current vertex
@@ -441,7 +468,6 @@ bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[])
             }
         }
     }
-
     return false;
 }
 
