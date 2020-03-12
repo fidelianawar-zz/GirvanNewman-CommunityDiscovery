@@ -80,7 +80,7 @@ void createOutputFile(std::basic_string<char> output) {
 
 }
 void discoverCommunities(std::basic_string<char> s, std::basic_string<char> d) {
-    networkGraph.getAllPaths(s, d);
+    networkGraph.girvanGetAllPaths(s, d);
 }
 
 int main(int argc, char *const argv[]) {
@@ -92,8 +92,8 @@ int main(int argc, char *const argv[]) {
 
     string command, input;
 
-    std::vector<std::pair<string, string>> mcMap;
-    std::vector<pair<string, string>> commandMap;
+    std::vector<std::pair<string, string>> makeConnectionsVec;
+    std::vector<pair<string, string>> commandsVec;
 
     for (std::string line; std::getline(controlFile, line);) {
         std::stringstream ss(line);
@@ -102,27 +102,27 @@ int main(int argc, char *const argv[]) {
         if (command == "mc") {
             string arg1, arg2;
             ss >> arg1 >> arg2;
-            mcMap.push_back(std::make_pair(arg1, arg2));
+            makeConnectionsVec.push_back(std::make_pair(arg1, arg2));
         }
         else {
             if(command != "dc"){
                 while (ss >> input) {
                     cout << input << " " << endl;
-                    commandMap.push_back(std::make_pair(command, input));
+                    commandsVec.push_back(std::make_pair(command, input));
                 }
             }
             else{
-                commandMap.push_back({command, ""});
+                commandsVec.push_back({command, ""});
             }
         }
     }
 
-    for (unsigned int i = 0; i < commandMap.size(); i++) {
-        //cout << commandMap[i].first << " " << commandMap[i].second << endl;
+    for (unsigned int i = 0; i < commandsVec.size(); i++) {
+        //cout << commandsVec[i].first << " " << commandsVec[i].second << endl;
     }
 
     cout << endl;
-    for (auto itr = commandMap.begin(); itr != commandMap.end(); ++itr) {
+    for (auto itr = commandsVec.begin(); itr != commandsVec.end(); ++itr) {
         if (itr->first == "or") {
             readInputFile(itr->second);
         } else if (itr->first == "ow") {
@@ -132,11 +132,11 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "dfs") {
             networkGraph.DFS(itr->second);
         } else if (itr->first == "dc") {
-            networkGraph.printAllPaths();
+            networkGraph.girvanNewman();
         }
     }
 
-    for (auto itr = mcMap.begin(); itr != mcMap.end(); ++itr) {
+    for (auto itr = makeConnectionsVec.begin(); itr != makeConnectionsVec.end(); ++itr) {
         //discoverCommunities(itr->first,itr->second);
         networkGraph.makeConnection(itr->first, itr->second);
     }

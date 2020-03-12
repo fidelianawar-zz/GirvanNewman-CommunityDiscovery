@@ -12,6 +12,8 @@ set (EXE_NAME LinkSearchingAndCommunityDiscovery)
 # etc....
 
 set (input01 "controlFile.txt")
+set (input02 "g1.txt")
+set (output01 "g1-output.txt")
 #
 ##########################################
 
