@@ -25,13 +25,13 @@ using std::vector;
 using std::list;
 
 template<class T>
-class InfoTracker{
+class InfoTracker {
     bool visited;
     int distanceFromOrigin;
     T parent;
 };
 
-class graphNode{
+class graphNode {
 public:
     int id;
     string name;
@@ -42,6 +42,8 @@ public:
 
 template<class T>
 class Graph {
+
+    int numVertices;
 
     vector<vector<int>> adjVec;
     vector<int> numPathsSize;
@@ -55,44 +57,91 @@ class Graph {
     vector<int> dfsVector;
     vector<int> edgePath;
     vector<int> shortestPathVector;
+    std::unordered_map<int, int> GparentChildrenCount;
 
     vector<std::pair<int, int>> bfsEdgeList;
     vector<std::pair<int, int>> dfsEdgeList;
-    vector<std::pair<int,int>> shortestPathEdgeList;
+    vector<std::pair<int, int>> shortestPathEdgeList;
 
 public:
 
     Graph();
+
     T unHash(int);
+
     void createReverseVertexMap();
+
     void populateAdj(T src, T dest);
+
     void displayAdjVec();
+
     void hashVertex(T);
+
     void createAdj(int);
 
     void findNumEdges(T, T);
-    void makeConnection(T,T);
+
+    void makeConnection(T, T);
+
     void printShortestDistance(int s, int dest);
 
     void printMaps();
+
     T getKey(T value);
-    int girvanGetAllPaths(T s, T d);
-    int girvanPathHelper(int u, int d, bool *visited, int *path, int &path_index);
+
+    int getAllPaths(T s, T d);
+
+    int getAllPathsHelper(int u, int d, bool *visited, int *path, int &path_index);
+
     void printAllPaths();
 
     void DFS(T);
+
     void DFSHelper(int v, bool visited[]);
+
     void BFS(T);
+
     bool connectionBFS(int src, int dest, int pred[], int dist[]);
 
     bool isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path);
+
     void createShortestPathEdgeList();
+
     void createBFSEdgeList();
+
     void createDFSEdgeList();
+
+    void girvanNewman1();
+
+    void removeEdge(T, T); //remove edges based on betweenness value
+
+    int isNotVisited(int x, vector<int> &path);
+
+    int findpaths(vector<vector<int> > &g, int src,
+                  int dst, int v);
+
+    void printpath(vector<int> &);
+
     void girvanNewman();
-    void removeEdge(T,T); //remove edges based on betweenness value
+
+    void girvanNewman2();
+
+    void ModifiedBFS(T, T);
+
+    bool BFSforGirvan(int src, int dest, int parent[], int distanceFromParent[]);
+    void printShortestDistanceGirvan(int s, int dest);
+
+    void girvanDFS(int,int);
+
+    void girvan();
+
+    void calculateBetweenness(int);
 
 };
+
+bool isNotVisited(int &i, vector<int> vector);
+
+void printpath(vector<int> vector);
 
 template<class T>
 Graph<T>::Graph() {
@@ -103,10 +152,11 @@ template<class T>
 void Graph<T>::hashVertex(T vertex) {
     //A - 0, B - 1, C -2, etc.
     vertexMap.insert(std::make_pair(vertex, count));
+    numVertices = adjVec.size();
     count++;
 }
 
-template <class T>
+template<class T>
 void Graph<T>::createReverseVertexMap() {
     //0 - A, 1 - B, 2 - C, etc.
     for (auto itr = vertexMap.begin(); itr != vertexMap.end(); ++itr) {
@@ -120,10 +170,10 @@ T Graph<T>::unHash(int vertex) {
 }
 
 template<class T>
-void Graph<T>::createAdj(int numV){
+void Graph<T>::createAdj(int numV) {
     cout << "number of vertices is: " << numV << endl;
     vector<int> emptyVector;
-    for(int i = 0; i < numV; i++){
+    for (int i = 0; i < numV; i++) {
         adjVec.push_back(emptyVector);
     }
     createReverseVertexMap();
@@ -140,11 +190,11 @@ void Graph<T>::populateAdj(T src, T dest) { //src: vertex, dest: edge to be adde
 }
 
 template<class T>
-void Graph<T>::displayAdjVec(){
+void Graph<T>::displayAdjVec() {
     cout << endl << "Adjacency List" << endl;
-    for(unsigned int i  = 0; i < adjVec.size(); i++){
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
         cout << unHash(i) << "-> ";
-        for(unsigned int j = 0; j < adjVec[i].size(); j++){
+        for (unsigned int j = 0; j < adjVec[i].size(); j++) {
             cout << unHash(adjVec[i][j]) << " ";
         }
         cout << endl;
@@ -160,8 +210,8 @@ void Graph<T>::DFS(T node) {
 
     // Mark all the vertices as not visited
     bool *visited = new bool[adjVec.size()];
-    for (unsigned int i = 0; i < adjVec.size(); i++){
-       visited[i] = false;
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
+        visited[i] = false;
     }
 
     // Call the recursive helper function to print DFS traversal
@@ -171,19 +221,19 @@ void Graph<T>::DFS(T node) {
 }
 
 template<class T>
-void Graph<T>::DFSHelper(int v, bool visited[])
-{
+void Graph<T>::DFSHelper(int v, bool visited[]) {
     visited[v] = true;
     cout << unHash(v) << " ";
     dfsVector.push_back(v);
     // Recur for all the vertices adjacent to this vertex
     vector<int>::iterator i;
-    for(i = adjVec[v].begin(); i != adjVec[v].end(); i++){
-        if(!visited[*i]){
+    for (i = adjVec[v].begin(); i != adjVec[v].end(); i++) {
+        if (!visited[*i]) {
             DFSHelper(*i, visited);
         }
     }
 }
+
 template<class T>
 void Graph<T>::createDFSEdgeList() {
     dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
@@ -191,16 +241,16 @@ void Graph<T>::createDFSEdgeList() {
         dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
     }
     cout << endl << "DFS Edge List: (";
-    for (auto itr = dfsEdgeList.begin(); itr != dfsEdgeList.end()-1; ++itr) {
-        if(itr == dfsEdgeList.end()-2){
+    for (auto itr = dfsEdgeList.begin(); itr != dfsEdgeList.end() - 1; ++itr) {
+        if (itr == dfsEdgeList.end() - 2) {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
-        }
-        else{
+        } else {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
     cout << ")" << endl;
 }
+
 template<class T>
 void Graph<T>::BFS(T node) {
     int value = vertexMap.at(node);
@@ -241,11 +291,10 @@ void Graph<T>::createBFSEdgeList() {
         bfsEdgeList.push_back(std::make_pair(bfsVector[i], bfsVector[i + 1]));
     }
     cout << "BFS Edge List: (";
-    for (auto itr = bfsEdgeList.begin(); itr != bfsEdgeList.end()-1; ++itr) {
-        if(itr == bfsEdgeList.end()-2){
+    for (auto itr = bfsEdgeList.begin(); itr != bfsEdgeList.end() - 1; ++itr) {
+        if (itr == bfsEdgeList.end() - 2) {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
-        }
-        else {
+        } else {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
@@ -256,8 +305,8 @@ template<class T>
 T Graph<T>::getKey(T value) {
     typename std::unordered_map<int, T>::iterator it;
     T key;
-    for (it = vertexMap.begin(); it != vertexMap.end(); ++it){
-        if (it->second == value){
+    for (it = vertexMap.begin(); it != vertexMap.end(); ++it) {
+        if (it->second == value) {
             key = it->first;
             break;
         }
@@ -266,36 +315,36 @@ T Graph<T>::getKey(T value) {
 }
 
 template<class T>
-void Graph<T>::girvanNewman(){
+void Graph<T>::girvanNewman1() {
     cout << endl;
 
-    for(unsigned int i = 0; i < adjVec.size(); i++){
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
         vector<int> numPathSize;
-        for(unsigned int j = 0; j < adjVec.size(); j++){
-            numPathSize.push_back(girvanGetAllPaths(unHash(i), unHash(j)));
+        for (unsigned int j = 0; j < adjVec.size(); j++) {
+            numPathSize.push_back(getAllPaths(unHash(i), unHash(j)));
+            cout << getAllPaths(unHash(i), unHash(j)) << " ";
         }
         allPathsBetweenNodes.push_back(numPathSize);
-        cout << "the size of numPathsSize at: " << numPathSize.size();
+        cout << "the size of numPathsSize at: " << numPathSize.size() << endl;
         numPathSize.clear();
     }
     cout << endl << "size of allPathsBetweenNodes: " << allPathsBetweenNodes.size() << endl << endl;
 
-    vector<int>::iterator i;
-    vector<vector<int>>::iterator j;
+//    vector<int>::iterator i;
+//    vector<vector<int>>::iterator j;
 
     //cout << endl << endl;
-    for(int i =0; i < allPathsBetweenNodes.size(); i++){
-        for(int j = 0; j < allPathsBetweenNodes.size(); j++){
+    for (int i = 0; i < allPathsBetweenNodes.size(); i++) {
+        for (int j = 0; j < allPathsBetweenNodes.size(); j++) {
             //cout << allPathsBetweenNodes[i][j] << " ";
         }
-       // cout << endl;
+        // cout << endl;
     }
 }
 
 template<class T>
 // Prints all paths from 's' to 'd'
-int Graph<T>::girvanGetAllPaths(T source, T destination)
-{
+int Graph<T>::getAllPaths(T source, T destination) {
     int start = vertexMap.at(source);
     int dest = vertexMap.at(destination);
     int size = 0;
@@ -313,12 +362,14 @@ int Graph<T>::girvanGetAllPaths(T source, T destination)
 
     // Call the recursive helper function to print all paths
     cout << endl << source << "(" << start << ") -> " << destination << "(" << dest << ") paths are: " << endl;
-    size = girvanPathHelper(start, dest, visited, path, path_index);
+    size = getAllPathsHelper(start, dest, visited, path, path_index);
+    cout << "SIZE OF GET ALL PATHS: " << size << endl;
     return size;
 
 }
+
 template<class T>
-int Graph<T>::girvanPathHelper(int u, int d, bool *visited, int *path, int &path_index){
+int Graph<T>::getAllPathsHelper(int u, int d, bool *visited, int *path, int &path_index) {
     // Mark the current node and store it in path[]
     visited[u] = true;
     path[path_index] = u;
@@ -326,21 +377,19 @@ int Graph<T>::girvanPathHelper(int u, int d, bool *visited, int *path, int &path
 
     vector<int> helperPaths;
     // If current vertex is same as destination, then print current path[]
-    if (u == d){
-        for (int i = 0; i<path_index; i++){
+    if (u == d) {
+        for (int i = 0; i < path_index; i++) {
             helperPaths.push_back(path[i]);
             cout << path[i] << " ";
         }
-        cout << "The size of this path is: " << helperPaths.size() << endl;
         int pathSize = helperPaths.size();
+        cout << "The size of this path is: " << pathSize << endl;
         return pathSize;
-    }
-
-    else{ // If curr vertex is not destination, recur for all the vertices adjacent to current vertex
+    } else { // If curr vertex is not destination, recur for all the vertices adjacent to current vertex
         vector<int>::iterator i;
-        for (i = adjVec[u].begin(); i != adjVec[u].end(); ++i){
-            if (!visited[*i]){
-                girvanPathHelper(*i, d, visited, path, path_index);
+        for (i = adjVec[u].begin(); i != adjVec[u].end(); ++i) {
+            if (!visited[*i]) {
+                getAllPathsHelper(*i, d, visited, path, path_index);
             }
         }
     }
@@ -349,7 +398,7 @@ int Graph<T>::girvanPathHelper(int u, int d, bool *visited, int *path, int &path
     visited[u] = false;
 }
 
-template <class T>
+template<class T>
 void Graph<T>::printMaps() {
     for (auto itr = reverseVertexMap.begin(); itr != reverseVertexMap.end(); ++itr) {
         cout << itr->first << "\t" << itr->second << "\t" << endl;
@@ -369,17 +418,17 @@ void Graph<T>::findNumEdges(T ctr, T cting) {
     vector<int> distance(adjVec.size(), 0);
 
     // queue to do BFS.
-    std::queue <int> Q;
+    std::queue<int> Q;
     distance[connector] = 0;
 
     Q.push(connector);
     visited[connector] = true;
-    while (!Q.empty()){
+    while (!Q.empty()) {
         int x = Q.front();
         Q.pop();
 
-        for (int i=0; i<adjVec[x].size(); i++){
-            if (visited[adjVec[x][i]]){
+        for (int i = 0; i < adjVec[x].size(); i++) {
+            if (visited[adjVec[x][i]]) {
                 continue;
             }
             // update distance for i
@@ -389,9 +438,9 @@ void Graph<T>::findNumEdges(T ctr, T cting) {
         }
     }
     cout << endl << "Number of edges between " << unHash(connector) << " and " << unHash(connecting) << " is: " <<
-    distance[connecting] << endl;
+         distance[connecting] << endl;
     vector<bool> discovered(adjVec.size(), 0);
-    isConnected(connector, connecting, discovered,edgePath);
+    isConnected(connector, connecting, discovered, edgePath);
     cout << "The edge path from " << unHash(connector) << " to " << unHash(connecting) << " is: ";
     for (int i: edgePath)
         cout << unHash(i) << ' ';
@@ -401,7 +450,7 @@ void Graph<T>::findNumEdges(T ctr, T cting) {
 // Function to perform DFS traversal in a directed graph to find the
 // complete path between source and destination vertices
 template<class T>
-bool Graph<T>::isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path){
+bool Graph<T>::isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path) {
     // mark current node as discovered
     discovered[src] = true;
 
@@ -413,9 +462,9 @@ bool Graph<T>::isConnected(int src, int dest, vector<bool> &discovered, vector<i
         return true;
     }
     // do for every edge (src -> i)
-    for (int i: adjVec[src]){
+    for (int i: adjVec[src]) {
         // u is not discovered
-        if (!discovered[i]){
+        if (!discovered[i]) {
             // return true if destination is found
             if (isConnected(i, dest, discovered, path))
                 return true;
@@ -438,14 +487,14 @@ template<class T>
 void Graph<T>::makeConnection(T s, T d) {
     int src = vertexMap.at(s);
     int dest = vertexMap.at(d);
-    printShortestDistance(src,dest);
+    //CHANGE THIS BACK TO printShortestDistance //////
+    printShortestDistanceGirvan(src, dest);
 }
 
 template<class T>
-bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[]){
+bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[]) {
     //queue for BFS
     list<int> queue;
-
     //checks if nodes are visited
     bool visited[adjVec.size()];
 
@@ -481,14 +530,12 @@ bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[]){
     return false;
 }
 
-template <class T>
-void Graph<T>::printShortestDistance(int s, int dest)
-{
+template<class T>
+void Graph<T>::printShortestDistance(int s, int dest) {
     // predecessor[i] contains parent of i and dist[] stores distance of i from source
     int pred[adjVec.size()], dist[adjVec.size()];
 
-    if (!connectionBFS(s, dest, pred, dist))
-    {
+    if (!connectionBFS(s, dest, pred, dist)) {
         cout << "Given source and destination cannot be connected";
         return;
     }
@@ -505,14 +552,14 @@ void Graph<T>::printShortestDistance(int s, int dest)
 
     // printing path from source to destination
     cout << "\nTo travel from " << unHash(s) << " to " << unHash(dest) << ", the path is: " << endl;
-    for (int i = shortestPathVector.size() - 1; i >= 0; i--){
+    for (int i = shortestPathVector.size() - 1; i >= 0; i--) {
         cout << unHash(shortestPathVector[i]) << " ";
     }
     cout << endl << endl;
     createShortestPathEdgeList();
 }
 
-template <class T>
+template<class T>
 void Graph<T>::createShortestPathEdgeList() {
 
     std::reverse(shortestPathVector.begin(), shortestPathVector.end());
@@ -522,15 +569,278 @@ void Graph<T>::createShortestPathEdgeList() {
         shortestPathEdgeList.push_back(std::make_pair(shortestPathVector[i], shortestPathVector[i + 1]));
     }
     cout << "Shortest Path Edge List: (";
-    for (auto itr = shortestPathEdgeList.begin(); itr != shortestPathEdgeList.end()-1; ++itr) {
-        if(itr == shortestPathEdgeList.end()-2){
+    for (auto itr = shortestPathEdgeList.begin(); itr != shortestPathEdgeList.end() - 1; ++itr) {
+        if (itr == shortestPathEdgeList.end() - 2) {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
-        }
-        else {
+        } else {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
     cout << ")" << endl;
 }
+
+template<class T>
+void Graph<T>::girvanNewman() {
+    for (int i = 0; i < adjVec.size(); i++) {
+        vector<int> pathSizeVertex;
+        for (int j = 0; j < adjVec.size(); j++) {
+            pathSizeVertex.push_back(findpaths(adjVec, i, j, adjVec.size()));
+            cout << "finding path in girvan: " << findpaths(adjVec, i, j, adjVec.size()) << " @" << endl;
+        }
+        pathSizeVertex.clear();
+        cout << endl << endl;
+    }
+
+}
+
+// utility function to check if current
+// vertex is already present in path
+template<class T>
+int Graph<T>::isNotVisited(int x, vector<int> &path) {
+    int size = path.size();
+    for (int i = 0; i < size; i++)
+        if (path[i] == x)
+            return 0;
+    return 1;
+}
+
+// utility function for printing
+// the found path in graph
+template<class T>
+void Graph<T>::printpath(vector<int> &path) {
+    int size = path.size();
+    cout << "the path is: ";
+    for (int i = 0; i < size; i++) {
+        cout << path[i] << " ";
+    }
+    cout << "The size of this path is: " << size << ".";
+}
+
+template<class T>
+// utility function for finding paths in graph
+// from source to destination
+int Graph<T>::findpaths(vector<vector<int> > &g, int src,
+                        int dst, int v) {
+
+//    v = adjVec.size();
+    // create a queue which stores
+    // the paths
+    std::queue<vector<int> > q;
+    int sizePath;
+    // path vector to store the current path
+    vector<int> path;
+    path.push_back(src);
+    q.push(path);
+    while (!q.empty()) {
+        path = q.front();
+        q.pop();
+        int last = path[path.size() - 1];
+
+        // if last vertex is the desired destination
+        // then print the path
+        if (last == dst) {
+            printpath(path);
+            return path.size();
+        }
+
+
+        // traverse to all the nodes connected to
+        // current vertex and push new path to queue
+        for (int i = 0; i < g[last].size(); i++) {
+            if (isNotVisited(g[last][i], path)) {
+                vector<int> newpath(path);
+                newpath.push_back(g[last][i]);
+                q.push(newpath);
+            }
+        }
+    }
+}
+
+template<class T>
+void Graph<T>::girvanNewman2() {
+    for (int i = 0; i < adjVec.size(); i++) {
+        //vector<int> pathSizeVertex;
+        for (int j = 0; j < adjVec.size(); j++) {
+            girvanDFS(i,j);
+            //cout << "finding path in girvan: " << findpaths(adjVec, i, j, adjVec.size()) << " @" << endl;
+        }
+        //pathSizeVertex.clear();
+        //cout << endl << endl;
+    }
+}
+
+
+template<class T>
+void Graph<T>::girvanDFS(int baap, int destination) {
+    vector<int> s;//stack to store the ordering of the elements in the path
+    vector<int> g[adjVec.size()];//it stores the adjacent elements of each nodes
+    bool visited[adjVec.size()];//it will prevent us from the cycles
+
+    if (baap == destination)//if we found our destination
+    {
+        //print all the nodes from lower stack to top stack
+        for (int i = 0; i < s.size(); i++){
+            printf("%d ", s[i]);
+        }
+
+        printf("%d\n", destination);
+        return;
+    }
+
+    visited[baap] = true;
+    s.push_back(baap);//pushing the elements while we explore them
+
+    for (int i = 0; i < g[baap].size(); i++) {
+        int beta = g[baap][i];
+        if (!visited[beta]) {
+            girvanDFS(beta, destination);
+        }
+    }
+    visited[baap] = false;
+    s.pop_back();//poping the elements while we go out from it
+}
+
+template<class T>
+void Graph<T>::girvan() {
+    // Calculate the betweenness for all edges in the network.
+
+    // Remove the edge with the highest betweenness.
+
+    // Recalculate betweennesses for all edges affected by the removal.
+
+    // Repeat from step 2 until no edges remain.
+
+
+}
+template<class T>
+void Graph<T>::ModifiedBFS(T start, T end) {
+    int s = vertexMap.at(start);
+    int d = vertexMap.at(end);
+    bool visited[adjVec.size()];
+    list<int> queue;
+    //add start to the queue
+    queue.push_back(s);
+    // while (queue is not empty):
+    while (!queue.empty()) {
+        //Node current = queue.pop
+        int current = queue.front();
+        queue.pop_front();
+
+    }
+
+
+//    set current as visited
+//    for each neighbor of current:
+//    if (neighbor is not in queue):
+//    add neighbor to queue
+//    if (neighbor's level > current's level):
+//    add Node current as a parent of Node neighbor
+//
+//    return all paths found from Node end to Node start using DFS
+}
+
+
+template<class T>
+void Graph<T>::printShortestDistanceGirvan(int s, int dest) {
+    cout << endl << "----------------------------------------" << endl;
+    // predecessor[i] contains parent of i and dist[] stores distance of i from source
+    int pred[adjVec.size()], dist[adjVec.size()];
+
+    if (!BFSforGirvan(s, dest, pred, dist)) {
+        cout << "Given source and destination cannot be connected";
+        return;
+    }
+    cout  << "----------------------------------------" << endl;
+    int crawl = dest;
+    shortestPathVector.push_back(crawl);
+    while (pred[crawl] != -1) {
+        shortestPathVector.push_back(pred[crawl]);
+        crawl = pred[crawl];
+    }
+
+    // distance from source is in distance array
+    cout << endl << "Shortest path length is : " << dist[dest];
+
+    // printing path from source to destination
+    cout << "\nTo travel from " << unHash(s) << " to " << unHash(dest) << ", the path is: " << endl;
+    for (int i = shortestPathVector.size() - 1; i >= 0; i--) {
+        cout << unHash(shortestPathVector[i]) << " ";
+    }
+    cout << endl << endl;
+    createShortestPathEdgeList();
+}
+
+template<class T>
+bool Graph<T>::BFSforGirvan(int src, int dest, int parent[], int distanceFromParent[]) {
+    //queue for BFS
+
+    list<int> queue;
+
+    //checks if nodes are visited
+    bool visited[adjVec.size()];
+    int shortestDistance;
+    int parentsOfChildren[adjVec.size()];
+
+    //setting initial values to false/infinity
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
+        visited[i] = false;
+        distanceFromParent[i] = INT_MAX;
+        shortestDistance = INT_MAX;
+        parent[i] = -1;
+    }
+
+    //visit source and set distance to 0
+    visited[src] = true;
+    distanceFromParent[src] = 0; //distance from root is 0
+    queue.push_back(src);
+
+    //BFS 2.0
+    //C - F : C -> B -> D -> F (3)
+    //C -> A -> B -> D -> G -> F
+    while (!queue.empty()) {
+
+        int u = queue.front();
+        GparentChildrenCount.insert(std::make_pair(u, 0));
+       // cout << "AT NODE: " << unHash(u) << endl;
+        queue.pop_front();
+        for (unsigned int i = 0; i < adjVec[u].size(); i++) {
+            if (visited[adjVec[u][i]] == false) {
+                visited[adjVec[u][i]] = true; //visit the node
+
+                //check to see if child node is more than 1 level away from parent
+                if(distanceFromParent[adjVec[u][i]] > distanceFromParent[u] + 1){
+                    distanceFromParent[adjVec[u][i]] = distanceFromParent[u] + 1;
+                }
+               // cout << "the child that we are visiting is : " << unHash(adjVec[u][i]) << endl;
+                //parent[adjVec[u][i]] = u;
+                GparentChildrenCount[u]++;
+                cout << "the number of kids at parent " << unHash(u) << " is: " <<  GparentChildrenCount[u] << endl;
+                queue.push_back(adjVec[u][i]); //push back G
+
+                //stop when destination is found
+                if (adjVec[u][i] == dest){
+                    if(distanceFromParent[adjVec[u][i]] <= shortestDistance){
+                        parent[adjVec[u][i]] = u; //parent[F] =
+                        GparentChildrenCount[u]++;
+                        shortestDistance = distanceFromParent[u];
+                        //queue.pop_back();
+                        visited[adjVec[u][i]] = false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
+}
+
+template<class T>
+void Graph<T>::calculateBetweenness(int) {
+    for(int i = 0; i < GparentChildrenCount.size(); i++){
+
+    }
+
+
+}
+
 
 #endif //INC_20S_3353_PA02_GRAPH_H

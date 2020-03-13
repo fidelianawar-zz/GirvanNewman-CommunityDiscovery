@@ -2,5 +2,5 @@ or g1.txt
 ow g1-output.txt
 dfs B
 bfs G
-mc A B
+mc C F
 dc

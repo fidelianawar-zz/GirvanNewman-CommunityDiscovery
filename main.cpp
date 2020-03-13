@@ -80,7 +80,7 @@ void createOutputFile(std::basic_string<char> output) {
 
 }
 void discoverCommunities(std::basic_string<char> s, std::basic_string<char> d) {
-    networkGraph.girvanGetAllPaths(s, d);
+    networkGraph.getAllPaths(s, d);
 }
 
 int main(int argc, char *const argv[]) {
@@ -132,12 +132,13 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "dfs") {
             networkGraph.DFS(itr->second);
         } else if (itr->first == "dc") {
-            networkGraph.girvanNewman();
+            //networkGraph.girvanNewman1();
         }
     }
 
     for (auto itr = makeConnectionsVec.begin(); itr != makeConnectionsVec.end(); ++itr) {
         //discoverCommunities(itr->first,itr->second);
+
         networkGraph.makeConnection(itr->first, itr->second);
     }
     cout << endl;
