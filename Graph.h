@@ -118,7 +118,7 @@ public:
     int isNotVisited(int x, vector<int> &path);
 
     int findpaths(vector<vector<int> > &g, int src,
-                  int dst, int v);
+                  int dst);
 
     void printpath(vector<int> &);
 
@@ -126,7 +126,7 @@ public:
 
     void girvanNewman2();
 
-    void ModifiedBFS(T, T);
+    //void ModifiedBFS(T, T);
 
     bool BFSforGirvan(int src, int dest, int parent[], int distanceFromParent[]);
     void printShortestDistanceGirvan(int s, int dest);
@@ -396,6 +396,7 @@ int Graph<T>::getAllPathsHelper(int u, int d, bool *visited, int *path, int &pat
     // Remove current vertex from path[] and mark it as unvisited
     path_index--;
     visited[u] = false;
+    return 0;
 }
 
 template<class T>
@@ -619,14 +620,12 @@ void Graph<T>::printpath(vector<int> &path) {
 template<class T>
 // utility function for finding paths in graph
 // from source to destination
-int Graph<T>::findpaths(vector<vector<int> > &g, int src,
-                        int dst, int v) {
+int Graph<T>::findpaths(vector<vector<int> > &g, int src, int dst) {
 
 //    v = adjVec.size();
     // create a queue which stores
     // the paths
     std::queue<vector<int> > q;
-    int sizePath;
     // path vector to store the current path
     vector<int> path;
     path.push_back(src);
@@ -712,21 +711,21 @@ void Graph<T>::girvan() {
 
 
 }
-template<class T>
-void Graph<T>::ModifiedBFS(T start, T end) {
-    int s = vertexMap.at(start);
-    int d = vertexMap.at(end);
-    bool visited[adjVec.size()];
-    list<int> queue;
-    //add start to the queue
-    queue.push_back(s);
-    // while (queue is not empty):
-    while (!queue.empty()) {
-        //Node current = queue.pop
-        int current = queue.front();
-        queue.pop_front();
-
-    }
+//template<class T>
+//void Graph<T>::ModifiedBFS(T start, T end) {
+//    int s = vertexMap.at(start);
+//    //int d = vertexMap.at(end);
+//    bool visited[adjVec.size()];
+//    list<int> queue;
+//    //add start to the queue
+//    queue.push_back(s);
+//    // while (queue is not empty):
+//    while (!queue.empty()) {
+//        //Node current = queue.pop
+//        //int current = queue.front();
+//        queue.pop_front();
+//
+//    }
 
 
 //    set current as visited
@@ -737,7 +736,7 @@ void Graph<T>::ModifiedBFS(T start, T end) {
 //    add Node current as a parent of Node neighbor
 //
 //    return all paths found from Node end to Node start using DFS
-}
+// }
 
 
 template<class T>
