@@ -135,7 +135,7 @@ public:
 
     void girvan();
 
-    void calculateBetweenness(int);
+    void calculateBetweenness(int[]);
 
 };
 
@@ -401,9 +401,11 @@ int Graph<T>::getAllPathsHelper(int u, int d, bool *visited, int *path, int &pat
 
 template<class T>
 void Graph<T>::printMaps() {
-    for (auto itr = reverseVertexMap.begin(); itr != reverseVertexMap.end(); ++itr) {
-        cout << itr->first << "\t" << itr->second << "\t" << endl;
+
+    for(int i = 0; i < GparentChildrenCount.size(); i++){
+        cout << "u: " << unHash(i) << " " << GparentChildrenCount[i]  << endl;
     }
+    cout << endl;
 }
 
 template<class T>
@@ -618,33 +620,20 @@ void Graph<T>::printpath(vector<int> &path) {
 }
 
 template<class T>
-// utility function for finding paths in graph
-// from source to destination
-int Graph<T>::findpaths(vector<vector<int> > &g, int src, int dst) {
-
-//    v = adjVec.size();
-    // create a queue which stores
-    // the paths
-    std::queue<vector<int> > q;
-    // path vector to store the current path
+// utility function for finding paths in graph from source to destination
+int Graph<T>::findpaths(vector<vector<int> > &g, int src, int dst) { //v = adjVec.size(), create a queue which stores the paths
+    std::queue<vector<int> > q; // path vector to store the current path
     vector<int> path;
     path.push_back(src);
     q.push(path);
     while (!q.empty()) {
         path = q.front();
         q.pop();
-        int last = path[path.size() - 1];
-
-        // if last vertex is the desired destination
-        // then print the path
+        int last = path[path.size() - 1]; // if last vertex is the desired destination, then print the path
         if (last == dst) {
             printpath(path);
             return path.size();
-        }
-
-
-        // traverse to all the nodes connected to
-        // current vertex and push new path to queue
+        } // traverse to all the nodes connected to current vertex and push new path to queue
         for (int i = 0; i < g[last].size(); i++) {
             if (isNotVisited(g[last][i], path)) {
                 vector<int> newpath(path);
@@ -792,15 +781,11 @@ bool Graph<T>::BFSforGirvan(int src, int dest, int parent[], int distanceFromPar
     visited[src] = true;
     distanceFromParent[src] = 0; //distance from root is 0
     queue.push_back(src);
-
-    //BFS 2.0
-    //C - F : C -> B -> D -> F (3)
-    //C -> A -> B -> D -> G -> F
     while (!queue.empty()) {
 
         int u = queue.front();
         GparentChildrenCount.insert(std::make_pair(u, 0));
-       // cout << "AT NODE: " << unHash(u) << endl;
+
         queue.pop_front();
         for (unsigned int i = 0; i < adjVec[u].size(); i++) {
             if (visited[adjVec[u][i]] == false) {
@@ -810,36 +795,36 @@ bool Graph<T>::BFSforGirvan(int src, int dest, int parent[], int distanceFromPar
                 if(distanceFromParent[adjVec[u][i]] > distanceFromParent[u] + 1){
                     distanceFromParent[adjVec[u][i]] = distanceFromParent[u] + 1;
                 }
-               // cout << "the child that we are visiting is : " << unHash(adjVec[u][i]) << endl;
-                //parent[adjVec[u][i]] = u;
-                GparentChildrenCount[u]++;
-                cout << "the number of kids at parent " << unHash(u) << " is: " <<  GparentChildrenCount[u] << endl;
-                queue.push_back(adjVec[u][i]); //push back G
 
-                //stop when destination is found
-                if (adjVec[u][i] == dest){
-                    if(distanceFromParent[adjVec[u][i]] <= shortestDistance){
-                        parent[adjVec[u][i]] = u; //parent[F] =
-                        GparentChildrenCount[u]++;
-                        shortestDistance = distanceFromParent[u];
-                        //queue.pop_back();
-                        visited[adjVec[u][i]] = false;
-                    }
+                std::list<int>::iterator iter = std::find (queue.begin(), queue.end(), adjVec[u][i]);
+                if(iter == queue.end()){
+                    queue.push_back(adjVec[u][i]);
+                }
+
+                if(distanceFromParent[adjVec[u][i]] > distanceFromParent[u]){
+                    //add Node current as a parent of Node neighbor
+                    parent[adjVec[u][i]] = u;
+                    GparentChildrenCount[u]++;
                 }
             }
         }
     }
+    calculateBetweenness(parent);
     return true;
 }
 
 template<class T>
-void Graph<T>::calculateBetweenness(int) {
-    for(int i = 0; i < GparentChildrenCount.size(); i++){
+void Graph<T>::calculateBetweenness(int parents[]) {
 
+    for(int i = 0; i < sizeof(parents); i++){
+        cout << parents[i] << endl;
+    }
+    cout << endl;
+
+    for(auto i = GparentChildrenCount.begin(); i != GparentChildrenCount.end(); i++){
+        cout << "Vertex " << i->first << ": " << i->second << endl;
     }
 
 
 }
-
-
 #endif //INC_20S_3353_PA02_GRAPH_H
