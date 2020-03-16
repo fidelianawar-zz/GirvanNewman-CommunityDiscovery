@@ -13,6 +13,7 @@ set (EXE_NAME LinkSearchingAndCommunityDiscovery)
 
 set (input01 "controlFile.txt")
 set (input02 "g1.txt")
+set (input03 "pa03-karate-with-dashes.txt")
 set (output01 "g1-output.txt")
 #
 ##########################################

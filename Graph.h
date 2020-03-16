@@ -491,7 +491,11 @@ void Graph<T>::makeConnection(T s, T d) {
     int src = vertexMap.at(s);
     int dest = vertexMap.at(d);
     //CHANGE THIS BACK TO printShortestDistance //////
-    printShortestDistanceGirvan(src, dest);
+    for(int i =0; i < vertexMap.size(); i++){
+        for(int j= i +1; j<vertexMap.size(); j++){
+            printShortestDistanceGirvan(i,j);
+        }
+    }
 }
 
 template<class T>
@@ -796,15 +800,18 @@ bool Graph<T>::BFSforGirvan(int src, int dest, int parent[], int distanceFromPar
                     distanceFromParent[adjVec[u][i]] = distanceFromParent[u] + 1;
                 }
 
+                //check neighboring nodes, add to queue if not already in queue
                 std::list<int>::iterator iter = std::find (queue.begin(), queue.end(), adjVec[u][i]);
                 if(iter == queue.end()){
                     queue.push_back(adjVec[u][i]);
                 }
 
-                if(distanceFromParent[adjVec[u][i]] > distanceFromParent[u]){
-                    //add Node current as a parent of Node neighbor
-                    parent[adjVec[u][i]] = u;
-                    GparentChildrenCount[u]++;
+                //keeping track of distance from roots
+                if((adjVec[u][i] == dest) && (distanceFromParent[adjVec[u][i]] <= shortestDistance)) {
+                    shortestDistance = distanceFromParent[adjVec[u][i]]; //update shortest distance
+                    parent[adjVec[u][i]] = u; //add Node current as a parent of Node neighbor
+                    GparentChildrenCount[u]++; //incr the # of children for a vertex
+                    visited[adjVec[u][i]] = false; //reset to false so it can be visited again
                 }
             }
         }
