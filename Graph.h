@@ -24,21 +24,6 @@ using std::string;
 using std::vector;
 using std::list;
 
-template<class T>
-class InfoTracker {
-    bool visited;
-    int distanceFromOrigin;
-    T parent;
-};
-
-class graphNode {
-public:
-    int id;
-    string name;
-    bool status;
-    double weight;
-};
-
 
 template<class T>
 class Graph {
@@ -51,6 +36,7 @@ class Graph {
     vector<vector<int>> allPathsBetweenNodes;
     std::unordered_map<T, int> vertexMap;
     std::unordered_map<int, T> reverseVertexMap;
+    std::map<std::pair<int,int>,int> betweennessMap;
     int count = 0;
 
     vector<int> bfsVector;
@@ -141,7 +127,10 @@ public:
 
     void girvan();
 
+    void calculateBetweenness(vector<std::pair<int, int>>);
     void calculateBetweenness(int[]);
+    void displayBetweennessMap();
+    void removeEdges();
 
 };
 
@@ -600,6 +589,8 @@ void Graph<T>::girvanNewman() {
             printShortestDistanceGirvan(i,j);
         }
     }
+    displayBetweennessMap();
+    removeEdges();
 }
 
 template<class T>
@@ -638,9 +629,9 @@ void Graph<T>::printShortestDistanceGirvan(int s, int dest) {
     cout << endl;
 
     std::reverse(girvanPath.begin(), girvanPath.end());
-    edgeList.push_back(std::make_pair(girvanPath[0], girvanPath[1]));
+    //edgeList.push_back(std::make_pair(girvanPath[0], girvanPath[1]));
 
-    for (unsigned int i = 1; i < girvanPath.size(); i++) {
+    for (unsigned int i = 0; i < girvanPath.size(); i++) {
         edgeList.push_back(std::make_pair(girvanPath[i], girvanPath[i + 1]));
     }
     cout << "Shortest Path Edge List: (";
@@ -652,10 +643,71 @@ void Graph<T>::printShortestDistanceGirvan(int s, int dest) {
         }
     }
     cout << ")" << endl;
+    calculateBetweenness(edgeList);
+
 }
 
-// utility function to check if current
-// vertex is already present in path
+template<class T>
+void Graph<T>::calculateBetweenness(vector<std::pair<int, int>> edgeList) {
+
+    for(int i = 0; i < edgeList.size()-1; i++){
+
+        std::pair<int,int> p1 = std::make_pair(edgeList[i].first,edgeList[i].second);
+        std::pair<int,int> p2 = std::make_pair(edgeList[i].second,edgeList[i].first);
+        std::map<std::pair<int,int>,int>::iterator it, it2;
+
+        it = betweennessMap.find(p1);
+        it2 = betweennessMap.find(p2);
+
+        if((it != betweennessMap.end()) && (it2 != betweennessMap.end())){
+            betweennessMap[edgeList[i]]++;
+        }
+        else{
+            betweennessMap.emplace(std::make_pair(edgeList[i].first, edgeList[i].second),1);
+        }
+    }
+}
+
+template<class T>
+void Graph<T>::displayBetweennessMap() {
+    cout << endl << endl;
+    std::map<int,std::pair<int,int>> newMap;
+    for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it)
+    {
+        cout << unHash(it->first.first) << " " << unHash(it->first.second) << " - " << it->second << endl;
+    }
+    for(auto i = betweennessMap.begin(); i != betweennessMap.end(); i++){
+        newMap.emplace(i->second, i->first);
+    }
+    cout << endl << endl;
+    for(auto i = newMap.begin(); i != newMap.end(); i++){
+        //cout << i->first << " - " << unHash(i->second.first) << " " << unHash(i->second.second) << endl;
+    }
+
+    std::multimap<int,std::pair<int,int>> multimap;
+    for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it)
+    {
+        multimap.emplace(it->second, it->first);
+   }
+    for(auto it = multimap.begin(); it != multimap.end(); ++it)
+    {
+        cout << it->first << " - " << unHash(it->second.first) << " " << unHash(it->second.second)  << '\n';
+    }
+}
+
+template<class T>
+void Graph<T>::removeEdges() {
+    int sum = 0;
+    for(auto it = betweennessMap.cbegin(); it != betweennessMap.cend(); ++it)
+    {
+        sum += it->second;
+    }
+
+
+    sum = sum / betweennessMap.size();
+    cout << endl << "average betweenness is: " << sum << endl;
+}
+// utility function to check if current vertex is already present in path
 template<class T>
 int Graph<T>::isNotVisited(int x, vector<int> &path) {
     int size = path.size();
@@ -665,8 +717,7 @@ int Graph<T>::isNotVisited(int x, vector<int> &path) {
     return 1;
 }
 
-// utility function for printing
-// the found path in graph
+// utility function for printing found path in graph
 template<class T>
 void Graph<T>::printpath(vector<int> &path) {
     int size = path.size();
