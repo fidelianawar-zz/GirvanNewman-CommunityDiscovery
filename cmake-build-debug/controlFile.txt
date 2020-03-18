@@ -2,5 +2,5 @@ or pa03-karate-with-dashes.txt
 ow g1-output.txt
 dfs 34
 bfs 2
-mc 14 19
+mc 12 31
 dc
