@@ -37,6 +37,8 @@ class Graph {
     std::unordered_map<T, int> vertexMap;
     std::unordered_map<int, T> reverseVertexMap;
     std::map<std::pair<int,int>,int> betweennessMap;
+    std::multimap<int,std::pair<int,int>> multimap;
+
     int count = 0;
 
     vector<int> bfsVector;
@@ -311,33 +313,6 @@ T Graph<T>::getKey(T value) {
     return key;
 }
 
-template<class T>
-void Graph<T>::girvanNewman1() {
-    cout << endl;
-
-    for (unsigned int i = 0; i < adjVec.size(); i++) {
-        vector<int> numPathSize;
-        for (unsigned int j = 0; j < adjVec.size(); j++) {
-            numPathSize.push_back(getAllPaths(unHash(i), unHash(j)));
-            cout << getAllPaths(unHash(i), unHash(j)) << " ";
-        }
-        allPathsBetweenNodes.push_back(numPathSize);
-        cout << "the size of numPathsSize at: " << numPathSize.size() << endl;
-        numPathSize.clear();
-    }
-    cout << endl << "size of allPathsBetweenNodes: " << allPathsBetweenNodes.size() << endl << endl;
-
-//    vector<int>::iterator i;
-//    vector<vector<int>>::iterator j;
-
-    //cout << endl << endl;
-    for (int i = 0; i < allPathsBetweenNodes.size(); i++) {
-        for (int j = 0; j < allPathsBetweenNodes.size(); j++) {
-            //cout << allPathsBetweenNodes[i][j] << " ";
-        }
-        // cout << endl;
-    }
-}
 
 template<class T>
 // Prints all paths from 's' to 'd'
@@ -670,21 +645,11 @@ void Graph<T>::calculateBetweenness(vector<std::pair<int, int>> edgeList) {
 
 template<class T>
 void Graph<T>::displayBetweennessMap() {
-    cout << endl << endl;
-    std::map<int,std::pair<int,int>> newMap;
+
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it)
     {
         cout << unHash(it->first.first) << " " << unHash(it->first.second) << " - " << it->second << endl;
     }
-    for(auto i = betweennessMap.begin(); i != betweennessMap.end(); i++){
-        newMap.emplace(i->second, i->first);
-    }
-    cout << endl << endl;
-    for(auto i = newMap.begin(); i != newMap.end(); i++){
-        //cout << i->first << " - " << unHash(i->second.first) << " " << unHash(i->second.second) << endl;
-    }
-
-    std::multimap<int,std::pair<int,int>> multimap;
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it)
     {
         multimap.emplace(it->second, it->first);
@@ -697,16 +662,9 @@ void Graph<T>::displayBetweennessMap() {
 
 template<class T>
 void Graph<T>::removeEdges() {
-    int sum = 0;
-    for(auto it = betweennessMap.cbegin(); it != betweennessMap.cend(); ++it)
-    {
-        sum += it->second;
-    }
-
-
-    sum = sum / betweennessMap.size();
-    cout << endl << "average betweenness is: " << sum << endl;
+  multimap.erase(multimap.end());
 }
+
 // utility function to check if current vertex is already present in path
 template<class T>
 int Graph<T>::isNotVisited(int x, vector<int> &path) {
@@ -752,20 +710,6 @@ int Graph<T>::findpaths(vector<vector<int> > &g, int src, int dst) { //v = adjVe
         }
     }
 }
-
-template<class T>
-void Graph<T>::girvanNewman2() {
-    for (int i = 0; i < adjVec.size(); i++) {
-        //vector<int> pathSizeVertex;
-        for (int j = 0; j < adjVec.size(); j++) {
-            girvanDFS(i,j);
-            //cout << "finding path in girvan: " << findpaths(adjVec, i, j, adjVec.size()) << " @" << endl;
-        }
-        //pathSizeVertex.clear();
-        //cout << endl << endl;
-    }
-}
-
 
 template<class T>
 void Graph<T>::girvanDFS(int baap, int destination) {
