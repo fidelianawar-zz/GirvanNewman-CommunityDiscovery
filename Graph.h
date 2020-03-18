@@ -662,7 +662,7 @@ void Graph<T>::displayBetweennessMap() {
 
 template<class T>
 void Graph<T>::removeEdges() {
-  multimap.erase(multimap.end());
+  //multimap.erase(multimap.end());
 }
 
 // utility function to check if current vertex is already present in path
