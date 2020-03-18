@@ -1,6 +1,6 @@
-or pa03-karate-with-dashes.txt
+or pa03-football-with-dashes.txt
 ow g1-output.txt
-dfs 34
-bfs 2
-mc 12 31
+dfs Stanford
+bfs Tulane
+mc Ohio Nevada
 dc

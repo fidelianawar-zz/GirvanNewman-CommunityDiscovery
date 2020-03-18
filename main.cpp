@@ -132,7 +132,7 @@ int main(int argc, char *const argv[]) {
         } else if (itr->first == "dfs") {
             networkGraph.DFS(itr->second);
         } else if (itr->first == "dc") {
-            //networkGraph.girvanNewman1();
+            networkGraph.girvanNewman();
         }
     }
 

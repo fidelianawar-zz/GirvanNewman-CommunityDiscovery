@@ -56,7 +56,7 @@ class Graph {
     vector<int> bfsVector;
     vector<int> dfsVector;
     vector<int> edgePath;
-    vector<int> shortestPathVector;
+    vector<int> GirvanShortestPathVector;
     std::unordered_map<int, int> GparentChildrenCount;
     std::unordered_map<int, vector<int>> parentsMap;
 
@@ -64,6 +64,7 @@ class Graph {
     vector<std::pair<int, int>> bfsEdgeList;
     vector<std::pair<int, int>> dfsEdgeList;
     vector<std::pair<int, int>> shortestPathEdgeList;
+    vector<std::pair<int, int>> GirvanShortestPathEdgeList;
 
 public:
 
@@ -86,6 +87,7 @@ public:
     void makeConnection(T, T);
 
     void printShortestDistance(int s, int dest);
+    void printShortestDistanceGirvan(int s, int dest);
 
     void printMaps();
 
@@ -107,7 +109,9 @@ public:
 
     bool isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path);
 
-    void createShortestPathEdgeList();
+    void createEdgeList(vector<int>);
+
+    void createGirvanShortestPathEdgeList();
 
     void createBFSEdgeList();
 
@@ -131,7 +135,7 @@ public:
     //void ModifiedBFS(T, T);
 
     bool BFSforGirvan(int src, int dest, int parent[], int distanceFromParent[]);
-    void printShortestDistanceGirvan(int s, int dest);
+    void printShortestDistanceG(int s, int dest);
 
     void girvanDFS(int,int);
 
@@ -206,7 +210,7 @@ void Graph<T>::displayAdjVec() {
 
 template<class T>
 void Graph<T>::DFS(T node) {
-
+    dfsVector.clear();
     int value = vertexMap.at(node);
     cout << endl << "Node is: " << unHash(value) << endl;
 
@@ -238,6 +242,7 @@ void Graph<T>::DFSHelper(int v, bool visited[]) {
 
 template<class T>
 void Graph<T>::createDFSEdgeList() {
+    dfsEdgeList.clear();
     dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
     for (unsigned int i = 1; i < dfsVector.size(); i++) {
         dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
@@ -255,6 +260,7 @@ void Graph<T>::createDFSEdgeList() {
 
 template<class T>
 void Graph<T>::BFS(T node) {
+    bfsVector.clear();
     int value = vertexMap.at(node);
     cout << endl << "Node is: " << unHash(value) << endl;
     bool *visited = new bool[adjVec.size()];
@@ -492,13 +498,7 @@ template<class T>
 void Graph<T>::makeConnection(T s, T d) {
     int src = vertexMap.at(s);
     int dest = vertexMap.at(d);
-    //CHANGE THIS BACK TO printShortestDistance //////
     printShortestDistance(src,dest);
-    for(int i =0; i < vertexMap.size(); i++){
-        for(int j= i +1; j<vertexMap.size(); j++){
-            //printShortestDistanceGirvan(i,j);
-        }
-    }
 }
 
 template<class T>
@@ -544,7 +544,7 @@ template<class T>
 void Graph<T>::printShortestDistance(int s, int dest) {
     // predecessor[i] contains parent of i and dist[] stores distance of i from source
     int pred[adjVec.size()], dist[adjVec.size()];
-
+    vector<int> shortestPathVector;
     if (!connectionBFS(s, dest, pred, dist)) {
         cout << "Given source and destination cannot be connected";
         return;
@@ -566,21 +566,24 @@ void Graph<T>::printShortestDistance(int s, int dest) {
         cout << unHash(shortestPathVector[i]) << " ";
     }
     cout << endl << endl;
-    createShortestPathEdgeList();
+    createEdgeList(shortestPathVector);
 }
 
 template<class T>
-void Graph<T>::createShortestPathEdgeList() {
+void Graph<T>::createEdgeList(vector<int> path) {
 
-    std::reverse(shortestPathVector.begin(), shortestPathVector.end());
-    shortestPathEdgeList.push_back(std::make_pair(shortestPathVector[0], shortestPathVector[1]));
+    vector<std::pair<int, int>> edgeList;
+    edgeList.clear();
+    std::reverse(path.begin(), path.end());
 
-    for (unsigned int i = 1; i < shortestPathVector.size(); i++) {
-        shortestPathEdgeList.push_back(std::make_pair(shortestPathVector[i], shortestPathVector[i + 1]));
+    edgeList.push_back(std::make_pair(path[0], path[1]));
+
+    for (unsigned int i = 1; i < path.size(); i++) {
+        edgeList.push_back(std::make_pair(path[i], path[i + 1]));
     }
-    cout << "Shortest Path Edge List: (";
-    for (auto itr = shortestPathEdgeList.begin(); itr != shortestPathEdgeList.end() - 1; ++itr) {
-        if (itr == shortestPathEdgeList.end() - 2) {
+    cout << "Edge List: (";
+    for (auto itr = edgeList.begin(); itr != edgeList.end() - 1; ++itr) {
+        if (itr == edgeList.end() - 2) {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
         } else {
             cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
@@ -591,16 +594,64 @@ void Graph<T>::createShortestPathEdgeList() {
 
 template<class T>
 void Graph<T>::girvanNewman() {
-    for (int i = 0; i < adjVec.size(); i++) {
-        vector<int> pathSizeVertex;
-        for (int j = 0; j < adjVec.size(); j++) {
-            pathSizeVertex.push_back(findpaths(adjVec, i, j, adjVec.size()));
-            cout << "finding path in girvan: " << findpaths(adjVec, i, j, adjVec.size()) << " @" << endl;
+    cout << "inside of GirvanNewman" << endl;
+    for(int i = 0; i < vertexMap.size(); i++){
+        for(int j = i + 1; j < vertexMap.size(); j++){
+            printShortestDistanceGirvan(i,j);
         }
-        pathSizeVertex.clear();
-        cout << endl << endl;
+    }
+}
+
+template<class T>
+void Graph<T>::printShortestDistanceGirvan(int s, int dest) {
+
+    // predecessor[i] contains parent of i and dist[] stores distance of i from source
+    int pred[adjVec.size()], dist[adjVec.size()];
+    vector<int> girvanPath;
+    vector<std::pair<int, int>> edgeList;
+    if (!connectionBFS(s, dest, pred, dist)) {
+        cout << "Given source and destination cannot be connected";
+        return;
     }
 
+    int crawl = dest;
+    girvanPath.push_back(crawl);
+    while (pred[crawl] != -1) {
+        girvanPath.push_back(pred[crawl]);
+        crawl = pred[crawl];
+    }
+
+    // distance from source is in distance array
+    cout << endl << "Girvan shortest path length is : " << dist[dest];
+
+    // printing path from source to destination
+    cout << "\nTo travel from " << unHash(s) << " to " << unHash(dest) << ", the path is: ";
+    for (int i = girvanPath.size() - 1; i >= 0; i--) {
+        if(i == 0){
+            cout << unHash(girvanPath[i]) << "";
+        }
+        else{
+            cout << unHash(girvanPath[i]) << " -> ";
+        }
+
+    }
+    cout << endl;
+
+    std::reverse(girvanPath.begin(), girvanPath.end());
+    edgeList.push_back(std::make_pair(girvanPath[0], girvanPath[1]));
+
+    for (unsigned int i = 1; i < girvanPath.size(); i++) {
+        edgeList.push_back(std::make_pair(girvanPath[i], girvanPath[i + 1]));
+    }
+    cout << "Shortest Path Edge List: (";
+    for (auto itr = edgeList.begin(); itr != edgeList.end() - 1; ++itr) {
+        if (itr == edgeList.end() - 2) {
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
+        } else {
+            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
+        }
+    }
+    cout << ")" << endl;
 }
 
 // utility function to check if current
@@ -696,47 +747,7 @@ void Graph<T>::girvanDFS(int baap, int destination) {
 }
 
 template<class T>
-void Graph<T>::girvan() {
-    // Calculate the betweenness for all edges in the network.
-
-    // Remove the edge with the highest betweenness.
-
-    // Recalculate betweennesses for all edges affected by the removal.
-
-    // Repeat from step 2 until no edges remain.
-
-
-}
-//template<class T>
-//void Graph<T>::ModifiedBFS(T start, T end) {
-//    int s = vertexMap.at(start);
-//    //int d = vertexMap.at(end);
-//    bool visited[adjVec.size()];
-//    list<int> queue;
-//    //add start to the queue
-//    queue.push_back(s);
-//    // while (queue is not empty):
-//    while (!queue.empty()) {
-//        //Node current = queue.pop
-//        //int current = queue.front();
-//        queue.pop_front();
-//
-//    }
-
-
-//    set current as visited
-//    for each neighbor of current:
-//    if (neighbor is not in queue):
-//    add neighbor to queue
-//    if (neighbor's level > current's level):
-//    add Node current as a parent of Node neighbor
-//
-//    return all paths found from Node end to Node start using DFS
-// }
-
-
-template<class T>
-void Graph<T>::printShortestDistanceGirvan(int s, int dest) {
+void Graph<T>::printShortestDistanceG(int s, int dest) {
     //cout << endl << "----------------------------------------" << endl;
     // predecessor[i] contains parent of i and dist[] stores distance of i from source
     int pred[adjVec.size()], dist[adjVec.size()];
@@ -773,10 +784,12 @@ bool Graph<T>::BFSforGirvan(int src, int dest, int parent[], int distanceFromPar
     while (!queue.empty()) {
 
         int u = queue.front();
-        GparentChildrenCount.insert(std::make_pair(u, 0));
+        if(GparentChildrenCount.find(u) != GparentChildrenCount.end()){
+            GparentChildrenCount.insert(std::make_pair(u, 0));
+        }
+
         vector<int> tempVec;
         parentsMap.insert(std::make_pair(u, tempVec));
-
 
         queue.pop_front();
 
@@ -799,14 +812,13 @@ bool Graph<T>::BFSforGirvan(int src, int dest, int parent[], int distanceFromPar
                 //keeping track of distance from roots
                 if((adjVec[u][i] == dest) && (distanceFromParent[adjVec[u][i]] <= shortestDistance)) {
                     shortestDistance = distanceFromParent[adjVec[u][i]]; //update shortest distance
-
                     GparentChildrenCount[u]++; //incr the # of children for a vertex
                     visited[adjVec[u][i]] = false; //reset to false so it can be visited again
                 }
             }
         }
     }
-    //calculateBetweenness(parent);
+    calculateBetweenness(parent);
     return true;
 }
 
