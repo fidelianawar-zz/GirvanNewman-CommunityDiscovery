@@ -685,7 +685,7 @@ void Graph<T>::displayBetweennessMap() {
 
 template<class T>
 void Graph<T>::removeEdges() {
-
+    displayAdjVec();
     int percentageToDelete = multimap.size()/4;
     cout << percentageToDelete << endl << endl << endl << "EDGES TO REMOVE:" << endl;
 
@@ -711,7 +711,9 @@ void Graph<T>::removeEdges() {
             if (*vertexIterator == edge->first) {
                 adjVec[x].erase((vertexIterator + 1).base());
                 for(edgeIterator = adjVec[y].rbegin(); edgeIterator < adjVec[y].rend(); edgeIterator++){
-                    adjVec[y].erase((edgeIterator + 1).base());
+                    if (*edgeIterator == vertex->first) {
+                        adjVec[y].erase((edgeIterator + 1).base());
+                    }
                 }
             }
         }

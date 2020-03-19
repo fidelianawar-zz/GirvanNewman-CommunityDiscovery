@@ -16,4 +16,7 @@ Edge List: ({Tulane - EastCarolina} {EastCarolina - Houston} {Houston - Southern
 -----------------------------------------------------------------------------------------------------
 Make Connection
 
-Nodes to connect: Ohio and NevadaGiven source and destination cannot be connected
+Nodes to connect: Ohio and Nevada
+To travel from Ohio to Nevada, the path is: 
+Ohio -> BowlingGreenState -> Temple -> Navy -> AirForce -> ColoradoState -> Nevada
+Edge List: ({Ohio - BowlingGreenState} {BowlingGreenState - Temple} {Temple - Navy} {Navy - AirForce} {AirForce - ColoradoState} {ColoradoState - Nevada})
