@@ -19,7 +19,7 @@ using std::pair;
 Graph<string> networkGraph;
 
 void readInputFile(std::basic_string<char> input) {
-    cout << "Inputfile is: " << input << endl;
+    //cout << "Input is: " << input << endl;
     std::ifstream networkFile(input);
 
     if (!networkFile) {
@@ -70,15 +70,6 @@ void readInputFile(std::basic_string<char> input) {
     networkFile.close();
 }
 
-void createOutputFile(std::basic_string<char> output) {
-
-    cout << "Outputfile is: " << output << endl;
-
-    std::ofstream outputFile(output);
-    outputFile << "Writing this to output file.\n";
-    outputFile.close();
-
-}
 void discoverCommunities(std::basic_string<char> s, std::basic_string<char> d) {
     networkGraph.getAllPaths(s, d);
 }
@@ -98,7 +89,7 @@ int main(int argc, char *const argv[]) {
     for (std::string line; std::getline(controlFile, line);) {
         std::stringstream ss(line);
         ss >> command;
-        cout << command << " ";
+        //cout << command << " ";
         if (command == "mc") {
             string arg1, arg2;
             ss >> arg1 >> arg2;
@@ -107,7 +98,7 @@ int main(int argc, char *const argv[]) {
         else {
             if(command != "dc"){
                 while (ss >> input) {
-                    cout << input << " " << endl;
+                    //cout << input << " " << endl;
                     commandsVec.push_back(std::make_pair(command, input));
                 }
             }
@@ -117,20 +108,21 @@ int main(int argc, char *const argv[]) {
         }
     }
 
-    for (unsigned int i = 0; i < commandsVec.size(); i++) {
-        //cout << commandsVec[i].first << " " << commandsVec[i].second << endl;
-    }
+    //cout << endl;
 
-    cout << endl;
+    std::ofstream outputFile;
+
     for (auto itr = commandsVec.begin(); itr != commandsVec.end(); ++itr) {
         if (itr->first == "or") {
             readInputFile(itr->second);
         } else if (itr->first == "ow") {
-            createOutputFile(itr->second);
+            outputFile.open(itr->second);
+            if(!outputFile){ cout << "welp shit" << endl; }
+            //networkGraph.writeOutput(outputFile);
         } else if (itr->first == "bfs") {
-            networkGraph.BFS(itr->second);
+            networkGraph.BFS(itr->second, outputFile);
         } else if (itr->first == "dfs") {
-            networkGraph.DFS(itr->second);
+            networkGraph.DFS(itr->second, outputFile);
         } else if (itr->first == "dc") {
             networkGraph.girvanNewman();
         }
@@ -138,9 +130,9 @@ int main(int argc, char *const argv[]) {
 
     for (auto itr = makeConnectionsVec.begin(); itr != makeConnectionsVec.end(); ++itr) {
         //discoverCommunities(itr->first,itr->second);
-
-        networkGraph.makeConnection(itr->first, itr->second);
+        networkGraph.makeConnection(itr->first, itr->second, outputFile);
     }
-    cout << endl;
+    outputFile.flush();
+    outputFile.close();
     return 0;
 }

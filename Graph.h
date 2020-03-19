@@ -4,8 +4,8 @@
 #ifndef INC_20S_3353_PA02_GRAPH_H
 #define INC_20S_3353_PA02_GRAPH_H
 
-
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <list>
 #include <map>
@@ -23,6 +23,7 @@ using std::endl;
 using std::string;
 using std::vector;
 using std::list;
+using std::ofstream;
 
 
 template<class T>
@@ -72,9 +73,9 @@ public:
 
     void findNumEdges(T, T);
 
-    void makeConnection(T, T);
+    void makeConnection(T, T, ofstream&);
 
-    void printShortestDistance(int s, int dest);
+    void printShortestDistance(int s, int dest, ofstream&);
     void printShortestDistanceGirvan(int s, int dest);
 
     void printMaps();
@@ -87,23 +88,23 @@ public:
 
     void printAllPaths();
 
-    void DFS(T);
+    void DFS(T, ofstream& outputFile);
 
-    void DFSHelper(int v, bool visited[]);
+    void DFSHelper(int v, bool visited[], ofstream& outputFile);
 
-    void BFS(T);
+    void BFS(T, ofstream& outputFile);
 
     bool connectionBFS(int src, int dest, int pred[], int dist[]);
 
     bool isConnected(int src, int dest, vector<bool> &discovered, vector<int> &path);
 
-    void createEdgeList(vector<int>);
+    void createEdgeList(vector<int>, ofstream&);
 
     void createGirvanShortestPathEdgeList();
 
-    void createBFSEdgeList();
+    void createBFSEdgeList(ofstream& outputFile);
 
-    void createDFSEdgeList();
+    void createDFSEdgeList(ofstream& outputFile);
 
     void girvanNewman1();
 
@@ -133,6 +134,7 @@ public:
     void calculateBetweenness(int[]);
     void displayBetweennessMap();
     void removeEdges();
+    void writeOutput(std::ofstream& output);
 
 };
 
@@ -142,7 +144,7 @@ void printpath(vector<int> vector);
 
 template<class T>
 Graph<T>::Graph() {
-    cout << "making a graph";
+    cout << "Making new graph.";
 }
 
 template<class T>
@@ -168,13 +170,13 @@ T Graph<T>::unHash(int vertex) {
 
 template<class T>
 void Graph<T>::createAdj(int numV) {
-    cout << "number of vertices is: " << numV << endl;
+    //cout << "number of vertices is: " << numV << endl;
     vector<int> emptyVector;
     for (int i = 0; i < numV; i++) {
         adjVec.push_back(emptyVector);
     }
     createReverseVertexMap();
-    cout << endl;
+    //cout << endl;
 }
 
 template<class T>
@@ -200,10 +202,13 @@ void Graph<T>::displayAdjVec() {
 }
 
 template<class T>
-void Graph<T>::DFS(T node) {
+void Graph<T>::DFS(T node, ofstream& outputFile) {
+    outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
+               << endl << "DFS" << endl << endl;
     dfsVector.clear();
     int value = vertexMap.at(node);
-    cout << endl << "Node is: " << unHash(value) << endl;
+    //cout << endl << "Node is: " << unHash(value) << endl;
+    outputFile << "Node is: " << unHash(value) << endl;
 
     // Mark all the vertices as not visited
     bool *visited = new bool[adjVec.size()];
@@ -212,48 +217,53 @@ void Graph<T>::DFS(T node) {
     }
 
     // Call the recursive helper function to print DFS traversal
-    cout << "DFS traversal of " << node << " is: ";
-    DFSHelper(value, visited);
-    createDFSEdgeList();
+    //cout << "DFS traversal of " << node << " is: ";
+    outputFile << "DFS traversal of " << node << " is: ";
+    DFSHelper(value, visited, outputFile);
+    createDFSEdgeList(outputFile);
+    //outputFile << "-----------------------------------------------------------------------------------------------------" << endl << endl;
 }
 
 template<class T>
-void Graph<T>::DFSHelper(int v, bool visited[]) {
+void Graph<T>::DFSHelper(int v, bool visited[], ofstream& outputFile) {
     visited[v] = true;
-    cout << unHash(v) << " ";
+    //cout << unHash(v) << " ";
+    outputFile << unHash(v) << " ";
     dfsVector.push_back(v);
     // Recur for all the vertices adjacent to this vertex
     vector<int>::iterator i;
     for (i = adjVec[v].begin(); i != adjVec[v].end(); i++) {
         if (!visited[*i]) {
-            DFSHelper(*i, visited);
+            DFSHelper(*i, visited, outputFile);
         }
     }
 }
 
 template<class T>
-void Graph<T>::createDFSEdgeList() {
+void Graph<T>::createDFSEdgeList(ofstream& outputFile) {
     dfsEdgeList.clear();
     dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
     for (unsigned int i = 1; i < dfsVector.size(); i++) {
         dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
     }
-    cout << endl << "DFS Edge List: (";
+    outputFile << endl << "Edge List: (";
     for (auto itr = dfsEdgeList.begin(); itr != dfsEdgeList.end() - 1; ++itr) {
         if (itr == dfsEdgeList.end() - 2) {
-            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
+            outputFile << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
         } else {
-            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
+            outputFile << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
-    cout << ")" << endl;
+    outputFile << ")" << endl;
 }
 
 template<class T>
-void Graph<T>::BFS(T node) {
+void Graph<T>::BFS(T node, ofstream& outputFile) {
+    outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
+               << endl <<"BFS" << endl;
     bfsVector.clear();
     int value = vertexMap.at(node);
-    cout << endl << "Node is: " << unHash(value) << endl;
+    outputFile << endl << "Node is: " << unHash(value) << endl;
     bool *visited = new bool[adjVec.size()];
     for (unsigned int i = 0; i < adjVec.size(); i++) {
         visited[i] = false;
@@ -265,11 +275,11 @@ void Graph<T>::BFS(T node) {
 
     vector<int>::iterator i;
 
-    cout << "BFS traversal of " << node << " is: ";
+    outputFile << "BFS traversal of " << node << " is: ";
     while (!queue.empty()) {
         value = queue.front();
         bfsVector.push_back(value);
-        cout << unHash(value) << " ";
+        outputFile << unHash(value) << " ";
         queue.pop_front();
 
         for (i = adjVec[value].begin(); i != adjVec[value].end(); i++) {
@@ -279,25 +289,26 @@ void Graph<T>::BFS(T node) {
             }
         }
     }
-    cout << endl;
-    createBFSEdgeList();
+    outputFile << endl;
+    createBFSEdgeList(outputFile);
+    //outputFile << endl <<  "-----------------------------------------------------------------------------------------------------" << endl;
 }
 
 template<class T>
-void Graph<T>::createBFSEdgeList() {
+void Graph<T>::createBFSEdgeList(ofstream& outputFile) {
     bfsEdgeList.push_back(std::make_pair(bfsVector[0], bfsVector[1]));
     for (unsigned int i = 1; i < bfsVector.size(); i++) {
         bfsEdgeList.push_back(std::make_pair(bfsVector[i], bfsVector[i + 1]));
     }
-    cout << "BFS Edge List: (";
+    outputFile << "Edge List: (";
     for (auto itr = bfsEdgeList.begin(); itr != bfsEdgeList.end() - 1; ++itr) {
         if (itr == bfsEdgeList.end() - 2) {
-            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
+            outputFile << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
         } else {
-            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
+            outputFile << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
-    cout << ")" << endl;
+    outputFile << ")" << endl;
 }
 
 template<class T>
@@ -459,10 +470,15 @@ bool Graph<T>::isConnected(int src, int dest, vector<bool> &discovered, vector<i
  * Ex: {(A - B), (B - D)}
  */
 template<class T>
-void Graph<T>::makeConnection(T s, T d) {
+void Graph<T>::makeConnection(T s, T d, ofstream& outputFile) {
+    outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
+               << endl << "Make Connection" << endl << endl;
+
     int src = vertexMap.at(s);
     int dest = vertexMap.at(d);
-    printShortestDistance(src,dest);
+
+    outputFile << "Nodes to connect: " << unHash(src) << " and " << unHash(dest);
+    printShortestDistance(src,dest, outputFile);
 }
 
 template<class T>
@@ -505,12 +521,12 @@ bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[]) {
 }
 
 template<class T>
-void Graph<T>::printShortestDistance(int s, int dest) {
+void Graph<T>::printShortestDistance(int s, int dest, ofstream& outputFile) {
     // predecessor[i] contains parent of i and dist[] stores distance of i from source
     int pred[adjVec.size()], dist[adjVec.size()];
     vector<int> shortestPathVector;
     if (!connectionBFS(s, dest, pred, dist)) {
-        cout << "Given source and destination cannot be connected";
+        outputFile << "Given source and destination cannot be connected";
         return;
     }
 
@@ -522,19 +538,24 @@ void Graph<T>::printShortestDistance(int s, int dest) {
     }
 
     // distance from source is in distance array
-    cout << endl << "Shortest path length is : " << dist[dest];
+    //cout << "Shortest path length is : " << dist[dest];
 
     // printing path from source to destination
-    cout << "\nTo travel from " << unHash(s) << " to " << unHash(dest) << ", the path is: " << endl;
+    outputFile << "\nTo travel from " << unHash(s) << " to " << unHash(dest) << ", the path is: " << endl;
     for (int i = shortestPathVector.size() - 1; i >= 0; i--) {
-        cout << unHash(shortestPathVector[i]) << " ";
+        if(i == 0){
+            outputFile << unHash(shortestPathVector[i]) << "";
+        }
+        else{
+            outputFile << unHash(shortestPathVector[i]) << " -> ";
+        }
     }
-    cout << endl << endl;
-    createEdgeList(shortestPathVector);
+    outputFile << endl;
+    createEdgeList(shortestPathVector, outputFile);
 }
 
 template<class T>
-void Graph<T>::createEdgeList(vector<int> path) {
+void Graph<T>::createEdgeList(vector<int> path, ofstream& outputFile) {
 
     vector<std::pair<int, int>> edgeList;
     edgeList.clear();
@@ -545,15 +566,15 @@ void Graph<T>::createEdgeList(vector<int> path) {
     for (unsigned int i = 1; i < path.size(); i++) {
         edgeList.push_back(std::make_pair(path[i], path[i + 1]));
     }
-    cout << "Edge List: (";
+    outputFile << "Edge List: (";
     for (auto itr = edgeList.begin(); itr != edgeList.end() - 1; ++itr) {
         if (itr == edgeList.end() - 2) {
-            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
+            outputFile << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "}";
         } else {
-            cout << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
+            outputFile << "{" << unHash(itr->first) << " - " << unHash(itr->second) << "} ";
         }
     }
-    cout << ")" << endl;
+    outputFile << ")" << endl;
 }
 
 template<class T>
@@ -645,7 +666,7 @@ void Graph<T>::calculateBetweenness(vector<std::pair<int, int>> edgeList) {
 
 template<class T>
 void Graph<T>::displayBetweennessMap() {
-
+    cout << endl << "Edge" << " - " << "Betweenness Value" << endl;
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it)
     {
         cout << unHash(it->first.first) << " " << unHash(it->first.second) << " - " << it->second << endl;
@@ -653,7 +674,9 @@ void Graph<T>::displayBetweennessMap() {
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it)
     {
         multimap.emplace(it->second, it->first);
-   }
+    }
+
+    cout << endl << "Betweenness Value" << " - " << "Edge" << endl;
     for(auto it = multimap.begin(); it != multimap.end(); ++it)
     {
         cout << it->first << " - " << unHash(it->second.first) << " " << unHash(it->second.second)  << '\n';
@@ -662,7 +685,23 @@ void Graph<T>::displayBetweennessMap() {
 
 template<class T>
 void Graph<T>::removeEdges() {
-  //multimap.erase(multimap.end());
+    vector<std::pair<int,int>> edgeRemove;
+    int percentageToDelete = multimap.size()/4;
+    cout << percentageToDelete << endl << endl << endl << "EDGES TO REMOVE:" << endl;
+    for(auto it = next(multimap.begin(), percentageToDelete*3); it != multimap.end(); it++){
+        cout << unHash(it->second.first) << " (" << (it->second.first) << ") " <<
+            unHash(it->second.second) << " (" << (it->second.second) << ") " << endl;
+
+        typename std::unordered_map<int,T>::iterator vertex = reverseVertexMap.find(it->second.first);
+        typename std::unordered_map<int,T>::iterator edge = reverseVertexMap.find(it->second.second);
+        cout << (vertex->first) << endl;
+        cout << (edge->first) << endl;
+//        for(int i = 0; i < adjVec[].size(); i++){
+//            if(i == edge){
+//                adjVec[i].erase(i);
+//            }
+//        }
+    }
 }
 
 // utility function to check if current vertex is already present in path
