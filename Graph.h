@@ -685,24 +685,49 @@ void Graph<T>::displayBetweennessMap() {
 
 template<class T>
 void Graph<T>::removeEdges() {
-    vector<std::pair<int,int>> edgeRemove;
+
     int percentageToDelete = multimap.size()/4;
     cout << percentageToDelete << endl << endl << endl << "EDGES TO REMOVE:" << endl;
+
+    int deletedEdges = 0;
+
+    vector<std::pair<int,int>> deletedEdgesVector;
+
     for(auto it = next(multimap.begin(), percentageToDelete*3); it != multimap.end(); it++){
+
         cout << unHash(it->second.first) << " (" << (it->second.first) << ") " <<
-            unHash(it->second.second) << " (" << (it->second.second) << ") " << endl;
+             unHash(it->second.second) << " (" << (it->second.second) << ") " << endl;
 
         typename std::unordered_map<int,T>::iterator vertex = reverseVertexMap.find(it->second.first);
         typename std::unordered_map<int,T>::iterator edge = reverseVertexMap.find(it->second.second);
-        cout << (vertex->first) << endl;
-        cout << (edge->first) << endl;
-//        for(int i = 0; i < adjVec[].size(); i++){
-//            if(i == edge){
-//                adjVec[i].erase(i);
-//            }
-//        }
+
+        int x = vertex->first;
+        int y = edge->first;
+
+        vector<int>::reverse_iterator vertexIterator;
+        vector<int>::reverse_iterator edgeIterator;
+
+        for (vertexIterator = adjVec[x].rbegin(); vertexIterator < adjVec[x].rend(); vertexIterator++) {
+            if (*vertexIterator == edge->first) {
+                adjVec[x].erase((vertexIterator + 1).base());
+                for(edgeIterator = adjVec[y].rbegin(); edgeIterator < adjVec[y].rend(); edgeIterator++){
+                    adjVec[y].erase((edgeIterator + 1).base());
+                }
+            }
+        }
+
+        deletedEdges++;
+        deletedEdgesVector.push_back(std::make_pair(vertex->first,edge->first));
     }
+
+    cout << endl << endl << "The number of edges deleted are: " << deletedEdges << endl;
+    cout << "The deleted edges are: " << endl;
+    for(int i = 0; i < deletedEdgesVector.size(); i++){
+        cout << deletedEdgesVector[i].first << " and " << deletedEdgesVector[i].second << endl;
+    }
+    displayAdjVec();
 }
+
 
 // utility function to check if current vertex is already present in path
 template<class T>

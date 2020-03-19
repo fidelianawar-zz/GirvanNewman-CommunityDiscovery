@@ -16,7 +16,4 @@ Edge List: ({Tulane - EastCarolina} {EastCarolina - Houston} {Houston - Southern
 -----------------------------------------------------------------------------------------------------
 Make Connection
 
-Nodes to connect: Ohio and Nevada
-To travel from Ohio to Nevada, the path is: 
-Ohio -> CentralMichigan -> Wyoming -> Nevada
-Edge List: ({Ohio - CentralMichigan} {CentralMichigan - Wyoming} {Wyoming - Nevada})
+Nodes to connect: Ohio and NevadaGiven source and destination cannot be connected
