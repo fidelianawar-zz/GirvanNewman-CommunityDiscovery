@@ -120,8 +120,6 @@ int main(int argc, char *const argv[]) {
             if(!outputFile){ cout << "welp shit" << endl; }
             //networkGraph.writeOutput(outputFile);
         } else if (itr->first == "bfs") {
-            outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
-                       << endl <<"BFS" << endl;
             networkGraph.BFS(itr->second, outputFile);
         } else if (itr->first == "dfs") {
             networkGraph.DFS(itr->second, outputFile);

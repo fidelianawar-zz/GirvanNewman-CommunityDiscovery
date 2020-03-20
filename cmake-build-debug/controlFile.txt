@@ -1,6 +1,6 @@
 or pa03-football-with-dashes.txt
 ow g1-output.txt
 dfs Tulane
-bfs Baylor
-mc UCLA TexasTech
+bfs SouthernMethodist
+mc Baylor SouthernMethodist
 dc
