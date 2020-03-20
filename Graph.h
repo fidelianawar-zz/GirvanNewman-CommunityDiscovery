@@ -40,6 +40,8 @@ class Graph {
     std::map<std::pair<int,int>,int> betweennessMap;
     std::multimap<int,std::pair<int,int>> multimap;
 
+    std::map<vector<int>,vector<int>> bigBoiMap;
+
     int count = 0;
 
     vector<int> dfsVector;
@@ -91,7 +93,7 @@ public:
 
     void BFS(T, ofstream& outputFile);
 
-    void BFSGirvan(T, ofstream& outputFile);
+    vector<int> BFSGirvan(T);
 
     bool connectionBFS(int src, int dest, int pred[], int dist[]);
 
@@ -722,24 +724,37 @@ void Graph<T>::removeEdges(ofstream& outputFile) {
         }
     }
 
-    cout << endl << endl << "The number of edges deleted are: " << deletedEdges << endl;
-    cout << "The deleted edges are: " << endl;
-    for(int i = 0; i < deletedEdgesVector.size(); i++){
-        cout << deletedEdgesVector[i].first << " and " << deletedEdgesVector[i].second << endl;
-    }
-    displayAdjVec();
+//    cout << endl << endl << "The number of edges deleted are: " << deletedEdges << endl;
+//    cout << "The deleted edges are: " << endl;
+//    for(int i = 0; i < deletedEdgesVector.size(); i++){
+//        cout << deletedEdgesVector[i].first << " and " << deletedEdgesVector[i].second << endl;
+//    }
+    //displayAdjVec();
     showCommunities(outputFile);
 }
 
 template<class T>
 void Graph<T>::showCommunities(ofstream& outputFile) {
+    
+    std::map<vector<int>, vector<int>>::iterator it;
     for(int i = 0; i < adjVec.size(); i++){
-        BFS(unHash(i), outputFile);
+        for(it = bigBoiMap.begin(); it != bigBoiMap.end(); it++){
+            it = bigBoiMap.find(BFSGirvan(unHash(i)));
+        }
+        if(it == bigBoiMap.end()){
+            vector<int> tempVec;
+            tempVec.push_back(i);
+            vector<int> t = BFSGirvan(unHash(i));
+            //bigBoiMap[t] = tempVec;
+        }
+        else{
+            it->second.push_back(i);
+        }
     }
 }
 
 template<class T>
-void Graph<T>::BFSGirvan(T node, ofstream& outputFile) {
+vector<int> Graph<T>::BFSGirvan(T node) {
     vector<int> bfsVector;
     int value = vertexMap.at(node);
     //outputFile << endl << "Node is: " << unHash(value) << endl;
@@ -768,6 +783,16 @@ void Graph<T>::BFSGirvan(T node, ofstream& outputFile) {
             }
         }
     }
+
+    sort(bfsVector.begin(),bfsVector.end());
+
+    for (const auto &i: bfsVector){
+        cout << i << ' ';
+    }
+
+    cout << endl;
+
+    return bfsVector;
     //outputFile << endl;
     //createBFSEdgeList(bfsVector, outputFile);
     //outputFile << endl <<  "-----------------------------------------------------------------------------------------------------" << endl;
