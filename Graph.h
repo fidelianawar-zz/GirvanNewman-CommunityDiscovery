@@ -336,11 +336,11 @@ void Graph<T>::printShortestDistance(int s, int dest, ofstream& outputFile) {
         return;
     }
 
-    int crawl = dest;
-    shortestPathVector.push_back(crawl);
-    while (pred[crawl] != -1) {
-        shortestPathVector.push_back(pred[crawl]);
-        crawl = pred[crawl];
+    int d = dest;
+    shortestPathVector.push_back(d);
+    while (pred[d] != -1) {
+        shortestPathVector.push_back(pred[d]);
+        d = pred[d];
     }
 
     // printing path from source to destination
@@ -528,7 +528,7 @@ void Graph<T>::removeEdges() {
 
     //displayAdjVec();
 
-    communitiesAdjVec = adjVec;
+    communitiesAdjVec = adjVec; //create tempVec so original adjVec can be used later
 
     int sum = 0;
     for(auto i = multimap.begin(); i != multimap.end(); i++){
@@ -879,7 +879,7 @@ void Graph<T>::calculateBetweennessv2() {
 
     for(auto i = GparentChildrenCount.begin(); i != GparentChildrenCount.end(); i++){
         if(i->second >= averageChildren){
-            removeNode(i->first);
+            //removeNode(i->first);
         }
     }
     cout << "size of map after deletion: " << GparentChildrenCount.size() << endl;
