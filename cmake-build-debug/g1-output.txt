@@ -2,9 +2,9 @@
 -----------------------------------------------------------------------------------------------------
 DFS
 
-Node is: Tulane
-DFS traversal of Tulane is: Tulane EastCarolina VirginiaTech Akron NorthernIllinois Northwestern Iowa KansasState TexasTech NewMexico BrighamYoung FloridaState NorthCarolinaState ArkansasState NorthTexas Baylor Minnesota PennState SouthernCalifornia ArizonaState SanDiegoState Wyoming Auburn Alabama UCLA Arizona Utah ColoradoState Colorado Washington Idaho BoiseState CentralMichigan WesternMichigan Wisconsin Michigan BowlingGreenState Buffalo BallState Florida Kentucky Louisville Connecticut BostonCollege WestVirginia Syracuse Pittsburgh Kent Purdue OhioState FresnoState Rice Houston SouthernMethodist Kansas IowaState Ohio MiamiOhio EasternMichigan CentralFlorida GeorgiaTech Virginia Duke Vanderbilt SouthCarolina MississippiState MiddleTennesseeState LouisianaTech LouisianaMonroe Memphis SouthernMississippi Tennessee Georgia NewMexicoState TexasElPaso Nevada Oregon WashingtonState Stanford SanJoseState Nebraska NotreDame Navy Temple Rutgers MiamiFlorida Maryland NorthCarolina Tulsa OklahomaState TexasA&M Oklahoma Texas LouisianaLafayette AlabamaBirmingham Army Cincinnati Indiana Illinois MichiganState Marshall Toledo Missouri Clemson WakeForest California OregonState AirForce NevadaLasVegas Mississippi LouisianaState Arkansas Hawaii TexasChristian UtahState 
-Edge List: ({Tulane - EastCarolina} {EastCarolina - VirginiaTech} {VirginiaTech - Akron} {Akron - NorthernIllinois} {NorthernIllinois - Northwestern} {Northwestern - Iowa} {Iowa - KansasState} {KansasState - TexasTech} {TexasTech - NewMexico} {NewMexico - BrighamYoung} {BrighamYoung - FloridaState} {FloridaState - NorthCarolinaState} {NorthCarolinaState - ArkansasState} {ArkansasState - NorthTexas} {NorthTexas - Baylor} {Baylor - Minnesota} {Minnesota - PennState} {PennState - SouthernCalifornia} {SouthernCalifornia - ArizonaState} {ArizonaState - SanDiegoState} {SanDiegoState - Wyoming} {Wyoming - Auburn} {Auburn - Alabama} {Alabama - UCLA} {UCLA - Arizona} {Arizona - Utah} {Utah - ColoradoState} {ColoradoState - Colorado} {Colorado - Washington} {Washington - Idaho} {Idaho - BoiseState} {BoiseState - CentralMichigan} {CentralMichigan - WesternMichigan} {WesternMichigan - Wisconsin} {Wisconsin - Michigan} {Michigan - BowlingGreenState} {BowlingGreenState - Buffalo} {Buffalo - BallState} {BallState - Florida} {Florida - Kentucky} {Kentucky - Louisville} {Louisville - Connecticut} {Connecticut - BostonCollege} {BostonCollege - WestVirginia} {WestVirginia - Syracuse} {Syracuse - Pittsburgh} {Pittsburgh - Kent} {Kent - Purdue} {Purdue - OhioState} {OhioState - FresnoState} {FresnoState - Rice} {Rice - Houston} {Houston - SouthernMethodist} {SouthernMethodist - Kansas} {Kansas - IowaState} {IowaState - Ohio} {Ohio - MiamiOhio} {MiamiOhio - EasternMichigan} {EasternMichigan - CentralFlorida} {CentralFlorida - GeorgiaTech} {GeorgiaTech - Virginia} {Virginia - Duke} {Duke - Vanderbilt} {Vanderbilt - SouthCarolina} {SouthCarolina - MississippiState} {MississippiState - MiddleTennesseeState} {MiddleTennesseeState - LouisianaTech} {LouisianaTech - LouisianaMonroe} {LouisianaMonroe - Memphis} {Memphis - SouthernMississippi} {SouthernMississippi - Tennessee} {Tennessee - Georgia} {Georgia - NewMexicoState} {NewMexicoState - TexasElPaso} {TexasElPaso - Nevada} {Nevada - Oregon} {Oregon - WashingtonState} {WashingtonState - Stanford} {Stanford - SanJoseState} {SanJoseState - Nebraska} {Nebraska - NotreDame} {NotreDame - Navy} {Navy - Temple} {Temple - Rutgers} {Rutgers - MiamiFlorida} {MiamiFlorida - Maryland} {Maryland - NorthCarolina} {NorthCarolina - Tulsa} {Tulsa - OklahomaState} {OklahomaState - TexasA&M} {TexasA&M - Oklahoma} {Oklahoma - Texas} {Texas - LouisianaLafayette} {LouisianaLafayette - AlabamaBirmingham} {AlabamaBirmingham - Army} {Army - Cincinnati} {Cincinnati - Indiana} {Indiana - Illinois} {Illinois - MichiganState} {MichiganState - Marshall} {Marshall - Toledo} {Toledo - Missouri} {Missouri - Clemson} {Clemson - WakeForest} {WakeForest - California} {California - OregonState} {OregonState - AirForce} {AirForce - NevadaLasVegas} {NevadaLasVegas - Mississippi} {Mississippi - LouisianaState} {LouisianaState - Arkansas} {Arkansas - Hawaii} {Hawaii - TexasChristian} {TexasChristian - UtahState})
+Node is: Colorado
+DFS traversal of Colorado is: Colorado KansasState Iowa PennState SouthernCalifornia ArizonaState SanDiegoState BrighamYoung FloridaState NorthCarolinaState ArkansasState NorthTexas TexasTech NewMexico Wyoming Auburn NorthernIllinois Northwestern Wisconsin WesternMichigan BallState Florida Kentucky Louisville Connecticut Akron VirginiaTech BostonCollege WestVirginia Syracuse Buffalo BowlingGreenState Michigan UCLA Alabama CentralFlorida GeorgiaTech Virginia Duke EastCarolina Houston Rice FresnoState OhioState Arizona Utah ColoradoState Nevada SouthernMethodist Kansas IowaState Baylor Minnesota Purdue CentralMichigan BoiseState Idaho Washington Oregon WashingtonState Stanford SanJoseState Nebraska NotreDame Navy Temple EasternMichigan MiamiOhio Kent Pittsburgh NorthCarolina Tulsa LouisianaTech LouisianaMonroe MiddleTennesseeState Illinois MichiganState Marshall Ohio Toledo Missouri Texas TexasA&M TexasElPaso NewMexicoState SouthCarolina Vanderbilt Tennessee Memphis MississippiState Mississippi Tulane SouthernMississippi Cincinnati Army AirForce NevadaLasVegas Hawaii TexasChristian AlabamaBirmingham LouisianaState Arkansas Georgia LouisianaLafayette Indiana OklahomaState Oklahoma WakeForest Clemson Maryland UtahState California OregonState MiamiFlorida Rutgers 
+Edge List: ({Colorado - KansasState} {KansasState - Iowa} {Iowa - PennState} {PennState - SouthernCalifornia} {SouthernCalifornia - ArizonaState} {ArizonaState - SanDiegoState} {SanDiegoState - BrighamYoung} {BrighamYoung - FloridaState} {FloridaState - NorthCarolinaState} {NorthCarolinaState - ArkansasState} {ArkansasState - NorthTexas} {NorthTexas - TexasTech} {TexasTech - NewMexico} {NewMexico - Wyoming} {Wyoming - Auburn} {Auburn - NorthernIllinois} {NorthernIllinois - Northwestern} {Northwestern - Wisconsin} {Wisconsin - WesternMichigan} {WesternMichigan - BallState} {BallState - Florida} {Florida - Kentucky} {Kentucky - Louisville} {Louisville - Connecticut} {Connecticut - Akron} {Akron - VirginiaTech} {VirginiaTech - BostonCollege} {BostonCollege - WestVirginia} {WestVirginia - Syracuse} {Syracuse - Buffalo} {Buffalo - BowlingGreenState} {BowlingGreenState - Michigan} {Michigan - UCLA} {UCLA - Alabama} {Alabama - CentralFlorida} {CentralFlorida - GeorgiaTech} {GeorgiaTech - Virginia} {Virginia - Duke} {Duke - EastCarolina} {EastCarolina - Houston} {Houston - Rice} {Rice - FresnoState} {FresnoState - OhioState} {OhioState - Arizona} {Arizona - Utah} {Utah - ColoradoState} {ColoradoState - Nevada} {Nevada - SouthernMethodist} {SouthernMethodist - Kansas} {Kansas - IowaState} {IowaState - Baylor} {Baylor - Minnesota} {Minnesota - Purdue} {Purdue - CentralMichigan} {CentralMichigan - BoiseState} {BoiseState - Idaho} {Idaho - Washington} {Washington - Oregon} {Oregon - WashingtonState} {WashingtonState - Stanford} {Stanford - SanJoseState} {SanJoseState - Nebraska} {Nebraska - NotreDame} {NotreDame - Navy} {Navy - Temple} {Temple - EasternMichigan} {EasternMichigan - MiamiOhio} {MiamiOhio - Kent} {Kent - Pittsburgh} {Pittsburgh - NorthCarolina} {NorthCarolina - Tulsa} {Tulsa - LouisianaTech} {LouisianaTech - LouisianaMonroe} {LouisianaMonroe - MiddleTennesseeState} {MiddleTennesseeState - Illinois} {Illinois - MichiganState} {MichiganState - Marshall} {Marshall - Ohio} {Ohio - Toledo} {Toledo - Missouri} {Missouri - Texas} {Texas - TexasA&M} {TexasA&M - TexasElPaso} {TexasElPaso - NewMexicoState} {NewMexicoState - SouthCarolina} {SouthCarolina - Vanderbilt} {Vanderbilt - Tennessee} {Tennessee - Memphis} {Memphis - MississippiState} {MississippiState - Mississippi} {Mississippi - Tulane} {Tulane - SouthernMississippi} {SouthernMississippi - Cincinnati} {Cincinnati - Army} {Army - AirForce} {AirForce - NevadaLasVegas} {NevadaLasVegas - Hawaii} {Hawaii - TexasChristian} {TexasChristian - AlabamaBirmingham} {AlabamaBirmingham - LouisianaState} {LouisianaState - Arkansas} {Arkansas - Georgia} {Georgia - LouisianaLafayette} {LouisianaLafayette - Indiana} {Indiana - OklahomaState} {OklahomaState - Oklahoma} {Oklahoma - WakeForest} {WakeForest - Clemson} {Clemson - Maryland} {Maryland - UtahState} {UtahState - California} {California - OregonState} {OregonState - MiamiFlorida} {MiamiFlorida - Rutgers})
 
 -----------------------------------------------------------------------------------------------------
 BFS
@@ -19,8 +19,8 @@ Discovering Communities
 The communities are: 
 
 Community 1
-Size: 89
-Members: BrighamYoung KansasState NewMexico TexasTech SouthernCalifornia ArizonaState SanDiegoState Baylor NorthTexas WesternMichigan Wyoming Auburn Akron VirginiaTech Alabama UCLA Arizona Utah BallState Florida BoiseState BostonCollege WestVirginia BowlingGreenState Buffalo Syracuse CentralMichigan Colorado ColoradoState Connecticut EasternMichigan EastCarolina FresnoState Houston Rice Idaho Washington Kansas SouthernMethodist Kent Pittsburgh Kentucky Louisville LouisianaTech MiamiOhio Vanderbilt MississippiState Memphis Nevada Oregon NewMexicoState SouthCarolina Ohio IowaState SanJoseState Nebraska SouthernMississippi Tennessee Stanford WashingtonState Temple Navy TexasA&M TexasElPaso Oklahoma Toledo Tulane Mississippi Tulsa UtahState Army Cincinnati AirForce Rutgers Georgia LouisianaState LouisianaLafayette Texas Marshall MiamiFlorida Missouri NevadaLasVegas OklahomaState OregonState TexasChristian California AlabamaBirmingham Arkansas Hawaii 
+Size: 45
+Members: BrighamYoung KansasState NewMexico TexasTech SouthernCalifornia ArizonaState SanDiegoState Baylor NorthTexas Wyoming UCLA Arizona Utah BoiseState Colorado ColoradoState FresnoState Rice Washington Kansas SouthernMethodist Nevada Oregon NewMexicoState IowaState SanJoseState Nebraska Stanford WashingtonState TexasA&M TexasElPaso Oklahoma Tulsa UtahState AirForce LouisianaLafayette Texas Missouri NevadaLasVegas OklahomaState OregonState TexasChristian California AlabamaBirmingham Hawaii 
 
 Community 2
 Size: 9
@@ -35,26 +35,54 @@ Size: 1
 Members: NorthernIllinois 
 
 Community 5
-Size: 1
-Members: ArkansasState 
+Size: 27
+Members: WesternMichigan Akron BostonCollege WestVirginia BowlingGreenState Buffalo Syracuse CentralMichigan Connecticut EasternMichigan EastCarolina Kent Pittsburgh Louisville MiamiOhio Memphis Ohio SouthernMississippi Temple Navy Toledo Tulane Army Cincinnati Rutgers Marshall MiamiFlorida 
 
 Community 6
-Size: 1
-Members: CentralFlorida 
+Size: 12
+Members: Auburn Alabama Florida Kentucky Vanderbilt MississippiState SouthCarolina Tennessee Mississippi Georgia LouisianaState Arkansas 
 
 Community 7
 Size: 1
-Members: LouisianaMonroe 
+Members: VirginiaTech 
 
 Community 8
 Size: 1
-Members: Minnesota 
+Members: ArkansasState 
 
 Community 9
 Size: 1
-Members: MiddleTennesseeState 
+Members: BallState 
 
 Community 10
+Size: 1
+Members: CentralFlorida 
+
+Community 11
+Size: 1
+Members: Houston 
+
+Community 12
+Size: 1
+Members: Idaho 
+
+Community 13
+Size: 1
+Members: LouisianaTech 
+
+Community 14
+Size: 1
+Members: LouisianaMonroe 
+
+Community 15
+Size: 1
+Members: Minnesota 
+
+Community 16
+Size: 1
+Members: MiddleTennesseeState 
+
+Community 17
 Size: 1
 Members: NotreDame 
 
@@ -62,7 +90,7 @@ Members: NotreDame
 -----------------------------------------------------------------------------------------------------
 Make Connection
 
-Nodes to connect: Baylor and SouthernMethodist
-To travel from Baylor to SouthernMethodist, the path is: 
-Baylor -> Oklahoma -> TexasElPaso -> TexasChristian -> SouthernMethodist
-Edge List: ({Baylor - Oklahoma} {Oklahoma - TexasElPaso} {TexasElPaso - TexasChristian} {TexasChristian - SouthernMethodist})
+Nodes to connect: Tulane and Hawaii
+To travel from Tulane to Hawaii, the path is: 
+Tulane -> SouthernMethodist -> Hawaii
+Edge List: ({Tulane - SouthernMethodist} {SouthernMethodist - Hawaii})
