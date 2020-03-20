@@ -94,11 +94,11 @@ public:
 
 template<class T>
 Graph<T>::Graph() {
-    cout << "Making new graph.";
+    cout << "Making new graph..............";
 }
 
 template<class T>
-void Graph<T>::hashVertex(T vertex) {
+void Graph<T>::hashVertex(T vertex) { //hashes T values to an index in map
     //A - 0, B - 1, C -2, etc.
     vertexMap.insert(std::make_pair(vertex, count));
     numVertices = adjVec.size();
@@ -106,7 +106,7 @@ void Graph<T>::hashVertex(T vertex) {
 }
 
 template<class T>
-void Graph<T>::createReverseVertexMap() {
+void Graph<T>::createReverseVertexMap() { //creates a reverse key/value map of original
     //0 - A, 1 - B, 2 - C, etc.
     for (auto itr = vertexMap.begin(); itr != vertexMap.end(); ++itr) {
         reverseVertexMap[itr->second] = itr->first;
@@ -114,12 +114,12 @@ void Graph<T>::createReverseVertexMap() {
 }
 
 template<class T>
-T Graph<T>::unHash(int vertex) {
+T Graph<T>::unHash(int vertex) { //used to obtain real T value
     return reverseVertexMap[vertex];
 }
 
 template<class T>
-void Graph<T>::createAdj(int numV) {
+void Graph<T>::createAdj(int numV) { //create empty list with empty vector
     vector<int> emptyVector;
     for (int i = 0; i < numV; i++) {
         adjVec.push_back(emptyVector);
@@ -136,7 +136,7 @@ void Graph<T>::populateAdj(T src, T dest) { //src: vertex, dest: edge to be adde
 }
 
 template<class T>
-void Graph<T>::displayAdjVec() {
+void Graph<T>::displayAdjVec() { //see contents of adjacency list
     cout << endl << "Adjacency List" << endl;
     for (unsigned int i = 0; i < adjVec.size(); i++) {
         cout << unHash(i) << "-> ";
@@ -153,13 +153,15 @@ void Graph<T>::DFS(T node, ofstream& outputFile) {
     outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
                << endl << "DFS" << endl << endl;
 
+    //if supplied node does not exist in vertex list
     if(vertexMap.find((node)) == vertexMap.end()){
         outputFile << "The node does not exist." << endl;
         return;
     }
 
-    dfsVector.clear();
-    int value = vertexMap.at(node);
+
+    dfsVector.clear(); //reset for each new iteration
+    int value = vertexMap.at(node); //obtain hashed value
     outputFile << "Node is: " << unHash(value) << endl;
 
     // Mark all the vertices as not visited
@@ -170,25 +172,27 @@ void Graph<T>::DFS(T node, ofstream& outputFile) {
 
     outputFile << "DFS traversal of " << node << " is: ";
     DFSHelper(value, visited, outputFile);
-    createDFSEdgeList(outputFile);
+    createDFSEdgeList(outputFile); //create edge list from returned path
 }
 
 template<class T>
 void Graph<T>::DFSHelper(int v, bool visited[], ofstream& outputFile) {
-    visited[v] = true;
+    visited[v] = true; //visit node
     outputFile << unHash(v) << " ";
-    dfsVector.push_back(v);
+    dfsVector.push_back(v); //push back node to vector
     vector<int>::iterator i;
     for (i = adjVec[v].begin(); i != adjVec[v].end(); i++) {
         if (!visited[*i]) {
-            DFSHelper(*i, visited, outputFile);
+            DFSHelper(*i, visited, outputFile); //perform DFS on all nodes from original
         }
     }
 }
 
 template<class T>
 void Graph<T>::createDFSEdgeList(ofstream& outputFile) {
-    dfsEdgeList.clear();
+
+    dfsEdgeList.clear(); //make sure list is cleared
+
     dfsEdgeList.push_back(std::make_pair(dfsVector[0], dfsVector[1]));
     for (unsigned int i = 1; i < dfsVector.size(); i++) {
         dfsEdgeList.push_back(std::make_pair(dfsVector[i], dfsVector[i + 1]));
@@ -209,35 +213,37 @@ void Graph<T>::BFS(T node, ofstream& outputFile) {
     outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
                << endl << "BFS" << endl;
 
+    //if node not found, return from function
     if(vertexMap.find((node)) == vertexMap.end()){
         outputFile << "This node does not exist." << endl;
         return;
     }
 
-    vector<int> bfsVector;
-    int value = vertexMap.at(node);
+    vector<int> bfsVector; //create temp vector
+    int value = vertexMap.at(node); //hash to get integer representation of T value
     outputFile << endl << "Node is: " << unHash(value) << endl;
-    bool *visited = new bool[adjVec.size()];
+    bool *visited = new bool[adjVec.size()]; //visiting array
     for (unsigned int i = 0; i < adjVec.size(); i++) {
-        visited[i] = false;
+        visited[i] = false; //set all nodes as unvisited
     }
 
     list<int> queue;
-    visited[value] = true;
+    visited[value] = true; //visit node and push to queue
     queue.push_back(value);
 
     vector<int>::iterator i;
 
     outputFile << "BFS traversal of " << node << " is: ";
-    while (!queue.empty()) {
+    while (!queue.empty()) { //iterate until all nodes traversed
         value = queue.front();
         bfsVector.push_back(value);
         outputFile << unHash(value) << " ";
-        queue.pop_front();
+        queue.pop_front(); //remove from queue
 
+        //visit all adjacent nodes of vertex
         for (i = adjVec[value].begin(); i != adjVec[value].end(); i++) {
             if (!visited[*i]) {
-                visited[*i] = true;
+                visited[*i] = true; //if unvisisted, visit, mark as visited, and push to queue
                 queue.push_back(*i);
             }
         }
@@ -275,12 +281,13 @@ void Graph<T>::makeConnection(T s, T d, ofstream& outputFile) {
     outputFile << endl <<  "-----------------------------------------------------------------------------------------------------"
                << endl << "Make Connection" << endl << endl;
 
+    //if either node not found, return from func
     if(vertexMap.find((s)) == vertexMap.end() || vertexMap.find((d)) == vertexMap.end()){
         outputFile << "This source/destination node does not exist." << endl;
         return;
     }
 
-    int src = vertexMap.at(s);
+    int src = vertexMap.at(s); //hash to get index/integer representation
     int dest = vertexMap.at(d);
 
     outputFile << "Nodes to connect: " << unHash(src) << " and " << unHash(dest);
@@ -288,49 +295,11 @@ void Graph<T>::makeConnection(T s, T d, ofstream& outputFile) {
 }
 
 template<class T>
-bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[]) {
-    //queue for BFS
-    list<int> queue;
-    //checks if nodes are visited
-    bool visited[adjVec.size()];
-
-    //setting initial values to false/infinity
-    for (unsigned int i = 0; i < adjVec.size(); i++) {
-        visited[i] = false;
-        dist[i] = INT_MAX;
-        pred[i] = -1;
-    }
-
-    //visit source and set distance to 0
-    visited[src] = true;
-    dist[src] = 0;
-    queue.push_back(src);
-
-    //BFS 2.0
-    while (!queue.empty()) {
-        int u = queue.front();
-        queue.pop_front();
-        for (unsigned int i = 0; i < adjVec[u].size(); i++) {
-            if (visited[adjVec[u][i]] == false) {
-                visited[adjVec[u][i]] = true;
-                dist[adjVec[u][i]] = dist[u] + 1;
-                pred[adjVec[u][i]] = u;
-                queue.push_back(adjVec[u][i]);
-
-                //stop when destination is found
-                if (adjVec[u][i] == dest)
-                    return true;
-            }
-        }
-    }
-    return false;
-}
-
-template<class T>
 void Graph<T>::printShortestDistance(int s, int dest, ofstream& outputFile) {
+
     // predecessor[i] contains parent of i and dist[] stores distance of i from source
     int pred[adjVec.size()], dist[adjVec.size()];
-    vector<int> shortestPathVector;
+    vector<int> shortestPathVector; //keep track of shortest paths
     if (!connectionBFS(s, dest, pred, dist)) {
         outputFile << "Given source and destination cannot be connected";
         return;
@@ -338,7 +307,7 @@ void Graph<T>::printShortestDistance(int s, int dest, ofstream& outputFile) {
 
     int d = dest;
     shortestPathVector.push_back(d);
-    while (pred[d] != -1) {
+    while (pred[d] != -1) { //used for printing
         shortestPathVector.push_back(pred[d]);
         d = pred[d];
     }
@@ -356,6 +325,48 @@ void Graph<T>::printShortestDistance(int s, int dest, ofstream& outputFile) {
     outputFile << endl;
     createEdgeList(shortestPathVector, outputFile);
 }
+
+
+template<class T>
+bool Graph<T>::connectionBFS(int src, int dest, int pred[], int dist[]) {
+
+    list<int> queue; //queue for BFS
+    bool visited[adjVec.size()]; //checks if nodes are visited
+
+    //setting initial values to false/infinity
+    for (unsigned int i = 0; i < adjVec.size(); i++) {
+        visited[i] = false;
+        dist[i] = INT_MAX;
+        pred[i] = -1;
+    }
+
+    //visit source and set distance to 0
+    visited[src] = true;
+    dist[src] = 0;
+    queue.push_back(src);
+
+    //BFS 2.0
+    while (!queue.empty()) {
+        int u = queue.front();
+        queue.pop_front();
+        //for each adjacent node of vertex
+        for (unsigned int i = 0; i < adjVec[u].size(); i++) {
+            if (visited[adjVec[u][i]] == false) {
+                visited[adjVec[u][i]] = true; //visit node
+                dist[adjVec[u][i]] = dist[u] + 1; //update distance from root
+                pred[adjVec[u][i]] = u; //save parent of node
+                queue.push_back(adjVec[u][i]); //add to queue
+
+                //stop when destination is found
+                if (adjVec[u][i] == dest){
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 
 template<class T>
 void Graph<T>::createEdgeList(vector<int> path, ofstream& outputFile) {
@@ -389,9 +400,9 @@ void Graph<T>::girvanNewman(ofstream& outputFile) {
             printShortestDistanceGirvan(i,j);
         }
     }
-    displayBetweennessMap();
-    removeEdges();
-    showCommunities(outputFile);
+    displayBetweennessMap(); //displays edges with highest betweenness
+    removeEdges(); //removes those within certain % of highest betweenness
+    showCommunities(outputFile); //displays communities as a result of removing edges
 }
 
 template<class T>
@@ -413,7 +424,7 @@ void Graph<T>::printShortestDistanceGirvan(int s, int dest) {
         curr = parent[curr];
     }
 
-    std::reverse(girvanPath.begin(), girvanPath.end());
+    std::reverse(girvanPath.begin(), girvanPath.end()); //reverse to get correct order
 
     for (unsigned int i = 0; i < girvanPath.size(); i++) {
         edgeList.push_back(std::make_pair(girvanPath[i], girvanPath[i + 1]));
@@ -492,17 +503,19 @@ void Graph<T>::calculateBetweenness(vector<std::pair<int, int>> edgeList) {
 
     for(unsigned int i = 0; i < edgeList.size()-1; i++){
 
+        //store values of edgeList to search for later
         std::pair<int,int> p1 = std::make_pair(edgeList[i].first,edgeList[i].second);
         std::pair<int,int> p2 = std::make_pair(edgeList[i].second,edgeList[i].first);
         std::map<std::pair<int,int>,int>::iterator it, it2;
 
-        it = betweennessMap.find(p1);
-        it2 = betweennessMap.find(p2);
+        it = betweennessMap.find(p1); //use to see if it exists in map or not
+        it2 = betweennessMap.find(p2); //if it doesn't, returns end of map
 
+        //edge found in map - increment it's count
         if((it != betweennessMap.end()) && (it2 != betweennessMap.end())){
             betweennessMap[edgeList[i]]++;
         }
-        else{
+        else{ //if edge was not found in map, add it to it and incr count of edge
             betweennessMap.emplace(std::make_pair(edgeList[i].first, edgeList[i].second),1);
         }
     }
@@ -510,9 +523,10 @@ void Graph<T>::calculateBetweenness(vector<std::pair<int, int>> edgeList) {
 
 template<class T>
 void Graph<T>::displayBetweennessMap() {
-    cout << endl << "Edge" << " - " << "Betweenness Value" << endl;
+
+    //cout << endl << "Edge" << " - " << "Betweenness Value" << endl;
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it){
-        cout << unHash(it->first.first) << " " << unHash(it->first.second) << " - " << it->second << endl;
+        //cout << unHash(it->first.first) << " " << unHash(it->first.second) << " - " << it->second << endl;
     }
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it){
         multimap.emplace(it->second, it->first);
@@ -535,16 +549,16 @@ void Graph<T>::removeEdges() {
         sum += i->first;
     }
 
+    //calculation to know which edges to remove
     sum /= multimap.size();
-    cout << sum << endl;
     double percentageToDelete = sum*(0.15);
-    cout << percentageToDelete << endl;
     int deletedEdges = 0;
     vector<std::pair<int,int>> deletedEdgesVector;
 
     for(auto it = multimap.begin(); it != multimap.end(); it++){
         if(it->first >= percentageToDelete*2.67){
 
+            //find vertex/edge to delete later from adjVec
             typename std::unordered_map<int,T>::iterator vertex = reverseVertexMap.find(it->second.first);
             typename std::unordered_map<int,T>::iterator edge = reverseVertexMap.find(it->second.second);
 
@@ -554,6 +568,7 @@ void Graph<T>::removeEdges() {
             vector<int>::reverse_iterator vertexIterator;
             vector<int>::reverse_iterator edgeIterator;
 
+            //make sure to delete at u, v and v, u
             for (vertexIterator = communitiesAdjVec[x].rbegin(); vertexIterator < communitiesAdjVec[x].rend(); vertexIterator++) {
                 if (*vertexIterator == edge->first) {
                     communitiesAdjVec[x].erase((vertexIterator + 1).base());
@@ -576,27 +591,36 @@ void Graph<T>::showCommunities(ofstream& outputFile) {
 
     std::map<vector<int>, vector<int>>::iterator it;
 
+    //perform another BFS on leftover nodes to find which ones have same paths
     for(unsigned int i = 0; i < communitiesAdjVec.size(); i++){
-        it = bigBoiMap.find(BFSPostEdgeDeletion(unHash(i)));
-        if(it != bigBoiMap.end()){
+
+        it = bigBoiMap.find(BFSPostEdgeDeletion(unHash(i)));  //store the path in map as key
+        if(it != bigBoiMap.end()){ //if path exists, append node as value to path
             it->second.push_back(i);
         }
-        else{
+
+        else{ //if path does not exist, create new element in map with path and node
             vector<int> tempVec;
             tempVec.push_back(i);
             vector<int> t = BFSPostEdgeDeletion(unHash(i));
             bigBoiMap.insert(std::pair<vector<int>,vector<int>>(t, tempVec));
         }
     }
+
     outputFile << "The communities are: " << endl << endl;
     int i = 1;
+
     for(it = bigBoiMap.begin(); it != bigBoiMap.end(); it++){
+
         outputFile << "Community " << i << endl << "Size: " << it->first.size() << endl;
         outputFile << "Members: ";
-        sort(it->second.begin(), it->second.end());
+
+        sort(it->second.begin(), it->second.end()); //sort for alphabetical order
+
         for(auto i = it->second.begin(); i != it->second.end(); i++){
             outputFile << unHash(*i) << " ";
         }
+
         i++;
         outputFile << endl << endl;
     }
@@ -605,6 +629,8 @@ void Graph<T>::showCommunities(ofstream& outputFile) {
 
 template<class T>
 vector<int> Graph<T>::BFSPostEdgeDeletion(T node) {
+
+    //same as previous BFS except w/o extra formatting and tracking of parents/distance from root
     vector<int> bfsVector;
     int value = vertexMap.at(node);
     bool *visited = new bool[communitiesAdjVec.size()];
