@@ -16,3 +16,53 @@ Edge List: ({SouthernMethodist - NorthCarolinaState} {NorthCarolinaState - Fresn
 -----------------------------------------------------------------------------------------------------
 Discovering Communities
 
+The communities are: 
+
+Community 1
+Size: 89
+Members: BrighamYoung KansasState NewMexico TexasTech SouthernCalifornia ArizonaState SanDiegoState Baylor NorthTexas WesternMichigan Wyoming Auburn Akron VirginiaTech Alabama UCLA Arizona Utah BallState Florida BoiseState BostonCollege WestVirginia BowlingGreenState Buffalo Syracuse CentralMichigan Colorado ColoradoState Connecticut EasternMichigan EastCarolina FresnoState Houston Rice Idaho Washington Kansas SouthernMethodist Kent Pittsburgh Kentucky Louisville LouisianaTech MiamiOhio Vanderbilt MississippiState Memphis Nevada Oregon NewMexicoState SouthCarolina Ohio IowaState SanJoseState Nebraska SouthernMississippi Tennessee Stanford WashingtonState Temple Navy TexasA&M TexasElPaso Oklahoma Toledo Tulane Mississippi Tulsa UtahState Army Cincinnati AirForce Rutgers Georgia LouisianaState LouisianaLafayette Texas Marshall MiamiFlorida Missouri NevadaLasVegas OklahomaState OregonState TexasChristian California AlabamaBirmingham Arkansas Hawaii 
+
+Community 2
+Size: 9
+Members: FloridaState NorthCarolinaState Virginia GeorgiaTech Duke NorthCarolina Clemson WakeForest Maryland 
+
+Community 3
+Size: 10
+Members: Iowa PennState Northwestern Wisconsin Michigan Purdue OhioState Illinois MichiganState Indiana 
+
+Community 4
+Size: 1
+Members: NorthernIllinois 
+
+Community 5
+Size: 1
+Members: ArkansasState 
+
+Community 6
+Size: 1
+Members: CentralFlorida 
+
+Community 7
+Size: 1
+Members: LouisianaMonroe 
+
+Community 8
+Size: 1
+Members: Minnesota 
+
+Community 9
+Size: 1
+Members: MiddleTennesseeState 
+
+Community 10
+Size: 1
+Members: NotreDame 
+
+
+-----------------------------------------------------------------------------------------------------
+Make Connection
+
+Nodes to connect: Baylor and SouthernMethodist
+To travel from Baylor to SouthernMethodist, the path is: 
+Baylor -> Oklahoma -> TexasElPaso -> TexasChristian -> SouthernMethodist
+Edge List: ({Baylor - Oklahoma} {Oklahoma - TexasElPaso} {TexasElPaso - TexasChristian} {TexasChristian - SouthernMethodist})
