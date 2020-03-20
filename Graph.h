@@ -39,8 +39,7 @@ class Graph {
     std::unordered_map<int, T> reverseVertexMap;
     std::map<std::pair<int,int>,int> betweennessMap;
     std::multimap<int,std::pair<int,int>> multimap;
-
-    std::map<vector<int>,vector<int>> bigBoiMap;
+    std::map<vector<int>, vector<int>> bigBoiMap;
 
     int count = 0;
 
@@ -134,8 +133,9 @@ public:
     void calculateBetweenness(vector<std::pair<int, int>>);
     void calculateBetweenness(int[]);
     void displayBetweennessMap();
-    void removeEdges(ofstream&);
+    void removeEdges();
     void showCommunities(ofstream&);
+    void displayBigBoyMap();
     void writeOutput(std::ofstream& output);
 
 };
@@ -588,7 +588,8 @@ void Graph<T>::girvanNewman(ofstream& outputFile) {
         }
     }
     displayBetweennessMap();
-    removeEdges(outputFile);
+    removeEdges();
+    showCommunities(outputFile);
 }
 
 template<class T>
@@ -680,25 +681,26 @@ void Graph<T>::displayBetweennessMap() {
 }
 
 template<class T>
-void Graph<T>::removeEdges(ofstream& outputFile) {
+void Graph<T>::removeEdges() {
 
-    displayAdjVec();
+    //displayAdjVec();
 
     int sum = 0;
     for(auto i = multimap.begin(); i != multimap.end(); i++){
         sum += i->first;
     }
+
     sum /= multimap.size();
     cout << sum << endl;
-    double percentageToDelete = sum*(0.25);
+    double percentageToDelete = sum*(0.23);
     cout << percentageToDelete << endl;
     int deletedEdges = 0;
     vector<std::pair<int,int>> deletedEdgesVector;
 
     for(auto it = multimap.begin(); it != multimap.end(); it++){
-        if(it->first >= percentageToDelete*3){
-            cout << unHash(it->second.first) << " (" << (it->second.first) << ") " <<
-                 unHash(it->second.second) << " (" << (it->second.second) << ") " << endl;
+        if(it->first >= percentageToDelete*2.5){
+            //cout << unHash(it->second.first) << " (" << (it->second.first) << ") " <<
+            //unHash(it->second.second) << " (" << (it->second.second) << ") " << endl;
 
             typename std::unordered_map<int,T>::iterator vertex = reverseVertexMap.find(it->second.first);
             typename std::unordered_map<int,T>::iterator edge = reverseVertexMap.find(it->second.second);
@@ -730,34 +732,62 @@ void Graph<T>::removeEdges(ofstream& outputFile) {
 //        cout << deletedEdgesVector[i].first << " and " << deletedEdgesVector[i].second << endl;
 //    }
     //displayAdjVec();
-    showCommunities(outputFile);
 }
 
 template<class T>
 void Graph<T>::showCommunities(ofstream& outputFile) {
-    
+
     std::map<vector<int>, vector<int>>::iterator it;
+
+    std::vector<int>::iterator pathIterator;
+    std::vector<int>::iterator nodeIterator;
+
     for(int i = 0; i < adjVec.size(); i++){
-        for(it = bigBoiMap.begin(); it != bigBoiMap.end(); it++){
-            it = bigBoiMap.find(BFSGirvan(unHash(i)));
+        it = bigBoiMap.find(BFSGirvan(unHash(i)));
+        if(it != bigBoiMap.end()){
+            it->second.push_back(i);
         }
-        if(it == bigBoiMap.end()){
+        else{
             vector<int> tempVec;
             tempVec.push_back(i);
             vector<int> t = BFSGirvan(unHash(i));
-            //bigBoiMap[t] = tempVec;
+            bigBoiMap.insert(std::pair<vector<int>,vector<int>>(t, tempVec));
         }
-        else{
-            it->second.push_back(i);
+    }
+    outputFile << "The communities are: " << endl << endl;
+    int i = 1;
+    for(it = bigBoiMap.begin(); it != bigBoiMap.end(); it++){
+        outputFile << "COMMUNITY " << i << endl << "Size: " << it->first.size() << endl;
+        outputFile << "MEMBERS: ";
+        sort(it->second.begin(), it->second.end());
+        for(auto i = it->second.begin(); i != it->second.end(); i++){
+            outputFile << unHash(*i) << " ";
+        }
+        i++;
+        outputFile << endl << endl;
+    }
+    //displayBigBoyMap();
+}
+template<class T>
+void Graph<T>::displayBigBoyMap() {
+    std::map<vector<int>, vector<int>>::iterator it2;
+    for(it2 = bigBoiMap.begin(); it2 != bigBoiMap.end(); it2++){
+        cout << "PATH: ";
+        for(auto i = it2->first.begin(); i != it2->first.end(); i++){
+            cout << *i << " -> ";
+            for(auto j = it2->second.begin(); j != it2->second.end(); j++){
+                cout << "Nodes of the path: " << *j << " ";
+            }
+            cout << endl;
         }
     }
 }
+
 
 template<class T>
 vector<int> Graph<T>::BFSGirvan(T node) {
     vector<int> bfsVector;
     int value = vertexMap.at(node);
-    //outputFile << endl << "Node is: " << unHash(value) << endl;
     bool *visited = new bool[adjVec.size()];
     for (unsigned int i = 0; i < adjVec.size(); i++) {
         visited[i] = false;
@@ -769,11 +799,9 @@ vector<int> Graph<T>::BFSGirvan(T node) {
 
     vector<int>::iterator i;
 
-    //outputFile << "BFS traversal of " << node << " is: ";
     while (!queue.empty()) {
         value = queue.front();
         bfsVector.push_back(value);
-        //outputFile << unHash(value) << " ";
         queue.pop_front();
 
         for (i = adjVec[value].begin(); i != adjVec[value].end(); i++) {
@@ -783,15 +811,7 @@ vector<int> Graph<T>::BFSGirvan(T node) {
             }
         }
     }
-
     sort(bfsVector.begin(),bfsVector.end());
-
-    for (const auto &i: bfsVector){
-        cout << i << ' ';
-    }
-
-    cout << endl;
-
     return bfsVector;
     //outputFile << endl;
     //createBFSEdgeList(bfsVector, outputFile);
