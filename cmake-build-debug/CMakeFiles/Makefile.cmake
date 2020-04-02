@@ -40,6 +40,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "../controlFile.txt"
   "../g1.txt"
   "../pa03-football-with-dashes.txt"
+  "../pa03-karate-with-dashes.txt"
   )
 
 # The corresponding makefile is:
@@ -52,6 +53,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 set(CMAKE_MAKEFILE_PRODUCTS
   "controlFile.txt"
   "g1.txt"
+  "pa03-karate-with-dashes.txt"
   "pa03-football-with-dashes.txt"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )

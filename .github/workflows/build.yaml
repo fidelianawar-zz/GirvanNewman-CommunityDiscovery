@@ -12,7 +12,7 @@ env:
   ###   Note - 2: If your program requires flags, put them in front of the first
   ###      input file
   ###      Example: INPUT_FILES: -f input01.txt input02.txt
-  INPUT_FILES: controlFile.txt g1.txt pa03-karate-with-dashes.txt pa03-football-with-dashes.txt
+  INPUT_FILES: controlFile.txt
   OUTPUT_FILES:
 
 jobs:

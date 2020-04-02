@@ -95,5 +95,8 @@
 		<Unit filename="/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/pa03-football-with-dashes.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
+		<Unit filename="/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/pa03-karate-with-dashes.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
 	</Project>
 </CodeBlocks_project_file>
