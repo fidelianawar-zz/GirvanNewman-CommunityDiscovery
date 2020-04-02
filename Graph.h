@@ -522,7 +522,7 @@ void Graph<T>::calculateBetweenness(vector<std::pair<int, int>> edgeList) {
 }
 
 template<class T>
-void Graph<T>::displayBetweennessMap() {
+void Graph<T>::displayBetweennessMap() { //parts are commented out so terminal output looks cleaner
 
     //cout << endl << "Edge" << " - " << "Betweenness Value" << endl;
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it){
@@ -531,9 +531,9 @@ void Graph<T>::displayBetweennessMap() {
     for(auto it = betweennessMap.begin(); it != betweennessMap.end(); ++it){
         multimap.emplace(it->second, it->first);
     }
-    cout << endl << "Betweenness Value" << " - " << "Edge" << endl;
+    //cout << endl << "Betweenness Value" << " - " << "Edge" << endl;
     for(auto it = multimap.begin(); it != multimap.end(); ++it){
-        cout << it->first << " - " << unHash(it->second.first) << " " << unHash(it->second.second)  << '\n';
+        //cout << it->first << " - " << unHash(it->second.first) << " " << unHash(it->second.second)  << '\n';
     }
 }
 

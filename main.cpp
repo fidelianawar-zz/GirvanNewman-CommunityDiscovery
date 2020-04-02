@@ -19,7 +19,9 @@ Graph<string> networkGraph;
 
 void readInputFile(std::basic_string<char> input) {
 
-    std::ifstream networkFile(input);
+    std::ifstream networkFile;
+
+    networkFile.open(input);
 
     if (!networkFile) {
         cout << "Network file cannot open :(";
@@ -70,8 +72,11 @@ void readInputFile(std::basic_string<char> input) {
 }
 
 int main(int argc, char *const argv[]) {
+
     std::ifstream controlFile(argv[1]);
+
     cout << argc << endl;
+
     if (!controlFile) {
         cout << "Control file cannot open";
     }
