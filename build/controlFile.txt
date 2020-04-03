@@ -1,0 +1,10 @@
+or pa03-football-with-dashes.txt
+ow g1-output.txt
+dfs NotreDame
+bfs Hawaii
+dfs Tulane
+bfs Hawaii
+mc Tulane Hawaii
+dc
+bfs NotreDame
+mc NotreDame SouthernMethodist
