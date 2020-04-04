@@ -1,10 +1,18 @@
-or pa03-football-with-dashes.txt
+or g2.txt
 ow g1-output.txt
-dfs NotreDame
-bfs Hawaii
+<<<<<<< HEAD
+dfs C
+bfs D
+dfs A
+bfs E
+mc A G
+=======
 dfs Tulane
 bfs Hawaii
+dfs Baylor
+bfs Hawaii
 mc Tulane Hawaii
+>>>>>>> 643ec0161ccba39ede6a3e2af4c6977261717cdb
 dc
-bfs NotreDame
-mc NotreDame SouthernMethodist
+bfs E
+mc C E

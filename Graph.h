@@ -540,27 +540,24 @@ void Graph<T>::displayBetweennessMap() { //parts are commented out so terminal o
 template<class T>
 void Graph<T>::removeEdges() {
 
-    //displayAdjVec();
-
     communitiesAdjVec = adjVec; //create tempVec so original adjVec can be used later
 
     int sum = 0;
     for(auto i = multimap.begin(); i != multimap.end(); i++){
         sum += i->first;
     }
-
     //calculation to know which edges to remove
     sum /= multimap.size();
-    double percentageToDelete = sum*(0.15);
+    double percentageToDelete = sum * (0.15);
     int deletedEdges = 0;
-    vector<std::pair<int,int>> deletedEdgesVector;
+    vector<std::pair<int, int>> deletedEdgesVector;
 
-    for(auto it = multimap.begin(); it != multimap.end(); it++){
-        if(it->first >= percentageToDelete*2.67){
+    for (auto it = multimap.begin(); it != multimap.end(); it++) {
+        if (it->first >= percentageToDelete * 2.67) {
 
             //find vertex/edge to delete later from adjVec
-            typename std::unordered_map<int,T>::iterator vertex = reverseVertexMap.find(it->second.first);
-            typename std::unordered_map<int,T>::iterator edge = reverseVertexMap.find(it->second.second);
+            typename std::unordered_map<int, T>::iterator vertex = reverseVertexMap.find(it->second.first);
+            typename std::unordered_map<int, T>::iterator edge = reverseVertexMap.find(it->second.second);
 
             int x = vertex->first;
             int y = edge->first;
@@ -569,10 +566,12 @@ void Graph<T>::removeEdges() {
             vector<int>::reverse_iterator edgeIterator;
 
             //make sure to delete at u, v and v, u
-            for (vertexIterator = communitiesAdjVec[x].rbegin(); vertexIterator < communitiesAdjVec[x].rend(); vertexIterator++) {
+            for (vertexIterator = communitiesAdjVec[x].rbegin();
+                 vertexIterator < communitiesAdjVec[x].rend(); vertexIterator++) {
                 if (*vertexIterator == edge->first) {
                     communitiesAdjVec[x].erase((vertexIterator + 1).base());
-                    for(edgeIterator = communitiesAdjVec[y].rbegin(); edgeIterator < communitiesAdjVec[y].rend(); edgeIterator++){
+                    for (edgeIterator = communitiesAdjVec[y].rbegin();
+                         edgeIterator < communitiesAdjVec[y].rend(); edgeIterator++) {
                         if (*edgeIterator == vertex->first) {
                             communitiesAdjVec[y].erase((edgeIterator + 1).base());
                         }
@@ -580,10 +579,9 @@ void Graph<T>::removeEdges() {
                 }
             }
             deletedEdges++;
-            deletedEdgesVector.push_back(std::make_pair(vertex->first,edge->first));
+            deletedEdgesVector.push_back(std::make_pair(vertex->first, edge->first));
         }
     }
-    //displayAdjVec();
 }
 
 template<class T>

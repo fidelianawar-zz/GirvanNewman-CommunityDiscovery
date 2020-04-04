@@ -24,10 +24,10 @@ void readInputFile(std::basic_string<char> input) {
     networkFile.open(input);
 
     if (!networkFile) {
-        cout << "Network file cannot open :(";
+        cout << "Input file cannot open :(";
         exit(5);
     } else {
-        cout << "Network file opened!" << endl;
+        cout << "Input file opened!" << endl;
     }
 
     int numVertices = 0;

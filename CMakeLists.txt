@@ -15,6 +15,7 @@ set (input01 "controlFile.txt")
 set (input02 "g1.txt")
 set (input03 "pa03-karate-with-dashes.txt")
 set (input04 "pa03-football-with-dashes.txt")
+set (input03 "g2.txt")
 #
 ##########################################
 

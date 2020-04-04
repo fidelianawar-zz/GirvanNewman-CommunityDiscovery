@@ -1,4 +1,4 @@
-# Install script for directory: /Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/Project2Reprieve/20s-pa02-doover-fidelianawar
+# Install script for directory: /Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/Project2Reprieve/20s-pa02-doover-fidelianawar/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

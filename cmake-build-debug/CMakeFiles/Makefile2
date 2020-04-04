@@ -44,10 +44,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar"
+CMAKE_SOURCE_DIR = "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/cmake-build-debug"
+CMAKE_BINARY_DIR = "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/cmake-build-debug"
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -74,14 +74,14 @@ preinstall:
 CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/all:
 	$(MAKE) -f CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/build.make CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/depend
 	$(MAKE) -f CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/build.make CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target LinkSearchingAndCommunityDiscovery"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/cmake-build-debug/CMakeFiles" --progress-num=1,2 "Built target LinkSearchingAndCommunityDiscovery"
 .PHONY : CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/cmake-build-debug/CMakeFiles" 2
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/cmake-build-debug/CMakeFiles" 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/cmake-build-debug/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/cmake-build-debug/CMakeFiles" 0
 .PHONY : CMakeFiles/LinkSearchingAndCommunityDiscovery.dir/rule
 
 # Convenience name for target.

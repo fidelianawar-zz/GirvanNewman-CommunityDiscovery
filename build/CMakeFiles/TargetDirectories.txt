@@ -1,3 +1,3 @@
-/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/Project2Reprieve/20s-pa02-doover-fidelianawar/build/CMakeFiles/rebuild_cache.dir
-/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/Project2Reprieve/20s-pa02-doover-fidelianawar/build/CMakeFiles/edit_cache.dir
-/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/Project2Reprieve/20s-pa02-doover-fidelianawar/build/CMakeFiles/LinkSearchingAndCommunityDiscovery.dir
+/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/build/CMakeFiles/rebuild_cache.dir
+/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/build/CMakeFiles/edit_cache.dir
+/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/build/CMakeFiles/LinkSearchingAndCommunityDiscovery.dir

@@ -1,4 +1,4 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar"
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "/Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar"
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/20s-pa02-fidelianawar/cmake-build-debug
+-- Build files have been written to: /Users/fidelianawar/Desktop/Spring 2020/CS3353 - Algorithms/Projects/PA02-Reprieve/20s-pa02-fidelianawar/cmake-build-debug
